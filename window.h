@@ -10,6 +10,7 @@
 #include <QtSql>
 #include <anotherwindow.h>
 #include <QPushButton>
+#include <QLabel>
 
 QT_BEGIN_NAMESPACE
 class QGroupBox;
@@ -33,7 +34,9 @@ private:
     AnotherWindow *sWindow;
     AnotherWindow *thirdWindow;
     QPushButton *pushButton;
-
+    QLabel *label_1;
+    QLabel *label_2;
+    QTimer *timer;
 };
 //! [0]
 
