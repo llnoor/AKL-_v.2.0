@@ -2,7 +2,7 @@ QT += widgets
 QT += sql
 
 HEADERS       = window.h \
-    anotherwindow.h
+    logowindow.h
 SOURCES       = window.cpp \
                 main.cpp \
-    anotherwindow.cpp
+    logowindow.cpp
