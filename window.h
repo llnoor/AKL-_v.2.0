@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QtSql>
 #include <logowindow.h>
-
+#include <authorization.h>
 
 class Window : public QWidget
 {
@@ -19,6 +19,7 @@ private slots:
 private:
     QTimer *timer;
     Logo *logoWindow;
+    Auth *authWindow;
 };
 
 #endif

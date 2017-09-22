@@ -14,7 +14,8 @@ class Logo : public QWidget
 {
     Q_OBJECT
 public:
-    explicit Logo();
+    //explicit Logo();
+    Logo();
 
 private:
     QGroupBox *groupLogo();
