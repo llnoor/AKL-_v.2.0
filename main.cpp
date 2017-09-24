@@ -1,6 +1,6 @@
 /****************************************************************************
-**  LAMP
-**  Copyright (C) 2017   Ilnur Gimazov ubvfp94@mail.ru
+**  LAMP (Laboratory for Advanced Materials Physics)
+**  Copyright (C) 2017 Ilnur Gimazov ubvfp94@mail.ru
 **
 ****************************************************************************/
 

@@ -7,14 +7,14 @@ void addScientist(QSqlQuery &q,
                   const QString &fullname,
                   const QString &login,
                   const QString &pass,
-                  QDate &date,
+                  const QDate &date,
                   const QString &parent,
                   const QString &email,
                   const QString &telegram,
                   const QString &phone,
                   const QString &experiments,
                   const QString &theme,
-                  QDate &birthdate)
+                  const QDate &birthdate)
 {
     q.addBindValue(fullname);
     q.addBindValue(login);
@@ -34,7 +34,7 @@ void addExperiment(QSqlQuery &q,
                   const QString &name,
                   const QString &description,
                   const QString &author,
-                  QDate &date,
+                  const QDate &date,
                   const QString &parent,
                   const QString &pass,
                   const QString &devices,
@@ -57,7 +57,7 @@ void addDevice(QSqlQuery &q,
                   const QString &name,
                   const QString &description,
                   const QString &author,
-                  QDate &date,
+                  const QDate &date,
                   const QString &parent,
                   const QString &pass,
                   const QString &docs,
@@ -78,7 +78,7 @@ void addTheme(QSqlQuery &q,
                   const QString &name,
                   const QString &description,
                   const QString &author,
-                  QDate &date,
+                  const QDate &date,
                   const QString &background,
                   const QString &translucent,
                   const QString &border, // ! it can be int
@@ -109,7 +109,7 @@ void addLog(QSqlQuery &q,
                   const QString &name,
                   const QString &description,
                   const QString &process,
-                  QDate &date,
+                  const QDate &date,
                   int type,
                   const QString &problem)
 {
@@ -278,40 +278,64 @@ QSqlError initDb()
 
 
     addScientist(q,
-                      QLatin1String("Admin Admin"),
-                      QLatin1String("admin"),
-                      QLatin1String("pass54_admin"),
-                      QDate(2017,09,23),
-                      QLatin1String("admin"),
-                      QLatin1String("admin@gmail.com"),
-                      QLatin1String("admin_telegram"),
-                      QLatin1String("+79271234567"),
-                      QLatin1String("exp_of_admin"),
-                      QLatin1String("default"),
-                      QDate(1920,10,10));
+                 QLatin1String("Admin Admin"),
+                 QLatin1String("admin"),
+                 QLatin1String("pass54_admin"),
+                 QDate(2017, 9, 23),
+                 QLatin1String("admin"),
+                 QLatin1String("admin@gmail.com"),
+                 QLatin1String("admin_telegram"),
+                 QLatin1String("+79271234567"),
+                 QLatin1String("exp_of_admin"),
+                 QLatin1String("default"),
+                 QDate(2017, 10, 10));
 
     addExperiment(q,
                       QLatin1String("First exp"),
                       QLatin1String("measurement of susceptibility"),
                       QLatin1String("admin"),
-                      QDate(2017,09,23),
+                      QDate(2017, 9 ,23),
                       QLatin1String(""),
                       QLatin1String(""),
                       QLatin1String("devices_of_First_exp"), //use the ground (_) instead of a space ( )
                       QLatin1String("First exp.doc"),
                       0);
 
-    addDevice(QSqlQuery &q,
+    addDevice(q,
                       QLatin1String("APPA"),
                       QLatin1String("APPA1"),
                       QLatin1String("admin"),
-                      QDate(2017,09,23),
+                      QDate(2017, 9, 23),
                       QLatin1String(""),
                       QLatin1String(""),
                       QLatin1String("APPA.doc"),
                       0); //add enum type {appa,keithley,lock-in}
 
-    //addTheme
+    addTheme(q,
+                      QLatin1String("default"),
+                      QLatin1String("default theme"),
+                      QLatin1String("admin"),
+                      QDate(2017, 9, 23),
+                      QLatin1String("default"), // background,
+                      QLatin1String("default"), // translucent,
+                      QLatin1String("default"), // border, // ! it can be int
+                      QLatin1String("default"), // border_color,
+                      QLatin1String("default"), // font,
+                      0, // int font_size,
+                      QLatin1String("default"), // font_color,
+                      QLatin1String("default"),// mergin,
+                      QLatin1String("default"));
+
+
+    addLog(q,
+                      QLatin1String("main"),
+                      QLatin1String("main log"),
+                      QLatin1String("default"),
+                      QDate(2017, 9, 23),
+                      0,
+                      QLatin1String("default"));
+
+            //addTheme
     //addLog
 
 

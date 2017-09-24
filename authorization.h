@@ -17,6 +17,9 @@ class Auth : public QWidget
 public:
     Auth();
 
+public slots:
+    void openWindow();
+
 private:
     QGroupBox *groupAuth();
     QTimer *timerAuth;

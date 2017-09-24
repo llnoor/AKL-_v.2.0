@@ -11,3 +11,7 @@ SOURCES       = window.cpp \
     logowindow.cpp \
     authorization.cpp \
     sqlamp.cpp
+
+DISTFILES += \
+    conf.txt \
+    README.md

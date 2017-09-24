@@ -5,6 +5,8 @@
 #include <QtSql>
 #include <logowindow.h>
 #include <authorization.h>
+#include <sqlamp.h>
+
 
 class Window : public QWidget
 {
@@ -20,6 +22,7 @@ private:
     QTimer *timer;
     Logo *logoWindow;
     Auth *authWindow;
+    SQLamp *sqLamp;
 };
 
 #endif

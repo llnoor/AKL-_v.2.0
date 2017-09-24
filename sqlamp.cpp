@@ -1,8 +1,6 @@
 #include "sqlamp.h"
 #include "initdb.h"
 
-#include <QtSql>
-
 SQLamp::SQLamp()
 {
 
@@ -18,6 +16,12 @@ SQLamp::SQLamp()
 
 
 
+
 }
 
 
+void SQLamp::showError(const QSqlError &err)
+{
+    QMessageBox::critical(this, "Unable to initialize Database",
+                "Error initializing database: " + err.text());
+}

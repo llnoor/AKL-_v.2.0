@@ -2,6 +2,7 @@
 #include <QSql>
 
 #include "authorization.h"
+#include "logowindow.h"
 
 Auth::Auth() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
 {
@@ -14,6 +15,16 @@ Auth::Auth() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
 
     this->setFont(QFont("Ubuntu",14));
 }
+
+void Auth::openWindow()
+{
+    this->setFont(QFont("Ubuntu",124));
+    //this->close();
+    //authWindow->show();
+    //logoWindow->show();
+    //timer->stop();
+}
+
 
 QGroupBox *Auth::groupAuth()
 {

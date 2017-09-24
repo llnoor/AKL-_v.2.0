@@ -13,9 +13,10 @@ Logo::Logo(): QWidget(0, Qt::Window | Qt::FramelessWindowHint)
     setAttribute(Qt::WA_TranslucentBackground);
     setStyleSheet("background: rgba(255, 255, 255, 100);");
 
-    //timerLogo = new QTimer();
-    //connect(timerLogo, SIGNAL(timeout()), this, SLOT(close()) );
-    //timerLogo->start(3000);
+    timerLogo = new QTimer();
+    connect(timerLogo, SIGNAL(timeout()), this, SIGNAL(firstWindow()) );
+    timerLogo->start(3000);
+    //emit firstWindow();
 }
 
 QGroupBox *Logo::groupLogo()
