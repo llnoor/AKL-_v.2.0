@@ -1,22 +1,21 @@
 #include <QtWidgets>
 #include <QSql>
 
-#include "authorization.h"
-#include "logowindow.h"
+#include "experiments.h"
 
-Auth::Auth() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
+Experiments::Experiments() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
 {
     QGridLayout *grid = new QGridLayout;
-    grid->addWidget(groupAuth(), 0, 0);
+    grid->addWidget(groupExperiments(), 0, 0);
     setLayout(grid);
 
-    setWindowTitle(tr("Authorization"));
+    setWindowTitle(tr("Experiments"));
     resize(380, 120);
 
     this->setFont(QFont("Ubuntu",14));
 }
 
-void Auth::openWindow()
+void Experiments::openWindowF()
 {
     this->setFont(QFont("Ubuntu",15));
     //this->close();
@@ -25,8 +24,7 @@ void Auth::openWindow()
     //timer->stop();
 }
 
-
-QGroupBox *Auth::groupAuth()
+QGroupBox *Experiments::groupExperiments()
 {
     QGroupBox *groupBox = new QGroupBox(tr(""));
         QGridLayout * gridLayout = new QGridLayout();

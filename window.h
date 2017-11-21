@@ -6,6 +6,7 @@
 #include <logowindow.h>
 #include <authorization.h>
 #include <sqlamp.h>
+#include <mainwindow_test.h>
 
 
 class Window : public QWidget
@@ -23,6 +24,10 @@ private:
     Logo *logoWindow;
     Auth *authWindow;
     SQLamp *sqLamp;
+    MainWindow_Test *MainWindow_T;
+
+
+
 };
 
 #endif

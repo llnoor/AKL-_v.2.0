@@ -7,18 +7,21 @@
 Window::Window() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
 {
     logoWindow = new Logo();
-    logoWindow->show();
+    //logoWindow->show();
 
     sqLamp = new SQLamp();
 
 
     authWindow = new Auth();
-    authWindow->show();
+    //authWindow->show();
+
+    MainWindow_T = new MainWindow_Test();
+    MainWindow_T ->show();
 
     setAttribute(Qt::WA_TranslucentBackground);
-    timer = new QTimer();
+    //timer = new QTimer();
     //connect(timer, SIGNAL(timeout()), this, SLOT(openWindow()));
-    timer->start(3000); //timer->setInterval(3000); timer->start();
+    //timer->start(3000); //timer->setInterval(3000); timer->start();
 
     connect(logoWindow, SIGNAL(firstWindow()) , authWindow, SLOT(openWindow()) );
 }
