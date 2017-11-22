@@ -7,6 +7,7 @@
 #include <authorization.h>
 #include <sqlamp.h>
 #include <mainwindow_test.h>
+#include "table.h"
 
 
 class Window : public QWidget
@@ -24,7 +25,8 @@ private:
     Logo *logoWindow;
     Auth *authWindow;
     SQLamp *sqLamp;
-    MainWindow_Test *MainWindow_T;
+    MainWindow_T *MainWindow_Test;
+    Table *Table_new;
 
 
 

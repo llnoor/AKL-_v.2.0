@@ -19,6 +19,12 @@
 #define DEVICE_IP               "IP"
 #define DEVICE_MAC              "MAC"
 
+#define TABLE                   "TableExample"
+#define TABLE_DATE              "Date"
+#define TABLE_TIME              "Time"
+#define TABLE_MESSAGE           "Message"
+#define TABLE_RANDOM            "Random"
+
 class DataBase : public QObject
 {
     Q_OBJECT
@@ -31,6 +37,8 @@ public:
     void connectToDataBase();
     bool inserIntoDeviceTable(const QVariantList &data);
 
+    bool inserIntoTable(const QVariantList &data);
+
 private:
     // Сам объект базы данных, с которым будет производиться работа
     QSqlDatabase    db;
@@ -42,6 +50,7 @@ private:
     bool restoreDataBase();
     void closeDataBase();
     bool createDeviceTable();
+    bool createTable();
 };
 
 #endif // DATABASE_H

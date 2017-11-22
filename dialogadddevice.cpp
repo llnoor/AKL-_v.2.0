@@ -1,17 +1,12 @@
-#include <QtWidgets>
-#include <QSql>
+#include "dialogadddevice.h"
+#include "ui_dialogadddevice.h"
 #include <QDebug>
 
-#include "dialogadddevice.h"
-
 DialogAddDevice::DialogAddDevice(int row, QWidget *parent) :
-    QDialog(parent)
+    QDialog(parent),
+    ui(new Ui::DialogAddDevice)
 {
-    QGridLayout *grid = new QGridLayout;
-    grid->addWidget(groupDevice(), 0, 0);
-    setLayout(grid);
-
-
+    ui->setupUi(this);
 
     /* Метода для инициализации модели,
      * из которой будут транслироваться данные
@@ -36,7 +31,7 @@ DialogAddDevice::DialogAddDevice(int row, QWidget *parent) :
 
 DialogAddDevice::~DialogAddDevice()
 {
-
+    delete ui;
 }
 
 /* Метод настройки модели данных и mapper
@@ -55,20 +50,20 @@ void DialogAddDevice::setupModel()
      * */
     mapper = new QDataWidgetMapper();
     mapper->setModel(model);
-    mapper->addMapping(HostnameLineEdit, 1);
-    mapper->addMapping(IPAddressLineEdit, 2);
-    mapper->addMapping(MACLineEdit, 3);
+    mapper->addMapping(ui->HostnameLineEdit, 1);
+    mapper->addMapping(ui->IPAddressLineEdit, 2);
+    mapper->addMapping(ui->MACLineEdit, 3);
     /* Ручное подтверждение изменения данных
      * через mapper
      * */
     mapper->setSubmitPolicy(QDataWidgetMapper::ManualSubmit);
 
+    qDebug() << ui->HostnameLineEdit->text();
     /* Подключаем коннекты от кнопок пролистывания
      * к прилистыванию модели данных в mapper
      * */
-    connect(previousButton, SIGNAL(clicked()), mapper, SLOT(toPrevious()));
-    connect(nextButton, SIGNAL(clicked()), mapper, SLOT(toNext()));
-    connect(nextButton, SIGNAL(clicked()), this, SLOT(okbuttonBox()));
+    connect(ui->previousButton, SIGNAL(clicked()), mapper, SLOT(toPrevious()));
+    connect(ui->nextButton, SIGNAL(clicked()), mapper, SLOT(toNext()));
     /* При изменении индекса в mapper изменяем состояние кнопок
      * */
     connect(mapper, SIGNAL(currentIndexChanged(int)), this, SLOT(updateButtons(int)));
@@ -84,7 +79,7 @@ void DialogAddDevice::createUI()
                      + "\\." + ipRange
                      + "\\." + ipRange + "$");
     QRegExpValidator *ipValidator = new QRegExpValidator(ipRegex, this);
-    IPAddressLineEdit->setValidator(ipValidator);
+    ui->IPAddressLineEdit->setValidator(ipValidator);
 
     QString macRange = "(?:[0-9A-Fa-f][0-9A-Fa-f])";
     QRegExp macRegex ("^" + macRange
@@ -94,7 +89,7 @@ void DialogAddDevice::createUI()
                       + "\\:" + macRange
                       + "\\:" + macRange + "$");
     QRegExpValidator *macValidator = new QRegExpValidator(macRegex, this);
-    MACLineEdit->setValidator(macValidator);
+    ui->MACLineEdit->setValidator(macValidator);
 }
 
 void DialogAddDevice::on_buttonBox_accepted()
@@ -110,8 +105,8 @@ void DialogAddDevice::on_buttonBox_accepted()
                           " WHERE ( " DEVICE_HOSTNAME " = '%1' "
                           " OR " DEVICE_IP " = '%2' )"
                           " AND id NOT LIKE '%3' )")
-            .arg(HostnameLineEdit->text(),
-                 IPAddressLineEdit->text(),
+            .arg(ui->HostnameLineEdit->text(),
+                 ui->IPAddressLineEdit->text(),
                  model->data(model->index(mapper->currentIndex(),0), Qt::DisplayRole).toString());
 
     query.prepare(str);
@@ -135,50 +130,10 @@ void DialogAddDevice::on_buttonBox_accepted()
         this->close();
     }
 }
-
-void DialogAddDevice::okbuttonBox()
-{
-    /* SQL-запрос для проверки существования записи
-     * с такими же учетными данными.
-     * Если запись не существует или находится лишь индекс
-     * редактируемой в данный момент записи,
-     * то диалог позволяет вставку записи в таблицу данных
-     * */
-    QSqlQuery query;
-    QString str = QString("SELECT EXISTS (SELECT " DEVICE_HOSTNAME " FROM " DEVICE
-                          " WHERE ( " DEVICE_HOSTNAME " = '%1' "
-                          " OR " DEVICE_IP " = '%2' )"
-                          " AND id NOT LIKE '%3' )")
-            .arg(HostnameLineEdit->text(),
-                 IPAddressLineEdit->text(),
-                 model->data(model->index(mapper->currentIndex(),0), Qt::DisplayRole).toString());
-
-    query.prepare(str);
-    query.exec();
-    query.next();
-
-    /* Если запись существует, то диалог вызывает
-     * предупредительное сообщение
-     * */
-    if(query.value(0) != 0){
-        QMessageBox::information(this, trUtf8("Ошибка хоста"),
-                                 trUtf8("Хост с таким именем или IP-адресом уже существует"));
-    /* В противном случае производится вставка новых данных в таблицу
-     * и диалог завершается с передачей сигнала для обновления
-     * таблицы в главном окне
-     * */
-    } else {
-        mapper->submit();
-        model->submitAll();
-        emit signalReady();
-        this->close();
-    }
-}
-
 
 void DialogAddDevice::accept()
 {
-qDebug() << HostnameLineEdit->text();
+qDebug() << ui->HostnameLineEdit->text();
 }
 
 /* Метод изменения состояния активности кнопок пролистывания
@@ -190,35 +145,6 @@ void DialogAddDevice::updateButtons(int row)
      * то мы изменяем состояние соответствующей кнопки на
      * состояние неактивна
      * */
-    previousButton->setEnabled(row > 0);
-    nextButton->setEnabled(row < model->rowCount() - 1);
+    ui->previousButton->setEnabled(row > 0);
+    ui->nextButton->setEnabled(row < model->rowCount() - 1);
 }
-
-QGroupBox *DialogAddDevice::groupDevice()
-{
-    QGroupBox *groupBox = new QGroupBox(tr(""));
-        QGridLayout * gridLayout = new QGridLayout();
-
-
-
-        HostnameLineEdit = new QLineEdit(tr("HostnameLineEdit"));
-        IPAddressLineEdit  = new QLineEdit(tr("IPAddressLineEdit"));
-        MACLineEdit  = new QLineEdit(tr("MACLineEdit"));
-        previousButton = new QPushButton(tr("previousButton"));
-        nextButton  = new QPushButton(tr("nextButton"));
-        okButton = new QPushButton(tr("Okey"));
-        buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
-
-
-        gridLayout->addWidget(HostnameLineEdit,0,0);
-        gridLayout->addWidget(IPAddressLineEdit,1,0);
-        gridLayout->addWidget(MACLineEdit,2,0);
-        gridLayout->addWidget(previousButton,3,0);
-        gridLayout->addWidget(nextButton,3,1);
-        gridLayout->addWidget(okButton,3,2);
-        gridLayout->addWidget(buttonBox,4,0);
-        groupBox->setLayout(gridLayout);
-    return groupBox;
-}
-
-

@@ -7,16 +7,19 @@
 Window::Window() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
 {
     logoWindow = new Logo();
-    //logoWindow->show();
+    logoWindow->show();
 
     sqLamp = new SQLamp();
 
 
     authWindow = new Auth();
-    //authWindow->show();
+    authWindow->show();
 
-    MainWindow_T = new MainWindow_Test();
-    MainWindow_T ->show();
+    //MainWindow_Test = new MainWindow_T();
+    //MainWindow_Test ->show();
+
+    Table_new = new Table();
+    Table_new -> show();
 
     setAttribute(Qt::WA_TranslucentBackground);
     //timer = new QTimer();

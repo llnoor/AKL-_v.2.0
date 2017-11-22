@@ -6,20 +6,11 @@
 #include <QDataWidgetMapper>
 #include <QMessageBox>
 
-#include <QWidget>
-#include <QPushButton>
-#include <QLabel>
-#include <QLineEdit>
-#include <QDialogButtonBox>
 #include <database.h>
 
-QT_BEGIN_NAMESPACE
-class QGroupBox;
+namespace Ui {
 class DialogAddDevice;
-QT_END_NAMESPACE
-
-
-
+}
 
 class DialogAddDevice : public QDialog
 {
@@ -35,22 +26,11 @@ signals:
 private slots:
     void on_buttonBox_accepted();
     void updateButtons(int row);
-    void okbuttonBox();
-
 
 private:
-    QGroupBox               *groupDevice();
+    Ui::DialogAddDevice         *ui;
     QSqlTableModel              *model;
     QDataWidgetMapper           *mapper;
-
-    QLineEdit *HostnameLineEdit;
-    QLineEdit *IPAddressLineEdit;
-    QLineEdit *MACLineEdit;
-    QPushButton *previousButton;
-    QPushButton *nextButton;
-    QPushButton *okButton;
-    QDialogButtonBox *buttonBox;
-
 
 private:
     void setupModel();

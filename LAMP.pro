@@ -9,7 +9,8 @@ HEADERS       = window.h \
     experiments.h \
     database.h \
     dialogadddevice.h \
-    mainwindow_test.h
+    mainwindow_test.h \
+    table.h
 SOURCES       = window.cpp \
                 main.cpp \
     logowindow.cpp \
@@ -18,7 +19,11 @@ SOURCES       = window.cpp \
     experiments.cpp \
     database.cpp \
     dialogadddevice.cpp \
-    mainwindow_test.cpp
+    mainwindow_test.cpp \
+    table.cpp
+
+FORMS    += mainwindow_test.ui \
+    dialogadddevice.ui
 
 DISTFILES += \
     conf.txt \
