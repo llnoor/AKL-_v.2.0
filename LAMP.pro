@@ -6,24 +6,14 @@ HEADERS       = window.h \
     authorization.h \
     sqlamp.h \
     initdb.h \
-    experiments.h \
-    database.h \
-    dialogadddevice.h \
-    mainwindow_test.h \
-    table.h
+    experiments.h
 SOURCES       = window.cpp \
                 main.cpp \
     logowindow.cpp \
     authorization.cpp \
     sqlamp.cpp \
-    experiments.cpp \
-    database.cpp \
-    dialogadddevice.cpp \
-    mainwindow_test.cpp \
-    table.cpp
+    experiments.cpp
 
-FORMS    += mainwindow_test.ui \
-    dialogadddevice.ui
 
 DISTFILES += \
     conf.txt \
