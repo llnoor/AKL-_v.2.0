@@ -6,15 +6,19 @@ HEADERS       = window.h \
     authorization.h \
     sqlamp.h \
     initdb.h \
-    experiments.h
+    experiments.h \
+    database.h
 SOURCES       = window.cpp \
                 main.cpp \
     logowindow.cpp \
     authorization.cpp \
     sqlamp.cpp \
-    experiments.cpp
+    experiments.cpp \
+    database.cpp
 
 
 DISTFILES += \
     conf.txt \
-    README.md
+    README.md \
+    photo1.jpg \
+    photo_sql.jpg

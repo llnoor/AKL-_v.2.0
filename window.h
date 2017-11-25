@@ -22,7 +22,7 @@ private slots:
 private:
     QTimer *timer;
     Logo *logoWindow;
-    Auth *authWindow;
+    AuthorizationWindow *authWindow;
     SQLamp *sqLamp;
     Experiments *Exp;
 

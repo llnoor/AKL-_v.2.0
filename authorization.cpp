@@ -1,46 +1,108 @@
-#include <QtWidgets>
-#include <QSql>
-
 #include "authorization.h"
-#include "logowindow.h"
+#include <QtWidgets>
+#include <QMainWindow>
 
-Auth::Auth() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
+AuthorizationWindow::AuthorizationWindow(QWidget *parent) :
+    QWidget(parent)
+    //QWidget(0, Qt::Window | Qt::FramelessWindowHint)
+
 {
+    tableView_new = new QTableView();
+
+
+
+
+
+    /* Первым делом необходимо создать объект, который будет использоваться для работы с данными нашей БД
+     * и инициализировать подключение к базе данных
+     * */
+    db = new DataBase();
+    db->connectToDataBase();
+
+    /* После чего производим наполнение таблицы базы данных
+     * контентом, который будет отображаться в TableView
+     * */
+    for(int i = 0; i < 20; i++){
+        QVariantList data;
+        int random = qrand(); // Получаем случайные целые числа для вставки а базу данных
+        data.append(QDate::currentDate()); // Получаем текущую дату для вставки в БД
+        data.append(QTime::currentTime()); // Получаем текущее время для вставки в БД
+        // Подготавливаем полученное случайное число для вставки в БД
+        data.append(random);
+        // Подготавливаем сообщение для вставки в базу данных
+        data.append("Получено сообщение от " + QString::number(random));
+        // Вставляем данные в БД
+        db->inserIntoTable(data);
+    }
+
+    /* Инициализируем модель для представления данных
+     * с заданием названий колонок
+     * */
+    this->setupModel(TABLE,
+                     QStringList() << trUtf8("id")
+                                   << trUtf8("Дата")
+                                   << trUtf8("Время")
+                                   << trUtf8("Рандомное число")
+                                   << trUtf8("Сообщение")
+               );
+
+    /* Инициализируем внешний вид таблицы с данными
+     * */
+    this->createUI();
+
+
     QGridLayout *grid = new QGridLayout;
-    grid->addWidget(groupAuth(), 0, 0);
+    grid->addWidget(tableView_new, 0, 0, model->rowCount(), model->columnCount());
     setLayout(grid);
 
+    //tableView_new->horizontalHeader()->setSectionResizeMode(1,QHeaderView::);
+    tableView_new->setColumnWidth(1,100);
+    tableView_new->setColumnWidth(2,100);
+
+
+
     setWindowTitle(tr("Authorization"));
-    resize(380, 120);
+        resize(480, 220);
 
-    this->setFont(QFont("Ubuntu",14));
 }
 
-void Auth::openWindow()
+/*AuthorizationWindow::~AuthorizationWindow()
 {
-    this->setFont(QFont("Ubuntu",15));
-    //this->close();
-    //authWindow->show();
-    //logoWindow->show();
-    //timer->stop();
+    delete ui;
+}*/
+
+/* Метод для инициализации модеи представления данных
+ * */
+void AuthorizationWindow::setupModel(const QString &tableName, const QStringList &headers)
+{
+    /* Производим инициализацию модели представления данных
+     * с установкой имени таблицы в базе данных, по которому
+     * будет производится обращение в таблице
+     * */
+    model = new QSqlTableModel(this);
+    model->setTable(tableName);
+
+    /* Устанавливаем названия колонок в таблице с сортировкой данных
+     * */
+    for(int i = 0, j = 0; i < model->columnCount(); i++, j++){
+        model->setHeaderData(i,Qt::Horizontal,headers[j]);
+    }
+    // Устанавливаем сортировку по возрастанию данных по нулевой колонке
+    model->setSort(0,Qt::AscendingOrder);
 }
 
-
-QGroupBox *Auth::groupAuth()
+void AuthorizationWindow::createUI()
 {
-    QGroupBox *groupBox = new QGroupBox(tr(""));
-        QGridLayout * gridLayout = new QGridLayout();
-        label_login = new QLabel(tr("Login"));
-        line_login = new QLineEdit(tr("Login"));
-        label_pass = new QLabel(tr("Password"));
-        line_pass = new QLineEdit(tr("Pass"));
-        line_pass->setEchoMode(QLineEdit::Password);
-        button_Submit = new QPushButton(tr("Submit"));
-        gridLayout->addWidget(label_login,0,0);
-        gridLayout->addWidget(line_login,0,1);
-        gridLayout->addWidget(label_pass,1,0);
-        gridLayout->addWidget(line_pass,1,1);
-        gridLayout->addWidget(button_Submit,2,1);
-        groupBox->setLayout(gridLayout);
-    return groupBox;
+    tableView_new->setModel(model);     // Устанавливаем модель на TableView
+    tableView_new->setColumnHidden(0, true);    // Скрываем колонку с id записей
+    // Разрешаем выделение строк
+    tableView_new->setSelectionBehavior(QAbstractItemView::SelectRows);
+    // Устанавливаем режим выделения лишь одно строки в таблице
+    tableView_new->setSelectionMode(QAbstractItemView::SingleSelection);
+    // Устанавливаем размер колонок по содержимому
+    tableView_new->resizeColumnsToContents();
+    tableView_new->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    tableView_new->horizontalHeader()->setStretchLastSection(true);
+
+    model->select(); // Делаем выборку данных из таблицы
 }

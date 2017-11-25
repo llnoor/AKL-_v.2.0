@@ -16,8 +16,8 @@ Window::Window() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
     //Exp->show();
 
 
-    authWindow = new Auth();
-    //authWindow->show();
+    authWindow = new AuthorizationWindow();
+    authWindow->show();
 
     //MainWindow_Test = new MainWindow_T();
     //MainWindow_Test ->show();
@@ -27,7 +27,7 @@ Window::Window() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
     //connect(timer, SIGNAL(timeout()), this, SLOT(openWindow()));
     //timer->start(3000); //timer->setInterval(3000); timer->start();
 
-    connect(logoWindow, SIGNAL(firstWindow()) , authWindow, SLOT(openWindow()) );
+    //connect(logoWindow, SIGNAL(firstWindow()) , authWindow, SLOT(openWindow()) );
 }
 
 void Window::openWindow()

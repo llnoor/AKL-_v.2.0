@@ -1,36 +1,39 @@
-#ifndef AUTH_H
-#define AUTH_H
+#ifndef AUTHORIZATIONWINDOW_H
+#define AUTHORIZATIONWINDOW_H
 
+#include <QMainWindow>
+#include <QSqlTableModel>
+/* Подключаем заголовочный файл для работы с информацией, которая помещена в базу данных */
+#include "database.h"
+#include <QTableView>
 #include <QWidget>
-#include <QtSql>
-#include <QPushButton>
-#include <QLabel>
-#include <QLineEdit>
 
 QT_BEGIN_NAMESPACE
 class QGroupBox;
 QT_END_NAMESPACE
 
-class Auth : public QWidget
+class AuthorizationWindow : public QWidget
 {
     Q_OBJECT
-public:
-    Auth();
 
-public slots:
-    void openWindow();
+public:
+    explicit AuthorizationWindow(QWidget *parent = 0);
+    //~AuthorizationWindow();
 
 private:
-    QGroupBox *groupAuth();
-    QTimer *timerAuth;
-    QLabel *label_login;
-    QLabel *label_pass;
-    QLineEdit *line_login;
-    QLineEdit *line_pass;
-    QPushButton *button_Submit;
 
-    QFont *font;
-    //int fontSize;
+    DataBase        *db;
+    QSqlTableModel  *model;
+    QGroupBox *groupTable();
+    QTableView *tableView_new;
+
+
+private:
+    /* Также присутствуют два метода, которые формируют модель
+     * и внешний вид TableView
+     * */
+    void setupModel(const QString &tableName, const QStringList &headers);
+    void createUI();
 };
 
-#endif // AUTH_H
+#endif // AUTHORIZATIONWINDOW_H

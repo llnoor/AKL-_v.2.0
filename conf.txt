@@ -1,4 +1,4 @@
-cientists
+scientists
 experiments
 devices
 name
