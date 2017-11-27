@@ -279,6 +279,69 @@ bool DataBase::createNewTableExperimentsOf(const QVariantList &table)
 
 }
 
+bool DataBase::createNewTableSelectedExperimentsOf(const QVariantList &table)
+{
+    QSqlQuery query;
+
+    query.prepare("CREATE TABLE :Table ("
+                 "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                 "Experiment_name VARCHAR(255) NOT NULL )");
+
+    query.bindValue(":Table", table[0].toString());
+
+    if(query.exec())
+    {
+        return true;
+    } else {
+        qDebug() << "DataBase: error of create " << table[0].toString();
+        qDebug() << query.lastError().text();
+        return false;
+    }
+
+}
+
+bool DataBase::createNewTableDevicesOf(const QVariantList &table)
+{
+    QSqlQuery query;
+
+    query.prepare("CREATE TABLE :Table ("
+                 "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                 "Device_name VARCHAR(255) NOT NULL )");
+
+    query.bindValue(":Table", table[0].toString());
+
+    if(query.exec())
+    {
+        return true;
+    } else {
+        qDebug() << "DataBase: error of create " << table[0].toString();
+        qDebug() << query.lastError().text();
+        return false;
+    }
+
+}
+
+bool DataBase::createNewTableExperimentNumber(const QVariantList &table)
+{
+    QSqlQuery query;
+
+    query.prepare("CREATE TABLE :Table ("
+                 "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                 "ExperimentNumber VARCHAR(255) NOT NULL )");
+
+    query.bindValue(":Table", table[0].toString());
+
+    if(query.exec())
+    {
+        return true;
+    } else {
+        qDebug() << "DataBase: error of create " << table[0].toString();
+        qDebug() << query.lastError().text();
+        return false;
+    }
+
+}
+
 /* Метод для вставки записи в базу данных
  * */
 bool DataBase::inserIntoTable(const QVariantList &data)
@@ -310,3 +373,123 @@ bool DataBase::inserIntoTable(const QVariantList &data)
     }
     return false;
 }
+
+
+
+bool DataBase::inserIntoNewTableExperimentsOf(const QVariantList &ndata)
+{
+    /* Запрос SQL формируется из QVariantList,
+     * в который передаются данные для вставки в таблицу.
+     * */
+    QSqlQuery query;
+    /* В начале SQL запрос формируется с ключами,
+     * которые потом связываются методом bindValue
+     * для подстановки данных из QVariantList
+     * */
+    query.prepare("INSERT INTO :Table ( Experiment_name ) "
+                  "VALUES (:Data )");
+
+    query.bindValue(":Table", ndata[0].toString());
+    query.bindValue(":Data", ndata[1].toString());
+
+    // После чего выполняется запросом методом exec()
+    if(!query.exec()){
+        qDebug() << "error insert into " << ndata[0].toString();
+        qDebug() << query.lastError().text();
+        return false;
+    } else {
+        return true;
+    }
+    return false;
+}
+
+bool DataBase::inserIntoNewTableSelectedExperimentsOf(const QVariantList &ndata)
+{
+    /* Запрос SQL формируется из QVariantList,
+     * в который передаются данные для вставки в таблицу.
+     * */
+    QSqlQuery query;
+    /* В начале SQL запрос формируется с ключами,
+     * которые потом связываются методом bindValue
+     * для подстановки данных из QVariantList
+     * */
+    query.prepare("INSERT INTO :Table ( Experiment_name ) "
+                  "VALUES (:Data )");
+
+    query.bindValue(":Table", ndata[0].toString());
+    query.bindValue(":Data", ndata[1].toString());
+
+    // После чего выполняется запросом методом exec()
+    if(!query.exec()){
+        qDebug() << "error insert into " << ndata[0].toString();
+        qDebug() << query.lastError().text();
+        return false;
+    } else {
+        return true;
+    }
+    return false;
+}
+
+bool DataBase::inserIntoNewTableDevicesOf(const QVariantList &ndata)
+{
+    /* Запрос SQL формируется из QVariantList,
+     * в который передаются данные для вставки в таблицу.
+     * */
+    QSqlQuery query;
+    /* В начале SQL запрос формируется с ключами,
+     * которые потом связываются методом bindValue
+     * для подстановки данных из QVariantList
+     * */
+    query.prepare("INSERT INTO :Table ( Device_name ) "
+                  "VALUES (:Data )");
+
+    query.bindValue(":Table", ndata[0].toString());
+    query.bindValue(":Data", ndata[1].toString());
+
+    // После чего выполняется запросом методом exec()
+    if(!query.exec()){
+        qDebug() << "error insert into " << ndata[0].toString();
+        qDebug() << query.lastError().text();
+        return false;
+    } else {
+        return true;
+    }
+    return false;
+}
+
+bool DataBase::inserIntoNewTableExperimentNumber(const QVariantList &ndata)
+{
+    /* Запрос SQL формируется из QVariantList,
+     * в который передаются данные для вставки в таблицу.
+     * */
+    QSqlQuery query;
+    /* В начале SQL запрос формируется с ключами,
+     * которые потом связываются методом bindValue
+     * для подстановки данных из QVariantList
+     * */
+    query.prepare("INSERT INTO :Table ( ExperimentNumber ) "
+                  "VALUES (:Data )");
+
+    query.bindValue(":Table", ndata[0].toString());
+    query.bindValue(":Data", ndata[1].toString());
+
+    // После чего выполняется запросом методом exec()
+    if(!query.exec()){
+        qDebug() << "error insert into " << ndata[0].toString();
+        qDebug() << query.lastError().text();
+        return false;
+    } else {
+        return true;
+    }
+    return false;
+}
+
+
+
+
+
+
+
+
+
+
