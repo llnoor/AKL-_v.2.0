@@ -9,6 +9,7 @@
 #include <QFile>
 #include <QDate>
 #include <QDebug>
+#include <QCryptographicHash>
 
 /* Директивы имен таблицы, полей таблицы и базы данных */
 #define DATABASE_HOSTNAME   "DataBase"
@@ -76,7 +77,7 @@
 #define EXPERIMENT_DATE                    "Date"
 #define EXPERIMENT_TIME                    "Time"
 #define EXPERIMENT_DATA                    "Data"
-#define EXPERIMENT_TABLE                   "Table"
+#define EXPERIMENT_TABLE                   "NameTable"
 #define EXPERIMENT_CONF                    "Conf"
 
 
@@ -92,6 +93,12 @@ public:
      * */
     void connectToDataBase();
     bool inserIntoTable(const QVariantList &data); //data = data
+    bool inserIntoScientists(const QVariantList &data);
+    bool inserIntoExperiments(const QVariantList &data);
+    bool inserIntoDevices(const QVariantList &data);
+    bool inserIntoThemes(const QVariantList &data);
+    bool inserIntoLogs(const QVariantList &data);
+    bool inserIntoExperiment(const QVariantList &data);
 
     /* Creat tables
      * TableExperimentsOf
@@ -121,6 +128,7 @@ private:
     bool restoreDataBase();
     void closeDataBase();
     bool createTable();
+    bool createAdmin();
 };
 
 #endif // DATABASE_H

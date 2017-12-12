@@ -34,6 +34,7 @@ bool DataBase::restoreDataBase()
         if(!this->createTable()){
             return false;
         } else {
+            createAdmin();
             return true;
         }
     } else {
@@ -212,47 +213,82 @@ bool DataBase::createTable()
                         " )"
                     ))
     {
-        //return true;
+        return true;
     } else {
         qDebug() << "DataBase: error of create " << EXPERIMENT;
         qDebug() << query.lastError().text();
         return false;
     }
 
-    query.prepare("INSERT INTO " LOGS " ( " LOGS_NAME ", "
-                                              LOGS_DATE ", "
-                                              LOGS_TIME ", "
-                                              LOGS_TYPE ", "
-                                              LOGS_DESCRIPTION ", "
-                                              LOGS_PROCESS ", "
-                                              LOGS_PROBLEM " ) "
-                                              "VALUES (:Name, :Date, :Time, :Type, :Description, :Process, :Problem )");
-    query.bindValue(":Name",        "FirstConnection");
-    query.bindValue(":Date",        QDate::currentDate());
-    query.bindValue(":Time",        QTime::currentTime());
-    query.bindValue(":Type",        "0");
-    query.bindValue(":Description",    "SQL created");
-    query.bindValue(":Process",        "SQL");
-    query.bindValue(":Problem",        "No problem");
-    // После чего выполняется запросом методом exec()
-    if(query.exec())
-    {
-        return true;
-    } else {
-        qDebug() << "error insert into " << TABLE;
-        qDebug() << query.lastError().text();
-        return false;
-    }
-
-
     return false;
 }
 
 
+bool DataBase::createAdmin()
+{
+
+    QByteArray pass_byte;
+    pass_byte.append("lamp");
+    QString pass_admin = QString(QCryptographicHash::hash(pass_byte,QCryptographicHash::Sha1).toHex());
+
+    QVariantList dataScientists;
+    dataScientists.append("Admin");
+    dataScientists.append("Administrator");
+    dataScientists.append("admin"); //write with the small letters
+    dataScientists.append(QDate::currentDate());
+    dataScientists.append("Noor");
+    dataScientists.append(pass_admin); //sha1 "lamp"
+    dataScientists.append("a@m.in");
+    dataScientists.append("admin" + pass_admin);//username
+    dataScientists.append("+79876543210");
+    dataScientists.append("TableExperimentsOfadmin");
+    dataScientists.append("TableSelectedExperimentsOfadmin");
+    dataScientists.append(QDate::currentDate());
+    dataScientists.append("admin");
+    dataScientists.append("default");
+
+    QVariantList dataExperiments;
+    dataExperiments.append("First");
+    dataExperiments.append("First Experiment (delete after first start)");
+    dataExperiments.append("admin");
+    dataExperiments.append(QDate::currentDate());
+    dataExperiments.append("TableDevicesOfFirst");
+    dataExperiments.append("Zero");
+    dataExperiments.append("first");
+    dataExperiments.append("default");
+
+    QVariantList dataLogs;
+    dataLogs.append("FirstConnection");
+    dataLogs.append(QDate::currentDate());
+    dataLogs.append(QTime::currentTime());
+    dataLogs.append("0");
+    dataLogs.append("SQL created");
+    dataLogs.append("SQL");
+    dataLogs.append("No problem");
+
+    /*if (!inserIntoScientists(dataScientists)
+            || !inserIntoExperiments(dataExperiments)
+            || !inserIntoLogs(dataLogs)
+            ) // !!! check out !!!
+    {
+        return false;
+    }else
+    {
+       return true;
+    }*/
+
+    inserIntoScientists(dataScientists);
+    inserIntoExperiments(dataExperiments);
+    inserIntoLogs(dataLogs);
+
+
+    return true;
+}
+
 
 
 /* Creat tables in time of experiments
- * TableExperimentsOf
+ * vsOf
  * TableSelectedExperimentsOf
  * TableDevicesOf
  * TableExperimentNumber
@@ -267,6 +303,9 @@ bool DataBase::createNewTableExperimentsOf(const QVariantList &table)
                  "Experiment_name VARCHAR(255) NOT NULL )");
 
     query.bindValue(":Table", table[0].toString());
+
+
+
 
     if(query.exec())
     {
@@ -374,6 +413,185 @@ bool DataBase::inserIntoTable(const QVariantList &data)
     return false;
 }
 
+
+bool DataBase::inserIntoScientists(const QVariantList &data)
+{
+    QSqlQuery query;
+    query.prepare("INSERT INTO " SCIENTISTS " ( " SCIENTISTS_NAME ", "
+                                              SCIENTISTS_SURNAME ", "
+                                              SCIENTISTS_LOGIN ", "
+                                              SCIENTISTS_DATE ", "
+                                              SCIENTISTS_PARENT ", "
+                                              SCIENTISTS_PASS ", "
+                                              SCIENTISTS_EMAIL ", "
+                                              SCIENTISTS_TELEGRAM ", "
+                                              SCIENTISTS_PHONE ", "
+                                              SCIENTISTS_EXPERIMENTS ", "
+                                              SCIENTISTS_SELECTED_EXPERIMENTS ", "
+                                              SCIENTISTS_BIRTHDAY ", "
+                                              SCIENTISTS_POSITION ", "
+                                              SCIENTISTS_THEME " ) "
+                  "VALUES (:Name, :Surname, :Login, :Date, :Parent, :Pass, :Email, :Telegram, :Phone, :Experiments, :Selected_experiments, :Birthday, :Position, :Theme )");
+    query.bindValue(":Name",                        data[0].toString());
+    query.bindValue(":Surname",                     data[1].toString());
+    query.bindValue(":Login",                       data[2].toString());
+    query.bindValue(":Date",                        data[3].toDate());
+    query.bindValue(":Parent",                      data[4].toString());
+    query.bindValue(":Pass",                        data[5].toString());
+    query.bindValue(":Email",                       data[6].toString());
+    query.bindValue(":Telegram",                    data[7].toString());
+    query.bindValue(":Phone",                       data[8].toString());
+    query.bindValue(":Experiments",                 data[9].toString());
+    query.bindValue(":Selected_experiments",        data[10].toString());
+    query.bindValue(":Birthday",                    data[11].toDate());
+    query.bindValue(":Position",                    data[12].toString());
+    query.bindValue(":Theme",                       data[13].toString());
+    if(!query.exec()){
+        qDebug() << "error insert into " << SCIENTISTS;
+        qDebug() << query.lastError().text();
+        return false;
+    } else {
+        return true;
+    }
+    //return false;
+}
+
+
+bool DataBase::inserIntoExperiments(const QVariantList &data)
+{
+    QSqlQuery query;
+    query.prepare("INSERT INTO " EXPERIMENTS " ( " EXPERIMENTS_NAME ", "
+                                              EXPERIMENTS_DESCRIPTION ", "
+                                              EXPERIMENTS_AUTHOR ", "
+                                              EXPERIMENTS_DATE ", "
+                                              EXPERIMENTS_DEVICES ", "
+                                              EXPERIMENTS_PARENT ", "
+                                              EXPERIMENTS_LINK ", "
+                                              EXPERIMENTS_CONF " ) "
+                  "VALUES (:Name, :Description, :Author, :Date, :Devices, :Parent, :Link, :Conf )");
+    query.bindValue(":Name",                        data[0].toString());
+    query.bindValue(":Description",                 data[1].toString());
+    query.bindValue(":Author",                      data[2].toString());
+    query.bindValue(":Date",                        data[3].toDate());
+    query.bindValue(":Devices",                     data[4].toString());
+    query.bindValue(":Parent",                      data[5].toString());
+    query.bindValue(":Link",                        data[6].toString());
+    query.bindValue(":Conf",                        data[7].toString());
+    if(!query.exec()){
+        qDebug() << "error insert into " << EXPERIMENTS;
+        qDebug() << query.lastError().text();
+        return false;
+    } else {
+        return true;
+    }
+    return false;
+}
+
+bool DataBase::inserIntoDevices(const QVariantList &data)
+{
+    QSqlQuery query;
+    query.prepare("INSERT INTO " DEVICES " ( " DEVICES_NAME ", "
+                                              DEVICES_TYPE ", "
+                                              DEVICES_DATE ", "
+                                              DEVICES_DESCRIPTION ", "
+                                              DEVICES_LINK ", "
+                                              DEVICES_CONF " ) "
+                  "VALUES (:Name, :Type, :Date, :Description, :Link, :Conf )");
+    query.bindValue(":Name",                        data[0].toString());
+    query.bindValue(":Type",                        data[1].toString());
+    query.bindValue(":Date",                        data[2].toDate());
+    query.bindValue(":Description",                 data[3].toString());
+    query.bindValue(":Link",                        data[4].toString());
+    query.bindValue(":Conf",                        data[5].toString());
+    if(!query.exec()){
+        qDebug() << "error insert into " << DEVICES;
+        qDebug() << query.lastError().text();
+        return false;
+    } else {
+        return true;
+    }
+    return false;
+}
+
+bool DataBase::inserIntoThemes(const QVariantList &data)
+{
+    QSqlQuery query;
+    query.prepare("INSERT INTO " THEMES " ( " THEMES_NAME ", "
+                                              THEMES_DESCRIPTION ", "
+                                              THEMES_AUTHOR ", "
+                                              THEMES_CONF " ) "
+                  "VALUES (:Name, :Description, :Author, :Conf )");
+    query.bindValue(":Name",                        data[0].toString());
+    query.bindValue(":Description",                 data[1].toString());
+    query.bindValue(":Author",                      data[2].toString());
+    query.bindValue(":Conf",                        data[3].toString());
+    if(!query.exec()){
+        qDebug() << "error insert into " << THEMES;
+        qDebug() << query.lastError().text();
+        return false;
+    } else {
+        return true;
+    }
+    return false;
+}
+
+bool DataBase::inserIntoLogs(const QVariantList &data)
+{
+    QSqlQuery query;
+    query.prepare("INSERT INTO " LOGS " ( " LOGS_NAME ", "
+                                              LOGS_DATE ", "
+                                              LOGS_TIME ", "
+                                              LOGS_TYPE ", "
+                                              LOGS_DESCRIPTION ", "
+                                              LOGS_PROCESS ", "
+                                              LOGS_PROBLEM " ) "
+                  "VALUES (:Name, :Date, :Time, :Type, :Description, :Process, :Problem )");
+    query.bindValue(":Name",                        data[0].toString());
+    query.bindValue(":Date",                        data[1].toDate());
+    query.bindValue(":Time",                        data[2].toTime());
+    query.bindValue(":Type",                        data[3].toString());
+    query.bindValue(":Description",                 data[4].toString());
+    query.bindValue(":Process",                     data[5].toString());
+    query.bindValue(":Problem",                     data[6].toString());
+    if(!query.exec()){
+        qDebug() << "error insert into " << LOGS;
+        qDebug() << query.lastError().text();
+        return false;
+    } else {
+        return true;
+    }
+    return false;
+}
+
+bool DataBase::inserIntoExperiment(const QVariantList &data)
+{
+    QSqlQuery query;
+    query.prepare("INSERT INTO " EXPERIMENT " ( " EXPERIMENT_NAME ", "
+                                              EXPERIMENT_DESCRIPTION ", "
+                                              EXPERIMENT_AUTHOR ", "
+                                              EXPERIMENT_DATE ", "
+                                              EXPERIMENT_TIME ", "
+                                              EXPERIMENT_DATA ", "
+                                              EXPERIMENT_TABLE ", "
+                                              EXPERIMENT_CONF " ) "
+                  "VALUES (:Name, :Description, :Author, :Date, :Time, :Data, :Table, :Conf )");
+    query.bindValue(":Name",                        data[0].toString());
+    query.bindValue(":Description",                 data[1].toString());
+    query.bindValue(":Author",                      data[2].toString());
+    query.bindValue(":Date",                        data[3].toDate());
+    query.bindValue(":Time",                        data[4].toTime());
+    query.bindValue(":Data",                        data[5].toString());
+    query.bindValue(":Table",                       data[6].toString());
+    query.bindValue(":Conf",                        data[7].toString());
+    if(!query.exec()){
+        qDebug() << "error insert into " << EXPERIMENT;
+        qDebug() << query.lastError().text();
+        return false;
+    } else {
+        return true;
+    }
+    return false;
+}
 
 
 bool DataBase::inserIntoNewTableExperimentsOf(const QVariantList &ndata)

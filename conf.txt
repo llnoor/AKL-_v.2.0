@@ -27,3 +27,13 @@ oscilloscope
 logo
 
 user table
+
+SCIENTISTS
+EXPERIMENTS
+DEVICES
+THEMES
+LOGS
+EXPERIMENT
+
+
+
