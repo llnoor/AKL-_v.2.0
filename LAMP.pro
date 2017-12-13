@@ -7,14 +7,16 @@ HEADERS       = window.h \
     sqlamp.h \
     initdb.h \
     experiments.h \
-    database.h
+    database.h \
+    dialogauth.h
 SOURCES       = window.cpp \
                 main.cpp \
     logowindow.cpp \
     authorization.cpp \
     sqlamp.cpp \
     experiments.cpp \
-    database.cpp
+    database.cpp \
+    dialogauth.cpp
 
 
 DISTFILES += \

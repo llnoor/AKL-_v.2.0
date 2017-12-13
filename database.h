@@ -15,6 +15,11 @@
 #define DATABASE_HOSTNAME   "DataBase"
 #define DATABASE_NAME       "DataBase.db"
 
+#define DEVICE                  "DeviceTable"
+#define DEVICE_HOSTNAME         "Hostname"
+#define DEVICE_IP               "IP"
+#define DEVICE_MAC              "MAC"
+
 #define TABLE                   "TableExample"
 #define TABLE_DATE              "Date"
 #define TABLE_TIME              "Time"
@@ -98,6 +103,7 @@ public:
     bool inserIntoDevices(const QVariantList &data);
     bool inserIntoThemes(const QVariantList &data);
     bool inserIntoLogs(const QVariantList &data);
+    bool inserIntoDeviceTable(const QVariantList &data);
     bool inserIntoExperiment(const QVariantList &data);
 
     /* Creat tables

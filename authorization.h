@@ -4,7 +4,8 @@
 #include <QMainWindow>
 #include <QSqlTableModel>
 /* Подключаем заголовочный файл для работы с информацией, которая помещена в базу данных */
-#include "database.h"
+#include <database.h>
+#include <dialogauth.h>
 #include <QTableView>
 #include <QWidget>
 
@@ -19,6 +20,11 @@ class AuthorizationWindow : public QWidget
 public:
     explicit AuthorizationWindow(QWidget *parent = 0);
     //~AuthorizationWindow();
+
+private slots:
+    void on_addDeviceButton_clicked();
+    void slotUpdateModels();
+    void slotEditRecord(QModelIndex index);
 
 private:
 

@@ -3,8 +3,8 @@
 #include <QMainWindow>
 
 AuthorizationWindow::AuthorizationWindow(QWidget *parent) :
-    QWidget(parent)
-    //QWidget(0, Qt::Window | Qt::FramelessWindowHint)
+    //QWidget(parent)
+    QWidget(0, Qt::Window | Qt::FramelessWindowHint)
 
 {
     tableView_new = new QTableView();
@@ -22,7 +22,7 @@ AuthorizationWindow::AuthorizationWindow(QWidget *parent) :
     /* После чего производим наполнение таблицы базы данных
      * контентом, который будет отображаться в TableView
      * */
-    for(int i = 0; i < 20; i++){
+    /*for(int i = 0; i < 20; i++){
         QVariantList data;
         int random = qrand(); // Получаем случайные целые числа для вставки а базу данных
         data.append(QDate::currentDate()); // Получаем текущую дату для вставки в БД
@@ -33,17 +33,29 @@ AuthorizationWindow::AuthorizationWindow(QWidget *parent) :
         data.append("Получено сообщение от " + QString::number(random));
         // Вставляем данные в БД
         db->inserIntoTable(data);
-    }
+    }*/
 
     /* Инициализируем модель для представления данных
      * с заданием названий колонок
      * */
-    this->setupModel(TABLE,
-                     QStringList() << trUtf8("id")
-                                   << trUtf8("Дата")
-                                   << trUtf8("Время")
-                                   << trUtf8("Рандомное число")
-                                   << trUtf8("Сообщение")
+    this->setupModel(SCIENTISTS,
+                        QStringList()
+                        << trUtf8("ID")
+                        << trUtf8("Name")
+                        << trUtf8("Surname")
+                        << trUtf8("Login")
+                        << trUtf8("Date")
+                        << trUtf8("Parent")
+                        << trUtf8("Pass")
+                        << trUtf8("Email")
+                        << trUtf8("Сообщение")
+                        << trUtf8("Telegram")
+                        << trUtf8("Phone")
+                        << trUtf8("Experiments")
+                        << trUtf8("Selected_experiments")
+                        << trUtf8("BirthDay")
+                        << trUtf8("Position")
+                        << trUtf8("Theme")
                );
 
     /* Инициализируем внешний вид таблицы с данными
@@ -56,8 +68,9 @@ AuthorizationWindow::AuthorizationWindow(QWidget *parent) :
     setLayout(grid);
 
     //tableView_new->horizontalHeader()->setSectionResizeMode(1,QHeaderView::);
-    tableView_new->setColumnWidth(1,100);
-    tableView_new->setColumnWidth(2,100);
+    tableView_new->setColumnWidth(1,120);
+    tableView_new->setColumnWidth(3,120);
+    tableView_new->setColumnWidth(4,120);
 
 
 
@@ -94,7 +107,24 @@ void AuthorizationWindow::setupModel(const QString &tableName, const QStringList
 void AuthorizationWindow::createUI()
 {
     tableView_new->setModel(model);     // Устанавливаем модель на TableView
-    tableView_new->setColumnHidden(0, true);    // Скрываем колонку с id записей
+    tableView_new->setColumnHidden(0, true);
+    tableView_new->setColumnHidden(1, false);    // Скрываем колонку с id записей
+    tableView_new->setColumnHidden(2, true);
+    tableView_new->setColumnHidden(3, false);
+    tableView_new->setColumnHidden(4, true);
+    tableView_new->setColumnHidden(5, true);
+    tableView_new->setColumnHidden(6, true);
+    tableView_new->setColumnHidden(7, true);
+    tableView_new->setColumnHidden(8, true);
+    tableView_new->setColumnHidden(9, true);
+    tableView_new->setColumnHidden(10, true);
+    tableView_new->setColumnHidden(11, true);
+    tableView_new->setColumnHidden(12, true);
+    tableView_new->setColumnHidden(13, true);
+    tableView_new->setColumnHidden(14, false);
+    tableView_new->setColumnHidden(15, true);
+
+
     // Разрешаем выделение строк
     tableView_new->setSelectionBehavior(QAbstractItemView::SelectRows);
     // Устанавливаем режим выделения лишь одно строки в таблице
@@ -105,4 +135,47 @@ void AuthorizationWindow::createUI()
     tableView_new->horizontalHeader()->setStretchLastSection(true);
 
     model->select(); // Делаем выборку данных из таблицы
+
+    connect(tableView_new, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slotEditRecord(QModelIndex)));
+
 }
+
+/* Метод для активации диалога добавления записей
+ * */
+void AuthorizationWindow::on_addDeviceButton_clicked()
+{
+    /* Создаем диалог и подключаем его сигнал завершения работы
+     * к слоту обновления вида модели представления данных
+     * */
+    DialogAuth *addDialogAuth = new DialogAuth();
+    connect(addDialogAuth, SIGNAL(signalReady()), this, SLOT(slotUpdateModels()));
+
+    /* Выполняем запуск диалогового окна
+     * */
+    addDialogAuth->setWindowTitle(trUtf8("Добавить Устройство"));
+    addDialogAuth->exec();
+}
+
+void AuthorizationWindow::slotUpdateModels()
+{
+    model->select();
+}
+
+/* Метод для активации диалога добавления записей в режиме редактирования
+ * с передачей индекса выбранной строки
+ * */
+void AuthorizationWindow::slotEditRecord(QModelIndex index)
+{
+    /* Также создаем диалог и подключаем его сигнал завершения работы
+     * к слоту обновления вида модели представления данных, но передаём
+     * в качестве параметров строку записи
+     * */
+    DialogAuth *addDialogAuth = new DialogAuth(index.row());
+    connect(addDialogAuth, SIGNAL(signalReady()), this, SLOT(slotUpdateModel()));
+
+    /* Выполняем запуск диалогового окна
+     * */
+    addDialogAuth->setWindowTitle(trUtf8("Редактировать Устройство"));
+    addDialogAuth->exec();
+}
+

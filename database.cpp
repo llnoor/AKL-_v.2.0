@@ -199,6 +199,22 @@ bool DataBase::createTable()
         return false;
     }
 
+    //DEVICE
+    if(query.exec( "CREATE TABLE " DEVICE " ("
+                                "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+                                DEVICE_HOSTNAME  " VARCHAR(255)    NOT NULL,"
+                                DEVICE_IP        " VARCHAR(16)     NOT NULL,"
+                                DEVICE_MAC       " VARCHAR(18)     NOT NULL"
+                            " )"
+                        ))
+    {
+        //return true;
+    } else {
+        qDebug() << "DataBase: error of create " << DEVICE ;
+        qDebug() << query.lastError().text();
+        return false;
+    }
+
     //EXPERIMENT
     if(query.exec( "CREATE TABLE " EXPERIMENT " ("
                             "id INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -257,6 +273,20 @@ bool DataBase::createAdmin()
     dataExperiments.append("first");
     dataExperiments.append("default");
 
+    QVariantList dataDevices;
+    dataDevices.append("Universally");
+    dataDevices.append("default");
+    dataDevices.append(QDate::currentDate());
+    dataDevices.append("Testing");
+    dataDevices.append("Test");
+    dataDevices.append("Test");
+
+    QVariantList dataThemes;
+    dataThemes.append("Default");
+    dataThemes.append("Default");
+    dataThemes.append("Admin");
+    dataThemes.append("Default");
+
     QVariantList dataLogs;
     dataLogs.append("FirstConnection");
     dataLogs.append(QDate::currentDate());
@@ -265,6 +295,16 @@ bool DataBase::createAdmin()
     dataLogs.append("SQL created");
     dataLogs.append("SQL");
     dataLogs.append("No problem");
+
+    QVariantList dataExperiment;
+    dataExperiment.append("First");
+    dataExperiment.append("First Experiment (delete after first start)");
+    dataExperiment.append("admin");
+    dataExperiment.append(QDate::currentDate());
+    dataExperiment.append(QTime::currentTime());
+    dataExperiment.append("Test");
+    dataExperiment.append("ExperimentNumberFirst");
+    dataExperiment.append("default");
 
     /*if (!inserIntoScientists(dataScientists)
             || !inserIntoExperiments(dataExperiments)
@@ -280,9 +320,17 @@ bool DataBase::createAdmin()
     inserIntoScientists(dataScientists);
     inserIntoExperiments(dataExperiments);
     inserIntoLogs(dataLogs);
+    inserIntoDevices(dataDevices);
+    inserIntoThemes(dataThemes);
+    inserIntoExperiment(dataExperiment);
 
-
-    return true;
+    if ( 1 and 1 and 1 )
+    {
+        return true;
+    }else
+    {
+        return false;
+    }
 }
 
 
@@ -555,6 +603,34 @@ bool DataBase::inserIntoLogs(const QVariantList &data)
     query.bindValue(":Problem",                     data[6].toString());
     if(!query.exec()){
         qDebug() << "error insert into " << LOGS;
+        qDebug() << query.lastError().text();
+        return false;
+    } else {
+        return true;
+    }
+    return false;
+}
+
+bool DataBase::inserIntoDeviceTable(const QVariantList &data)
+{
+    /* Запрос SQL формируется из QVariantList,
+     * в который передаются данные для вставки в таблицу.
+     * */
+    QSqlQuery query;
+    /* В начале SQL запрос формируется с ключами,
+     * которые потом связываются методом bindValue
+     * для подстановки данных из QVariantList
+     * */
+    query.prepare("INSERT INTO " DEVICE " ( " DEVICE_HOSTNAME ", "
+                                              DEVICE_IP ", "
+                                              DEVICE_MAC " ) "
+                  "VALUES (:Hostname, :IP, :MAC )");
+    query.bindValue(":Hostname",    data[0].toString());
+    query.bindValue(":IP",          data[1].toString());
+    query.bindValue(":MAC",         data[2].toString());
+    // После чего выполняется запросом методом exec()
+    if(!query.exec()){
+        qDebug() << "error insert into " << DEVICE;
         qDebug() << query.lastError().text();
         return false;
     } else {
