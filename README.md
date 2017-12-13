@@ -1,8 +1,8 @@
-LAMP
+LAMPh
 
 Laboratory for Advanced Materials Physics
 
-LAMP — acronym from Laboratory for Advanced Materials Physics. LAMP is an interesting computer program. His experimental tasks help to better understand the physical processes.
+LAMPh — acronym from Laboratory for Advanced Materials Physics. LAMPh is an interesting computer program. His experimental tasks help to better understand the physical processes.
 
 The program includes a set of laboratory experiments that cover the following topics:
 
