@@ -22,9 +22,11 @@ public:
     //~AuthorizationWindow();
 
 private slots:
-    void on_addDeviceButton_clicked();
+    //void on_addDeviceButton_clicked();
+
     void slotUpdateModels();
     void slotEditRecord(QModelIndex index);
+    void slotAdd();
 
 private:
 
@@ -32,6 +34,7 @@ private:
     QSqlTableModel  *model;
     QGroupBox *groupTable();
     QTableView *tableView_new;
+    QPushButton *newuserButton;
 
 
 private:

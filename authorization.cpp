@@ -2,9 +2,9 @@
 #include <QtWidgets>
 #include <QMainWindow>
 
-AuthorizationWindow::AuthorizationWindow(QWidget *parent) :
-    //QWidget(parent)
-    QWidget(0, Qt::Window | Qt::FramelessWindowHint)
+AuthorizationWindow::AuthorizationWindow(QWidget *parent):
+    QWidget(parent)
+    //QWidget(0, Qt::Window | Qt::FramelessWindowHint)
 
 {
     tableView_new = new QTableView();
@@ -62,9 +62,13 @@ AuthorizationWindow::AuthorizationWindow(QWidget *parent) :
      * */
     this->createUI();
 
+    //newuserButton = new QPushButton(tr("New"));
 
     QGridLayout *grid = new QGridLayout;
+
     grid->addWidget(tableView_new, 0, 0, model->rowCount(), model->columnCount());
+    //grid->addWidget(newuserButton);
+    grid->addWidget(groupTable(), 1, 1);
     setLayout(grid);
 
     //tableView_new->horizontalHeader()->setSectionResizeMode(1,QHeaderView::);
@@ -76,6 +80,8 @@ AuthorizationWindow::AuthorizationWindow(QWidget *parent) :
 
     setWindowTitle(tr("Authorization"));
         resize(480, 220);
+
+    connect(newuserButton, SIGNAL(released()), this, SLOT(slotAdd()));
 
 }
 
@@ -107,7 +113,7 @@ void AuthorizationWindow::setupModel(const QString &tableName, const QStringList
 void AuthorizationWindow::createUI()
 {
     tableView_new->setModel(model);     // Устанавливаем модель на TableView
-    tableView_new->setColumnHidden(0, true);
+    /*tableView_new->setColumnHidden(0, true);
     tableView_new->setColumnHidden(1, false);    // Скрываем колонку с id записей
     tableView_new->setColumnHidden(2, true);
     tableView_new->setColumnHidden(3, false);
@@ -122,7 +128,7 @@ void AuthorizationWindow::createUI()
     tableView_new->setColumnHidden(12, true);
     tableView_new->setColumnHidden(13, true);
     tableView_new->setColumnHidden(14, false);
-    tableView_new->setColumnHidden(15, true);
+    tableView_new->setColumnHidden(15, true);*/
 
 
     // Разрешаем выделение строк
@@ -142,7 +148,17 @@ void AuthorizationWindow::createUI()
 
 /* Метод для активации диалога добавления записей
  * */
-void AuthorizationWindow::on_addDeviceButton_clicked()
+/*void AuthorizationWindow::on_addDeviceButton_clicked()
+{
+
+    DialogAuth *addDialogAuth = new DialogAuth();
+    connect(addDialogAuth, SIGNAL(signalReady()), this, SLOT(slotUpdateModels()));
+
+    addDialogAuth->setWindowTitle(trUtf8("Добавить Устройство"));
+    addDialogAuth->exec();
+}*/
+
+void AuthorizationWindow::slotAdd()
 {
     /* Создаем диалог и подключаем его сигнал завершения работы
      * к слоту обновления вида модели представления данных
@@ -171,7 +187,7 @@ void AuthorizationWindow::slotEditRecord(QModelIndex index)
      * в качестве параметров строку записи
      * */
     DialogAuth *addDialogAuth = new DialogAuth(index.row());
-    connect(addDialogAuth, SIGNAL(signalReady()), this, SLOT(slotUpdateModel()));
+    connect(addDialogAuth, SIGNAL(signalReady()), this, SLOT(slotUpdateModels()));
 
     /* Выполняем запуск диалогового окна
      * */
@@ -179,3 +195,21 @@ void AuthorizationWindow::slotEditRecord(QModelIndex index)
     addDialogAuth->exec();
 }
 
+
+QGroupBox *AuthorizationWindow::groupTable()
+{
+    QGroupBox *groupBox = new QGroupBox(tr("New"));
+
+    newuserButton = new QPushButton(tr("New"));
+    //label_1 = new QLabel(tr(" LAMP "));
+
+
+    QVBoxLayout *vbox = new QVBoxLayout;
+    vbox->addWidget(newuserButton);
+    vbox->setSpacing(0);
+    vbox->setContentsMargins(0, 0, 0, 0);
+    vbox->setMargin(0);
+    groupBox->setLayout(vbox);
+
+    return groupBox;
+}

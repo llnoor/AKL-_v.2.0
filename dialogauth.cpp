@@ -70,6 +70,7 @@ DialogAuth::DialogAuth(int row, QWidget *parent) :
      /* При изменении индекса в mapper изменяем состояние кнопок
       * */
      connect(mapper, SIGNAL(currentIndexChanged(int)), this, SLOT(updateButtons(int)));
+     connect(saveButton,SIGNAL(clicked()),this, SLOT(on_buttonBox_accepted()));
  }
 
  /* Метод для установки валидатора на поле ввода IP и MAC адресов
@@ -159,6 +160,8 @@ DialogAuth::DialogAuth(int row, QWidget *parent) :
 
      previousButton = new QPushButton(tr("Previous"));
      nextButton = new QPushButton(tr("Next"));
+     saveButton = new QPushButton(tr("Save"));
+     newButton = new QPushButton(tr("New"));
      HostnameLineEdit = new QLineEdit();
      IPAddressLineEdit = new QLineEdit();
      MACLineEdit = new QLineEdit();
@@ -175,6 +178,10 @@ DialogAuth::DialogAuth(int row, QWidget *parent) :
      vbox->addWidget(HostnameLineEdit);
      vbox->addWidget(IPAddressLineEdit);
      vbox->addWidget(MACLineEdit);
+     vbox->addWidget(previousButton);
+     vbox->addWidget(nextButton);
+     vbox->addWidget(saveButton);
+     vbox->addWidget(newButton);
      vbox->setMargin(0);
      groupBox->setLayout(vbox);
 

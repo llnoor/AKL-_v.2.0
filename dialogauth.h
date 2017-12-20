@@ -36,6 +36,8 @@ private:
     QDataWidgetMapper           *mapper;
     QPushButton                 *previousButton;
     QPushButton                 *nextButton;
+    QPushButton                 *saveButton;
+    QPushButton                 *newButton;
     QLineEdit                   *HostnameLineEdit;
     QLineEdit                   *IPAddressLineEdit;
     QLineEdit                   *MACLineEdit;
