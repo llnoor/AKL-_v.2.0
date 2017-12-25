@@ -6,6 +6,7 @@
 /* Подключаем заголовочный файл для работы с информацией, которая помещена в базу данных */
 #include <database.h>
 #include <dialogauth.h>
+#include <dialogreg.h>
 #include <QTableView>
 #include <QWidget>
 
@@ -20,6 +21,9 @@ class AuthorizationWindow : public QWidget
 public:
     explicit AuthorizationWindow(QWidget *parent = 0);
     //~AuthorizationWindow();
+
+signals:
+    void showlogoWindow();
 
 private slots:
     //void on_addDeviceButton_clicked();

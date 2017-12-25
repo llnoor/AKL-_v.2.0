@@ -1,5 +1,5 @@
-#ifndef DIALOGAUTH_H
-#define DIALOGAUTH_H
+#ifndef DIALOGREG_H
+#define DIALOGREG_H
 
 #include <QMainWindow>
 #include <QDialog>
@@ -14,13 +14,13 @@ QT_BEGIN_NAMESPACE
 class QGroupBox;
 QT_END_NAMESPACE
 
-class DialogAuth : public QDialog
+class DialogReg : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DialogAuth(int row = -1, QWidget *parent = 0);
-    ~DialogAuth();
+    explicit DialogReg(int row = -1, QWidget *parent = 0);
+    ~DialogReg();
 
 signals:
     void signalReady();
@@ -68,4 +68,4 @@ private:
 
 };
 
-#endif // DIALOGAUTH_H
+#endif // DIALOGREG_H

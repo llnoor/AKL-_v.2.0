@@ -19,6 +19,11 @@ Logo::Logo(): QWidget(0, Qt::Window | Qt::FramelessWindowHint)
     //emit firstWindow();
 }
 
+void Logo::showlogoWindow()
+{
+    this->show();
+}
+
 QGroupBox *Logo::groupLogo()
 {
     QGroupBox *groupBox = new QGroupBox(tr(""));

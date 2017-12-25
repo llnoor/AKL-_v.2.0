@@ -9,7 +9,7 @@ AuthorizationWindow::AuthorizationWindow(QWidget *parent):
 {
     tableView_new = new QTableView();
 
-
+    //emit
 
 
 
@@ -48,7 +48,6 @@ AuthorizationWindow::AuthorizationWindow(QWidget *parent):
                         << trUtf8("Parent")
                         << trUtf8("Pass")
                         << trUtf8("Email")
-                        << trUtf8("Сообщение")
                         << trUtf8("Telegram")
                         << trUtf8("Phone")
                         << trUtf8("Experiments")
@@ -68,18 +67,19 @@ AuthorizationWindow::AuthorizationWindow(QWidget *parent):
 
     grid->addWidget(tableView_new, 0, 0, model->rowCount(), model->columnCount());
     //grid->addWidget(newuserButton);
-    grid->addWidget(groupTable(), 1, 1);
+    grid->addWidget(groupTable(),  model->rowCount()+1, 0);
     setLayout(grid);
 
     //tableView_new->horizontalHeader()->setSectionResizeMode(1,QHeaderView::);
     tableView_new->setColumnWidth(1,120);
+    tableView_new->setColumnWidth(2,120);
     tableView_new->setColumnWidth(3,120);
     tableView_new->setColumnWidth(4,120);
 
 
 
     setWindowTitle(tr("Authorization"));
-        resize(480, 220);
+        resize(480, 420);
 
     connect(newuserButton, SIGNAL(released()), this, SLOT(slotAdd()));
 
@@ -113,9 +113,9 @@ void AuthorizationWindow::setupModel(const QString &tableName, const QStringList
 void AuthorizationWindow::createUI()
 {
     tableView_new->setModel(model);     // Устанавливаем модель на TableView
-    /*tableView_new->setColumnHidden(0, true);
-    tableView_new->setColumnHidden(1, false);    // Скрываем колонку с id записей
-    tableView_new->setColumnHidden(2, true);
+    tableView_new->setColumnHidden(0, true);    // Скрываем колонку с id записей
+    tableView_new->setColumnHidden(1, false);
+    tableView_new->setColumnHidden(2, false);
     tableView_new->setColumnHidden(3, false);
     tableView_new->setColumnHidden(4, true);
     tableView_new->setColumnHidden(5, true);
@@ -126,9 +126,9 @@ void AuthorizationWindow::createUI()
     tableView_new->setColumnHidden(10, true);
     tableView_new->setColumnHidden(11, true);
     tableView_new->setColumnHidden(12, true);
-    tableView_new->setColumnHidden(13, true);
-    tableView_new->setColumnHidden(14, false);
-    tableView_new->setColumnHidden(15, true);*/
+    tableView_new->setColumnHidden(13, false);
+    tableView_new->setColumnHidden(14, true);
+    //tableView_new->setColumnHidden(15, true);
 
 
     // Разрешаем выделение строк
@@ -154,7 +154,7 @@ void AuthorizationWindow::createUI()
     DialogAuth *addDialogAuth = new DialogAuth();
     connect(addDialogAuth, SIGNAL(signalReady()), this, SLOT(slotUpdateModels()));
 
-    addDialogAuth->setWindowTitle(trUtf8("Добавить Устройство"));
+    addDialogAuth->setWindowTitle(trUtf8("Добавить"));
     addDialogAuth->exec();
 }*/
 
@@ -163,13 +163,13 @@ void AuthorizationWindow::slotAdd()
     /* Создаем диалог и подключаем его сигнал завершения работы
      * к слоту обновления вида модели представления данных
      * */
-    DialogAuth *addDialogAuth = new DialogAuth();
-    connect(addDialogAuth, SIGNAL(signalReady()), this, SLOT(slotUpdateModels()));
+    DialogReg *addDialogReg = new DialogReg();
+    connect(addDialogReg, SIGNAL(signalReady()), this, SLOT(slotUpdateModels()));
 
     /* Выполняем запуск диалогового окна
      * */
-    addDialogAuth->setWindowTitle(trUtf8("Добавить Устройство"));
-    addDialogAuth->exec();
+    addDialogReg->setWindowTitle(trUtf8("Добавить"));
+    addDialogReg->exec();
 }
 
 void AuthorizationWindow::slotUpdateModels()
@@ -191,18 +191,26 @@ void AuthorizationWindow::slotEditRecord(QModelIndex index)
 
     /* Выполняем запуск диалогового окна
      * */
-    addDialogAuth->setWindowTitle(trUtf8("Редактировать Устройство"));
-    addDialogAuth->exec();
+    addDialogAuth->setWindowTitle(trUtf8("Редактировать"));
+    //addDialogAuth->exec();
+
+    if(addDialogAuth->exec()){
+        QMessageBox::information(this, trUtf8("Ошибка1"),
+                                 trUtf8("уже существует1"));
+
+    } else {
+        QMessageBox::information(this, trUtf8("Ошибка2"),
+                                 trUtf8("уже существует2"));
+    }
+
 }
 
 
 QGroupBox *AuthorizationWindow::groupTable()
 {
-    QGroupBox *groupBox = new QGroupBox(tr("New"));
+    QGroupBox *groupBox = new QGroupBox(tr(""));
 
-    newuserButton = new QPushButton(tr("New"));
-    //label_1 = new QLabel(tr(" LAMP "));
-
+    newuserButton = new QPushButton(tr("New user"));
 
     QVBoxLayout *vbox = new QVBoxLayout;
     vbox->addWidget(newuserButton);

@@ -1,8 +1,8 @@
-#include "dialogauth.h"
+#include "dialogreg.h"
 #include <QtWidgets>
 #include <QMainWindow>
 
-DialogAuth::DialogAuth(int row, QWidget *parent) :
+DialogReg::DialogReg(int row, QWidget *parent) :
     QDialog(parent)
 {
     //ui->setupUi(this);
@@ -29,17 +29,18 @@ DialogAuth::DialogAuth(int row, QWidget *parent) :
      } else {
          mapper->setCurrentModelIndex(model->index(row,0));
      }
+
      //createUI();
  }
 
- DialogAuth::~DialogAuth()
+ DialogReg::~DialogReg()
  {
      //delete ui;
  }
 
  /* Метод настройки модели данных и mapper
   * */
- void DialogAuth::setupModel()
+ void DialogReg::setupModel()
  {
      /* Инициализируем модель и делаем выборку из неё
       * */
@@ -110,7 +111,7 @@ DialogAuth::DialogAuth(int row, QWidget *parent) :
 
  /* Метод для установки валидатора на поле ввода IP и MAC адресов
   * */
- void DialogAuth::createUI()
+ void DialogReg::createUI()
  {
      QString ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
      QRegExp ipRegex ("^" + ipRange
@@ -131,7 +132,7 @@ DialogAuth::DialogAuth(int row, QWidget *parent) :
      MACLineEdit->setValidator(macValidator);
  }
 
- void DialogAuth::on_buttonBox_accepted()
+ void DialogReg::on_buttonBox_accepted()
  {
      /* SQL-запрос для проверки существования записи
       * с такими же учетными данными.
@@ -165,13 +166,11 @@ DialogAuth::DialogAuth(int row, QWidget *parent) :
          mapper->submit();
          model->submitAll();
          emit signalReady();
-
-
          this->close();
      }
  }
 
- void DialogAuth::delete_data()
+ void DialogReg::delete_data()
  {
      /* SQL-запрос для проверки существования записи
       * с такими же учетными данными.
@@ -195,14 +194,14 @@ DialogAuth::DialogAuth(int row, QWidget *parent) :
 
  }
 
- void DialogAuth::accept()
+ void DialogReg::accept()
  {
 
  }
 
  /* Метод изменения состояния активности кнопок пролистывания
   * */
- void DialogAuth::updateButtons(int row)
+ void DialogReg::updateButtons(int row)
  {
      /* В том случае, если мы достигаем одного из крайних (самый первый или
       * самый последний) из индексов в таблице данных,
@@ -214,7 +213,7 @@ DialogAuth::DialogAuth(int row, QWidget *parent) :
  }
 
 
- QGroupBox *DialogAuth::groupTableAuth()
+ QGroupBox *DialogReg::groupTableAuth()
  {
      QGroupBox *groupBox = new QGroupBox(tr(""));
      groupBox->setStyleSheet("border: 0px solid white");
