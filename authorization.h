@@ -9,6 +9,7 @@
 #include <dialogreg.h>
 #include <QTableView>
 #include <QWidget>
+#include <QSignalMapper>
 
 QT_BEGIN_NAMESPACE
 class QGroupBox;
@@ -30,7 +31,8 @@ private slots:
 
     void slotUpdateModels();
     void slotEditRecord(QModelIndex index);
-    void slotAdd();
+    void slotNewUser();
+    void slotEditUser();
 
 private:
 
@@ -39,6 +41,9 @@ private:
     QGroupBox *groupTable();
     QTableView *tableView_new;
     QPushButton *newuserButton;
+    QPushButton *edituserButton;
+    QPushButton *tableButton;
+    QSignalMapper *signalMapper;
 
 
 private:

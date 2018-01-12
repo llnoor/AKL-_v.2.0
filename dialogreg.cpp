@@ -266,7 +266,7 @@ DialogReg::DialogReg(int row, QWidget *parent) :
     //vbox->addWidget(scientistExperiments);
     //vbox->addWidget(scientistSelected_experiments);
     //vbox->addWidget(scientistBirthday);
-    //vbox->addWidget(scientistPosition);
+    vbox->addWidget(scientistPosition);
     //vbox->addWidget(scientistTheme);
 
 

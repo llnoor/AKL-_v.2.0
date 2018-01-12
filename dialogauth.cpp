@@ -267,15 +267,15 @@ DialogAuth::DialogAuth(int row, QWidget *parent) :
     //vbox->addWidget(scientistExperiments);
     //vbox->addWidget(scientistSelected_experiments);
     //vbox->addWidget(scientistBirthday);
-    //vbox->addWidget(scientistPosition);
+    vbox->addWidget(scientistPosition);
     //vbox->addWidget(scientistTheme);
 
 
      /*vbox->addWidget(HostnameLineEdit);
      vbox->addWidget(IPAddressLineEdit);
      vbox->addWidget(MACLineEdit);*/
-     vbox->addWidget(previousButton);
-     vbox->addWidget(nextButton);
+     //vbox->addWidget(previousButton);
+     //vbox->addWidget(nextButton);
      vbox->addWidget(saveButton);
      vbox->addWidget(deleteButton);
 
