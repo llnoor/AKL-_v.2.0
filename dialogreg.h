@@ -26,7 +26,7 @@ signals:
     void signalReady();
 
 private slots:
-    void on_buttonBox_accepted();
+    void save_data();
     void delete_data();
     void updateButtons(int row);
 
@@ -41,6 +41,22 @@ private:
     QPushButton                 *newButton;
     QPushButton                 *deleteButton;
 
+    QLabel   *labelScientistName;
+    QLabel   *labelScientistSurname;
+    QLabel   *labelScientistLogin;
+    QLabel   *labelScientistDate;
+    QLabel   *labelScientistParent;
+    QLabel   *labelScientistPass;
+    QLabel   *labelScientistEmail;
+    QLabel   *labelScientistTelegram;
+    QLabel   *labelScientistPhone;
+    QLabel   *labelScientistExperiments;
+    QLabel   *labelScientistSelected_experiments;
+    QLabel   *labelScientistBirthday;
+    QLabel   *labelScientistPosition;
+    QLabel   *labelScientistTheme;
+
+    QLabel   *labelEmpty;
 
     QLineEdit   *scientistName;
     QLineEdit   *scientistSurname;
@@ -57,13 +73,10 @@ private:
     QLineEdit   *scientistPosition;
     QLineEdit   *scientistTheme;
 
-    QLineEdit                   *HostnameLineEdit;
-    QLineEdit                   *IPAddressLineEdit;
-    QLineEdit                   *MACLineEdit;
 
 private:
     void setupModel();
-    void createUI();
+    //void createUI();
     void accept();
 
 };

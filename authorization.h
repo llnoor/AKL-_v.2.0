@@ -9,7 +9,6 @@
 #include <dialogreg.h>
 #include <QTableView>
 #include <QWidget>
-#include <QSignalMapper>
 
 QT_BEGIN_NAMESPACE
 class QGroupBox;
@@ -25,14 +24,15 @@ public:
 
 signals:
     void showlogoWindow();
+    //void openExperiments();
 
 private slots:
     //void on_addDeviceButton_clicked();
 
     void slotUpdateModels();
-    void slotEditRecord(QModelIndex index);
+    void slotLogin(QModelIndex index);
     void slotNewUser();
-    void slotEditUser();
+    void slotEditUser(QModelIndex index);
 
 private:
 
@@ -43,7 +43,6 @@ private:
     QPushButton *newuserButton;
     QPushButton *edituserButton;
     QPushButton *tableButton;
-    QSignalMapper *signalMapper;
 
 
 private:

@@ -54,7 +54,7 @@ AuthorizationWindow::AuthorizationWindow(QWidget *parent):
                         << trUtf8("Selected_experiments")
                         << trUtf8("BirthDay")
                         << trUtf8("Position")
-                        << trUtf8("Edit")
+                        << trUtf8("Theme")
                );
 
     /* Инициализируем внешний вид таблицы с данными
@@ -63,14 +63,14 @@ AuthorizationWindow::AuthorizationWindow(QWidget *parent):
 
     //newuserButton = new QPushButton(tr("New"));
     newuserButton = new QPushButton(tr("New user"));
-    edituserButton = new QPushButton(tr("Edit"));
+    //edituserButton = new QPushButton(tr("Edit"));
 
 
     QGridLayout *grid = new QGridLayout;
     //grid->addWidget(groupTable());
     grid->addWidget(tableView_new, 0, 0, model->rowCount(), model->columnCount());
     grid->addWidget(newuserButton);
-    grid->addWidget(edituserButton);
+    //grid->addWidget(edituserButton);
     //grid->addWidget(groupTable(),  model->rowCount()+1, 0);
     setLayout(grid);
 
@@ -79,15 +79,16 @@ AuthorizationWindow::AuthorizationWindow(QWidget *parent):
     tableView_new->setColumnWidth(2,120);
     tableView_new->setColumnWidth(3,120);
     tableView_new->setColumnWidth(13,100);
-    tableView_new->setColumnWidth(14,40);
 
 
 
     setWindowTitle(tr("Authorization"));
-        resize(600, 420);
+        resize(550, 420);
+        //this->setFont(QFont("Ubuntu"));//Roboto
+        //this->setFont(QFont("Roboto",16,0,1));
 
     connect(newuserButton, SIGNAL(released()), this, SLOT(slotNewUser()));
-    connect(edituserButton, SIGNAL(released()), this, SLOT(slotEditUser()));
+    //connect(edituserButton, SIGNAL(released()), this, SLOT(slotEditUser()));
 
 }
 
@@ -135,7 +136,7 @@ void AuthorizationWindow::createUI()
     tableView_new->setColumnHidden(11, true);
     tableView_new->setColumnHidden(12, true);
     tableView_new->setColumnHidden(13, false);
-    tableView_new->setColumnHidden(14, false); //for tableButton
+    tableView_new->setColumnHidden(14, true);
 
 
     // Разрешаем выделение строк
@@ -149,18 +150,9 @@ void AuthorizationWindow::createUI()
 
     model->select(); // Делаем выборку данных из таблицы
 
-    connect(tableView_new, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slotEditRecord(QModelIndex)));
+    connect(tableView_new, SIGNAL(clicked(QModelIndex)), this, SLOT(slotLogin(QModelIndex)));
+    connect(tableView_new, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slotEditUser(QModelIndex)));
 
-    signalMapper = new QSignalMapper();
-
-    for (int row = 0; row < model->rowCount() /*model->columnCount()*/; ++row) {
-        tableButton= new QPushButton("Edit");
-        tableView_new->setIndexWidget(tableView_new->model()->index(row, 14), tableButton);
-        signalMapper->setMapping(tableButton, row);
-
-    }
-
-    connect(signalMapper, SIGNAL(mapped(int)), this, SLOT(slotEdit2User(int)));
 }
 
 /* Метод для активации диалога добавления записей
@@ -185,11 +177,13 @@ void AuthorizationWindow::slotNewUser()
 
     /* Выполняем запуск диалогового окна
      * */
-    addDialogReg->setWindowTitle(trUtf8("Добавить"));
+    addDialogReg->setWindowTitle(trUtf8("Add User"));
     addDialogReg->exec();
+    //showlogoWindow();
 }
 
-void AuthorizationWindow::slotEditUser()
+
+void AuthorizationWindow::slotEditUser(QModelIndex index)
 {
 
 
@@ -198,12 +192,12 @@ void AuthorizationWindow::slotEditUser()
      * */
 
 
-    DialogReg *addDialogReg = new DialogReg(model->data(tableView_new->currentIndex()).toInt());
+    DialogReg *addDialogReg = new DialogReg(index.row());
     connect(addDialogReg, SIGNAL(signalReady()), this, SLOT(slotUpdateModels()));
 
     /* Выполняем запуск диалогового окна
      * */
-    addDialogReg->setWindowTitle(trUtf8("Редактировать"));
+    addDialogReg->setWindowTitle(trUtf8("Edit"));
     addDialogReg->exec();
 }
 
@@ -216,7 +210,7 @@ void AuthorizationWindow::slotUpdateModels()
 /* Метод для активации диалога добавления записей в режиме редактирования
  * с передачей индекса выбранной строки
  * */
-void AuthorizationWindow::slotEditRecord(QModelIndex index)
+void AuthorizationWindow::slotLogin(QModelIndex index)
 {
     /* Также создаем диалог и подключаем его сигнал завершения работы
      * к слоту обновления вида модели представления данных, но передаём
@@ -225,18 +219,20 @@ void AuthorizationWindow::slotEditRecord(QModelIndex index)
     DialogAuth *addDialogAuth = new DialogAuth(index.row());
     connect(addDialogAuth, SIGNAL(signalReady()), this, SLOT(slotUpdateModels()));
 
+    connect(addDialogAuth, SIGNAL(accepted()),this, SIGNAL(showlogoWindow()));
+
     /* Выполняем запуск диалогового окна
      * */
-    addDialogAuth->setWindowTitle(trUtf8("Редактировать"));
+    addDialogAuth->setWindowTitle(trUtf8("Authorization"));
     addDialogAuth->exec();
 
     /*if(addDialogAuth->exec()){
-        QMessageBox::information(this, trUtf8("Ошибка1"),
-                                 trUtf8("уже существует1"));
+        QMessageBox::information(this, trUtf8("Check"),
+                                 trUtf8("True"));
 
     } else {
-        QMessageBox::information(this, trUtf8("Ошибка2"),
-                                 trUtf8("уже существует2"));
+        QMessageBox::information(this, trUtf8("Check"),
+                                 trUtf8("False"));
     }*/
 
 }
