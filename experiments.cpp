@@ -7,7 +7,7 @@ Experiments::Experiments(QWidget *parent):
     QWidget(0, Qt::Window | Qt::FramelessWindowHint)
 
 {
-    tableView_new = new QTableView();
+    tableView = new QTableView();
 
     //emit
 
@@ -44,17 +44,17 @@ Experiments::Experiments(QWidget *parent):
 
     QGridLayout *grid = new QGridLayout;
     //grid->addWidget(groupTable());
-    grid->addWidget(tableView_new, 0, 0, model->rowCount(), model->columnCount());
+    grid->addWidget(tableView, 0, 0, model->rowCount(), model->columnCount());
     grid->addWidget(newuserButton);
     //grid->addWidget(edituserButton);
     //grid->addWidget(groupTable(),  model->rowCount()+1, 0);
     setLayout(grid);
 
-    //tableView_new->horizontalHeader()->setSectionResizeMode(1,QHeaderView::);
-    tableView_new->setColumnWidth(1,120);
-    tableView_new->setColumnWidth(2,120);
-    tableView_new->setColumnWidth(3,120);
-    tableView_new->setColumnWidth(13,100);
+    //tableView->horizontalHeader()->setSectionResizeMode(1,QHeaderView::);
+    tableView->setColumnWidth(1,120);
+    tableView->setColumnWidth(2,120);
+    tableView->setColumnWidth(3,120);
+    tableView->setColumnWidth(13,100);
 
 
 
@@ -97,30 +97,30 @@ void Experiments::setupModel(const QString &tableName, const QStringList &header
 
 void Experiments::createUI()
 {
-    tableView_new->setModel(model);     // Устанавливаем модель на TableView
-    tableView_new->setColumnHidden(0, false);    // Скрываем колонку с id записей
-    tableView_new->setColumnHidden(1, false);
-    tableView_new->setColumnHidden(2, false);
-    tableView_new->setColumnHidden(3, false);
-    tableView_new->setColumnHidden(4, false);
-    tableView_new->setColumnHidden(5, false);
-    tableView_new->setColumnHidden(6, false);
-    tableView_new->setColumnHidden(7, false);
+    tableView->setModel(model);     // Устанавливаем модель на TableView
+    tableView->setColumnHidden(0, false);    // Скрываем колонку с id записей
+    tableView->setColumnHidden(1, false);
+    tableView->setColumnHidden(2, false);
+    tableView->setColumnHidden(3, false);
+    tableView->setColumnHidden(4, false);
+    tableView->setColumnHidden(5, false);
+    tableView->setColumnHidden(6, false);
+    tableView->setColumnHidden(7, false);
 
 
     // Разрешаем выделение строк
-    tableView_new->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     // Устанавливаем режим выделения лишь одно строки в таблице
-    tableView_new->setSelectionMode(QAbstractItemView::SingleSelection);
+    tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     // Устанавливаем размер колонок по содержимому
-    tableView_new->resizeColumnsToContents();
-    tableView_new->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    tableView_new->horizontalHeader()->setStretchLastSection(true);
+    tableView->resizeColumnsToContents();
+    tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    tableView->horizontalHeader()->setStretchLastSection(true);
 
     model->select(); // Делаем выборку данных из таблицы
 
-    connect(tableView_new, SIGNAL(clicked(QModelIndex)), this, SLOT(slotLogin(QModelIndex)));
-    connect(tableView_new, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slotEditUser(QModelIndex)));
+    connect(tableView, SIGNAL(clicked(QModelIndex)), this, SLOT(slotLogin(QModelIndex)));
+    connect(tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slotEditUser(QModelIndex)));
 
 }
 

@@ -39,7 +39,7 @@ private:
     DataBase        *db;
     QSqlTableModel  *model;
     QGroupBox *groupTable();
-    QTableView *tableView_new;
+    QTableView *tableView;
     QPushButton *newuserButton;
     QPushButton *edituserButton;
     QPushButton *tableButton;

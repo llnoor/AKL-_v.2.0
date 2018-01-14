@@ -7,7 +7,7 @@ AuthorizationWindow::AuthorizationWindow(QWidget *parent):
     QWidget(0, Qt::Window | Qt::FramelessWindowHint)
 
 {
-    tableView_new = new QTableView();
+    tableView = new QTableView();
 
     //emit
 
@@ -68,17 +68,17 @@ AuthorizationWindow::AuthorizationWindow(QWidget *parent):
 
     QGridLayout *grid = new QGridLayout;
     //grid->addWidget(groupTable());
-    grid->addWidget(tableView_new, 0, 0, model->rowCount(), model->columnCount());
+    grid->addWidget(tableView, 0, 0, model->rowCount(), model->columnCount());
     grid->addWidget(newuserButton);
     //grid->addWidget(edituserButton);
     //grid->addWidget(groupTable(),  model->rowCount()+1, 0);
     setLayout(grid);
 
-    //tableView_new->horizontalHeader()->setSectionResizeMode(1,QHeaderView::);
-    tableView_new->setColumnWidth(1,120);
-    tableView_new->setColumnWidth(2,120);
-    tableView_new->setColumnWidth(3,120);
-    tableView_new->setColumnWidth(13,100);
+    //tableView->horizontalHeader()->setSectionResizeMode(1,QHeaderView::);
+    tableView->setColumnWidth(1,120);
+    tableView->setColumnWidth(2,120);
+    tableView->setColumnWidth(3,120);
+    tableView->setColumnWidth(13,100);
 
 
 
@@ -121,37 +121,37 @@ void AuthorizationWindow::setupModel(const QString &tableName, const QStringList
 
 void AuthorizationWindow::createUI()
 {
-    tableView_new->setModel(model);     // Устанавливаем модель на TableView
-    tableView_new->setColumnHidden(0, true);    // Скрываем колонку с id записей
-    tableView_new->setColumnHidden(1, false);
-    tableView_new->setColumnHidden(2, false);
-    tableView_new->setColumnHidden(3, false);
-    tableView_new->setColumnHidden(4, true);
-    tableView_new->setColumnHidden(5, true);
-    tableView_new->setColumnHidden(6, true);
-    tableView_new->setColumnHidden(7, true);
-    tableView_new->setColumnHidden(8, true);
-    tableView_new->setColumnHidden(9, true);
-    tableView_new->setColumnHidden(10, true);
-    tableView_new->setColumnHidden(11, true);
-    tableView_new->setColumnHidden(12, true);
-    tableView_new->setColumnHidden(13, false);
-    tableView_new->setColumnHidden(14, true);
+    tableView->setModel(model);     // Устанавливаем модель на TableView
+    tableView->setColumnHidden(0, true);    // Скрываем колонку с id записей
+    tableView->setColumnHidden(1, false);
+    tableView->setColumnHidden(2, false);
+    tableView->setColumnHidden(3, false);
+    tableView->setColumnHidden(4, true);
+    tableView->setColumnHidden(5, true);
+    tableView->setColumnHidden(6, true);
+    tableView->setColumnHidden(7, true);
+    tableView->setColumnHidden(8, true);
+    tableView->setColumnHidden(9, true);
+    tableView->setColumnHidden(10, true);
+    tableView->setColumnHidden(11, true);
+    tableView->setColumnHidden(12, true);
+    tableView->setColumnHidden(13, false);
+    tableView->setColumnHidden(14, true);
 
 
     // Разрешаем выделение строк
-    tableView_new->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     // Устанавливаем режим выделения лишь одно строки в таблице
-    tableView_new->setSelectionMode(QAbstractItemView::SingleSelection);
+    tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     // Устанавливаем размер колонок по содержимому
-    tableView_new->resizeColumnsToContents();
-    tableView_new->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    tableView_new->horizontalHeader()->setStretchLastSection(true);
+    tableView->resizeColumnsToContents();
+    tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    tableView->horizontalHeader()->setStretchLastSection(true);
 
     model->select(); // Делаем выборку данных из таблицы
 
-    connect(tableView_new, SIGNAL(clicked(QModelIndex)), this, SLOT(slotLogin(QModelIndex)));
-    connect(tableView_new, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slotEditUser(QModelIndex)));
+    connect(tableView, SIGNAL(clicked(QModelIndex)), this, SLOT(slotLogin(QModelIndex)));
+    connect(tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slotEditUser(QModelIndex)));
 
 }
 
@@ -220,7 +220,7 @@ void AuthorizationWindow::slotLogin(QModelIndex index)
     connect(addDialogAuth, SIGNAL(signalReady()), this, SLOT(slotUpdateModels()));
 
     connect(addDialogAuth, SIGNAL(accepted()),this, SIGNAL(showlogoWindow()));
-
+    connect(addDialogAuth, SIGNAL(accepted()),this, SLOT(close()));
     /* Выполняем запуск диалогового окна
      * */
     addDialogAuth->setWindowTitle(trUtf8("Authorization"));
