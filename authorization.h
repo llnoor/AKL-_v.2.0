@@ -6,6 +6,7 @@
 /* Подключаем заголовочный файл для работы с информацией, которая помещена в базу данных */
 #include <database.h>
 #include <dialogauth.h>
+#include <dialogreg.h>
 #include <QTableView>
 #include <QWidget>
 
@@ -21,20 +22,27 @@ public:
     explicit AuthorizationWindow(QWidget *parent = 0);
     //~AuthorizationWindow();
 
+signals:
+    void showlogoWindow();
+    //void openExperiments();
+
 private slots:
     //void on_addDeviceButton_clicked();
 
     void slotUpdateModels();
-    void slotEditRecord(QModelIndex index);
-    void slotAdd();
+    void slotLogin(QModelIndex index);
+    void slotNewUser();
+    void slotEditUser(QModelIndex index);
 
 private:
 
     DataBase        *db;
     QSqlTableModel  *model;
     QGroupBox *groupTable();
-    QTableView *tableView_new;
+    QTableView *tableView;
     QPushButton *newuserButton;
+    QPushButton *edituserButton;
+    QPushButton *tableButton;
 
 
 private:

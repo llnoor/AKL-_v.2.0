@@ -19,6 +19,9 @@ public:
 signals:
     void firstWindow();
 
+public slots:
+    void showlogoWindow();
+
 private:
     QGroupBox *groupLogo();
     QTimer *timerLogo;

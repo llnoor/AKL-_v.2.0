@@ -3,13 +3,13 @@
 #include <QMainWindow>
 
 AuthorizationWindow::AuthorizationWindow(QWidget *parent):
-    QWidget(parent)
-    //QWidget(0, Qt::Window | Qt::FramelessWindowHint)
+    //QWidget(parent)
+    QWidget(0, Qt::Window | Qt::FramelessWindowHint)
 
 {
-    tableView_new = new QTableView();
+    tableView = new QTableView();
 
-
+    //emit
 
 
 
@@ -48,7 +48,6 @@ AuthorizationWindow::AuthorizationWindow(QWidget *parent):
                         << trUtf8("Parent")
                         << trUtf8("Pass")
                         << trUtf8("Email")
-                        << trUtf8("Сообщение")
                         << trUtf8("Telegram")
                         << trUtf8("Phone")
                         << trUtf8("Experiments")
@@ -63,27 +62,37 @@ AuthorizationWindow::AuthorizationWindow(QWidget *parent):
     this->createUI();
 
     //newuserButton = new QPushButton(tr("New"));
+    newuserButton = new QPushButton(tr("New user"));
+    //edituserButton = new QPushButton(tr("Edit"));
+
 
     QGridLayout *grid = new QGridLayout;
-
-    grid->addWidget(tableView_new, 0, 0, model->rowCount(), model->columnCount());
-    //grid->addWidget(newuserButton);
-    grid->addWidget(groupTable(), 1, 1);
+    //grid->addWidget(groupTable());
+    grid->addWidget(tableView, 0, 0, model->rowCount(), model->columnCount());
+    grid->addWidget(newuserButton);
+    //grid->addWidget(edituserButton);
+    //grid->addWidget(groupTable(),  model->rowCount()+1, 0);
     setLayout(grid);
 
-    //tableView_new->horizontalHeader()->setSectionResizeMode(1,QHeaderView::);
-    tableView_new->setColumnWidth(1,120);
-    tableView_new->setColumnWidth(3,120);
-    tableView_new->setColumnWidth(4,120);
+    //tableView->horizontalHeader()->setSectionResizeMode(1,QHeaderView::);
+    tableView->setColumnWidth(1,120);
+    tableView->setColumnWidth(2,120);
+    tableView->setColumnWidth(3,120);
+    tableView->setColumnWidth(13,100);
 
 
 
     setWindowTitle(tr("Authorization"));
-        resize(480, 220);
+        resize(550, 420);
+        //this->setFont(QFont("Ubuntu"));//Roboto
+        //this->setFont(QFont("Roboto",16,0,1));
 
-    connect(newuserButton, SIGNAL(released()), this, SLOT(slotAdd()));
+    connect(newuserButton, SIGNAL(released()), this, SLOT(slotNewUser()));
+    //connect(edituserButton, SIGNAL(released()), this, SLOT(slotEditUser()));
 
 }
+
+
 
 /*AuthorizationWindow::~AuthorizationWindow()
 {
@@ -112,37 +121,37 @@ void AuthorizationWindow::setupModel(const QString &tableName, const QStringList
 
 void AuthorizationWindow::createUI()
 {
-    tableView_new->setModel(model);     // Устанавливаем модель на TableView
-    /*tableView_new->setColumnHidden(0, true);
-    tableView_new->setColumnHidden(1, false);    // Скрываем колонку с id записей
-    tableView_new->setColumnHidden(2, true);
-    tableView_new->setColumnHidden(3, false);
-    tableView_new->setColumnHidden(4, true);
-    tableView_new->setColumnHidden(5, true);
-    tableView_new->setColumnHidden(6, true);
-    tableView_new->setColumnHidden(7, true);
-    tableView_new->setColumnHidden(8, true);
-    tableView_new->setColumnHidden(9, true);
-    tableView_new->setColumnHidden(10, true);
-    tableView_new->setColumnHidden(11, true);
-    tableView_new->setColumnHidden(12, true);
-    tableView_new->setColumnHidden(13, true);
-    tableView_new->setColumnHidden(14, false);
-    tableView_new->setColumnHidden(15, true);*/
+    tableView->setModel(model);     // Устанавливаем модель на TableView
+    tableView->setColumnHidden(0, true);    // Скрываем колонку с id записей
+    tableView->setColumnHidden(1, false);
+    tableView->setColumnHidden(2, false);
+    tableView->setColumnHidden(3, false);
+    tableView->setColumnHidden(4, true);
+    tableView->setColumnHidden(5, true);
+    tableView->setColumnHidden(6, true);
+    tableView->setColumnHidden(7, true);
+    tableView->setColumnHidden(8, true);
+    tableView->setColumnHidden(9, true);
+    tableView->setColumnHidden(10, true);
+    tableView->setColumnHidden(11, true);
+    tableView->setColumnHidden(12, true);
+    tableView->setColumnHidden(13, false);
+    tableView->setColumnHidden(14, true);
 
 
     // Разрешаем выделение строк
-    tableView_new->setSelectionBehavior(QAbstractItemView::SelectRows);
+    tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     // Устанавливаем режим выделения лишь одно строки в таблице
-    tableView_new->setSelectionMode(QAbstractItemView::SingleSelection);
+    tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     // Устанавливаем размер колонок по содержимому
-    tableView_new->resizeColumnsToContents();
-    tableView_new->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    tableView_new->horizontalHeader()->setStretchLastSection(true);
+    tableView->resizeColumnsToContents();
+    tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    tableView->horizontalHeader()->setStretchLastSection(true);
 
     model->select(); // Делаем выборку данных из таблицы
 
-    connect(tableView_new, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slotEditRecord(QModelIndex)));
+    connect(tableView, SIGNAL(clicked(QModelIndex)), this, SLOT(slotLogin(QModelIndex)));
+    connect(tableView, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(slotEditUser(QModelIndex)));
 
 }
 
@@ -154,23 +163,44 @@ void AuthorizationWindow::createUI()
     DialogAuth *addDialogAuth = new DialogAuth();
     connect(addDialogAuth, SIGNAL(signalReady()), this, SLOT(slotUpdateModels()));
 
-    addDialogAuth->setWindowTitle(trUtf8("Добавить Устройство"));
+    addDialogAuth->setWindowTitle(trUtf8("Добавить"));
     addDialogAuth->exec();
 }*/
 
-void AuthorizationWindow::slotAdd()
+void AuthorizationWindow::slotNewUser()
 {
     /* Создаем диалог и подключаем его сигнал завершения работы
      * к слоту обновления вида модели представления данных
      * */
-    DialogAuth *addDialogAuth = new DialogAuth();
-    connect(addDialogAuth, SIGNAL(signalReady()), this, SLOT(slotUpdateModels()));
+    DialogReg *addDialogReg = new DialogReg();
+    connect(addDialogReg, SIGNAL(signalReady()), this, SLOT(slotUpdateModels()));
 
     /* Выполняем запуск диалогового окна
      * */
-    addDialogAuth->setWindowTitle(trUtf8("Добавить Устройство"));
-    addDialogAuth->exec();
+    addDialogReg->setWindowTitle(trUtf8("Add User"));
+    addDialogReg->exec();
+    //showlogoWindow();
 }
+
+
+void AuthorizationWindow::slotEditUser(QModelIndex index)
+{
+
+
+    /* Создаем диалог и подключаем его сигнал завершения работы
+     * к слоту обновления вида модели представления данных
+     * */
+
+
+    DialogReg *addDialogReg = new DialogReg(index.row());
+    connect(addDialogReg, SIGNAL(signalReady()), this, SLOT(slotUpdateModels()));
+
+    /* Выполняем запуск диалогового окна
+     * */
+    addDialogReg->setWindowTitle(trUtf8("Edit"));
+    addDialogReg->exec();
+}
+
 
 void AuthorizationWindow::slotUpdateModels()
 {
@@ -180,7 +210,7 @@ void AuthorizationWindow::slotUpdateModels()
 /* Метод для активации диалога добавления записей в режиме редактирования
  * с передачей индекса выбранной строки
  * */
-void AuthorizationWindow::slotEditRecord(QModelIndex index)
+void AuthorizationWindow::slotLogin(QModelIndex index)
 {
     /* Также создаем диалог и подключаем его сигнал завершения работы
      * к слоту обновления вида модели представления данных, но передаём
@@ -189,23 +219,35 @@ void AuthorizationWindow::slotEditRecord(QModelIndex index)
     DialogAuth *addDialogAuth = new DialogAuth(index.row());
     connect(addDialogAuth, SIGNAL(signalReady()), this, SLOT(slotUpdateModels()));
 
+    connect(addDialogAuth, SIGNAL(accepted()),this, SIGNAL(showlogoWindow()));
+    connect(addDialogAuth, SIGNAL(accepted()),this, SLOT(close()));
     /* Выполняем запуск диалогового окна
      * */
-    addDialogAuth->setWindowTitle(trUtf8("Редактировать Устройство"));
+    addDialogAuth->setWindowTitle(trUtf8("Authorization"));
     addDialogAuth->exec();
+
+    /*if(addDialogAuth->exec()){
+        QMessageBox::information(this, trUtf8("Check"),
+                                 trUtf8("True"));
+
+    } else {
+        QMessageBox::information(this, trUtf8("Check"),
+                                 trUtf8("False"));
+    }*/
+
 }
 
 
 QGroupBox *AuthorizationWindow::groupTable()
 {
-    QGroupBox *groupBox = new QGroupBox(tr("New"));
+    QGroupBox *groupBox = new QGroupBox(tr(""));
 
-    newuserButton = new QPushButton(tr("New"));
-    //label_1 = new QLabel(tr(" LAMP "));
-
+    //newuserButton = new QPushButton(tr("New user"));
+    //edituserButton = new QPushButton(tr("Edit"));
 
     QVBoxLayout *vbox = new QVBoxLayout;
-    vbox->addWidget(newuserButton);
+    //vbox->addWidget(newuserButton,0);
+    //vbox->addWidget(edituserButton,1);
     vbox->setSpacing(0);
     vbox->setContentsMargins(0, 0, 0, 0);
     vbox->setMargin(0);

@@ -28,6 +28,11 @@ Window::Window() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
     //timer->start(3000); //timer->setInterval(3000); timer->start();
 
     //connect(logoWindow, SIGNAL(firstWindow()) , authWindow, SLOT(openWindow()) );
+
+
+    connect(authWindow, SIGNAL(showlogoWindow()) , logoWindow, SLOT(showlogoWindow()) );
+
+
 }
 
 void Window::openWindow()
