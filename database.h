@@ -43,7 +43,7 @@
 #define SCIENTISTS_THEME                    "Theme"
 
 #define EXPERIMENTS                         "TableExperiments"
-#define EXPERIMENTS_NAME                    "Name"
+#define EXPERIMENTS_NAME                    "Name"   // like LOGIN!!!
 #define EXPERIMENTS_DESCRIPTION             "Description"
 #define EXPERIMENTS_AUTHOR                  "Author" //admin
 #define EXPERIMENTS_DATE                    "Date"    //date of creating

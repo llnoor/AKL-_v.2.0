@@ -24,7 +24,7 @@ private:
     Logo *logoWindow;
     AuthorizationWindow *authWindow;
     SQLamp *sqLamp;
-    Experiments *Exp;
+    Experiments *exprimentsWindow;
 
 
 

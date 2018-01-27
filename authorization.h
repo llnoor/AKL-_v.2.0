@@ -24,7 +24,7 @@ public:
 
 signals:
     void showlogoWindow();
-    //void openExperiments();
+    void openExperiments(int id);
 
 private slots:
     //void on_addDeviceButton_clicked();

@@ -17,7 +17,10 @@ Window::Window() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
 
 
     authWindow = new AuthorizationWindow();
-    authWindow->show();
+    //authWindow->show();
+
+    exprimentsWindow = new Experiments();
+    exprimentsWindow ->show();
 
     //MainWindow_Test = new MainWindow_T();
     //MainWindow_Test ->show();
@@ -31,7 +34,7 @@ Window::Window() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
 
 
     connect(authWindow, SIGNAL(showlogoWindow()) , logoWindow, SLOT(showlogoWindow()) );
-
+    //connect(authWindow, SIGNAL(openExperiments(int)) , logoWindow, SLOT(showlogoWindow()) );
 
 }
 

@@ -5,13 +5,16 @@
 #include <QSqlTableModel>
 /* Подключаем заголовочный файл для работы с информацией, которая помещена в базу данных */
 #include <database.h>
-#include <dialogauth.h>
-#include <dialogreg.h>
+#include <dialogexp.h>
 #include <QTableView>
 #include <QWidget>
 
 QT_BEGIN_NAMESPACE
 class QGroupBox;
+class QAction;
+class QActionGroup;
+class QLabel;
+class QMenu;
 QT_END_NAMESPACE
 
 class Experiments : public QWidget
@@ -20,6 +23,7 @@ class Experiments : public QWidget
 
 public:
     explicit Experiments(QWidget *parent = 0);
+
     //~Experiments();
 
 signals:
@@ -30,26 +34,88 @@ private slots:
     //void on_addDeviceButton_clicked();
 
     void slotUpdateModels();
-    void slotLogin(QModelIndex index);
-    void slotNewUser();
-    void slotEditUser(QModelIndex index);
+    void slotStartExp(QModelIndex index);
+    void slotNewExp();
+    void slotEditExp(QModelIndex index);
+
+    void newFile();
+    void open();
+    void save();
+    void print();
+    void undo();
+    void redo();
+    void cut();
+    void copy();
+    void paste();
+    void bold();
+    void italic();
+    void leftAlign();
+    void rightAlign();
+    void justify();
+    void center();
+    void setLineSpacing();
+    void setParagraphSpacing();
+    void about();
+    void aboutQt();
+
+protected:
+    void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
 
 private:
 
     DataBase        *db;
     QSqlTableModel  *model;
+    QSqlTableModel  *modelDevices;
     QGroupBox *groupTable();
     QTableView *tableView;
-    QPushButton *newuserButton;
-    QPushButton *edituserButton;
+    QTableView *tableViewDevices;
+    QPushButton *newExpButton;
+    QPushButton *editExpButton;
     QPushButton *tableButton;
 
 
 private:
+    void createMenus();
+    void createActions();
+    QMenuBar *menu_bar;
+    QMenuBar *menu_barDevices;
+    QMenu *experimentsMenu;
+    QMenu *recentFilesMenu;
+    QMenu *editMenu;
+    QMenu *fileMenu;
+    QMenu *formatMenu;
+    QMenu *helpMenu;
+
+    QActionGroup *alignmentGroup;
+    QAction *newAct;
+    QAction *openAct;
+    QAction *saveAct;
+    QAction *printAct;
+    QAction *exitAct;
+    QAction *undoAct;
+    QAction *redoAct;
+    QAction *cutAct;
+    QAction *copyAct;
+    QAction *pasteAct;
+    QAction *boldAct;
+    QAction *italicAct;
+    QAction *leftAlignAct;
+    QAction *rightAlignAct;
+    QAction *justifyAct;
+    QAction *centerAct;
+    QAction *setLineSpacingAct;
+    QAction *setParagraphSpacingAct;
+    QAction *aboutAct;
+    QAction *aboutQtAct;
+    QLabel *infoLabel;
+
+
     /* Также присутствуют два метода, которые формируют модель
      * и внешний вид TableView
      * */
     void setupModel(const QString &tableName, const QStringList &headers);
+    void setupModelDevices(const QString &tableName, const QStringList &headers);
+
     void createUI();
 };
 

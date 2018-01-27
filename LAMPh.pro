@@ -9,7 +9,8 @@ HEADERS       = window.h \
     experiments.h \
     database.h \
     dialogauth.h \
-    dialogreg.h
+    dialogreg.h \
+    dialogexp.h
 SOURCES       = window.cpp \
                 main.cpp \
     logowindow.cpp \
@@ -18,7 +19,8 @@ SOURCES       = window.cpp \
     experiments.cpp \
     database.cpp \
     dialogauth.cpp \
-    dialogreg.cpp
+    dialogreg.cpp \
+    dialogexp.cpp
 
 
 DISTFILES += \
