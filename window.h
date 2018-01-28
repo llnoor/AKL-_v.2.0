@@ -17,7 +17,7 @@ public:
 
 private slots:
     void openWindow();
-
+    void login(QString loginQString);
 
 private:
     QTimer *timer;

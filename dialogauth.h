@@ -24,6 +24,7 @@ public:
 
 signals:
     void signalReady();
+    void sendLoginToAuth(QString loginQString);
 
 private slots:
     void login();

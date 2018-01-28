@@ -3,13 +3,13 @@
 #include <QMainWindow>
 
 
-Experiments::Experiments(QString loginQString, QWidget *parent):
+Experiments::Experiments(QWidget *parent):
     QWidget(parent)
     //QWidget(0, Qt::Window | Qt::FramelessWindowHint)
 
 {
-    login = new QString();
-    *login = loginQString;
+    login =new QString(tr("user"));
+    //login = loginQString;
     //login = "user";
     tableView = new QTableView();
     tableViewDevices = new QTableView();
@@ -105,7 +105,7 @@ Experiments::Experiments(QString loginQString, QWidget *parent):
         //statusBar()->showMessage(message);
 
 
-    setWindowTitle(tr("Experiments - %1 ").arg(login->toLower()));
+    setWindowTitle(tr("Experiments"));
     resize(900, 420);
     //setMinimumSize(160, 160);
     //showFullScreen();
@@ -466,13 +466,12 @@ void Experiments::createUI()
     tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     tableView->horizontalHeader()->setStretchLastSection(true);
 
-    /*QString str = QString("1=1 ORDER BY CASE "EXPERIMENTS_AUTHOR
+    QString str = QString("1=1 ORDER BY CASE "EXPERIMENTS_AUTHOR
                           " WHEN '%1' THEN '1' ELSE '0' END DESC")
-            .arg(login->toLower());*/
+            .arg("login");
+    qDebug() << str;
 
-    model->setFilter(QString("1=1 ORDER BY CASE "EXPERIMENTS_AUTHOR
-                             " WHEN '%1' THEN '1' ELSE '0' END DESC")
-               .arg(login->toLower()));
+    model->setFilter(str);
 
 
     //также надо добавить для dialogExp!!!

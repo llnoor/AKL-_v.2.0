@@ -17,10 +17,12 @@ Window::Window() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
 
 
     authWindow = new AuthorizationWindow();
-    //authWindow->show();
+    authWindow->show();
 
-    exprimentsWindow = new Experiments();
-    exprimentsWindow ->show();
+
+    //exprimentsWindow = new Experiments("user23");
+    //exprimentsWindow ->show();
+
 
     //MainWindow_Test = new MainWindow_T();
     //MainWindow_Test ->show();
@@ -33,17 +35,28 @@ Window::Window() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
     //connect(logoWindow, SIGNAL(firstWindow()) , authWindow, SLOT(openWindow()) );
 
 
-    connect(authWindow, SIGNAL(showlogoWindow()) , logoWindow, SLOT(showlogoWindow()) );
+    //connect(authWindow, SIGNAL(showlogoWindow()) , logoWindow, SLOT(showlogoWindow()) );
     //connect(authWindow, SIGNAL(openExperiments(int)) , logoWindow, SLOT(showlogoWindow()) );
-
+    connect(authWindow, SIGNAL(sendLogin(QString)),this, SLOT(login(QString)));
 }
 
 void Window::openWindow()
 {
+
     //logoWindow->close();
     //authWindow->show();
     //logoWindow->show();
     //timer->stop();
+}
+
+void Window::login(QString loginQString)
+{
+    exprimentsWindow = new Experiments(loginQString);
+    exprimentsWindow ->show();
+
+
+    //exprimentWindow = new Experiment(loginQString);
+    //appaWindow = new Appa(loginQString);
 }
 
 

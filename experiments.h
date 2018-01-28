@@ -22,7 +22,7 @@ class Experiments : public QWidget
     Q_OBJECT
 
 public:
-    explicit Experiments(QWidget *parent = 0);
+    explicit Experiments(QString loginQString, QWidget *parent = 0);
 
     //~Experiments();
 
@@ -62,16 +62,16 @@ protected:
     void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
 
 private:
-
+    QString         *login;
     DataBase        *db;
     QSqlTableModel  *model;
     QSqlTableModel  *modelDevices;
-    QGroupBox *groupTable();
-    QTableView *tableView;
-    QTableView *tableViewDevices;
-    QPushButton *newExpButton;
-    QPushButton *editExpButton;
-    QPushButton *tableButton;
+    QGroupBox       *groupTable();
+    QTableView      *tableView;
+    QTableView      *tableViewDevices;
+    QPushButton     *newExpButton;
+    QPushButton     *editExpButton;
+    QPushButton     *tableButton;
 
 
 private:

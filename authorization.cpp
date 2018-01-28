@@ -221,6 +221,7 @@ void AuthorizationWindow::slotLogin(QModelIndex index)
 
     connect(addDialogAuth, SIGNAL(accepted()),this, SIGNAL(showlogoWindow()));
     connect(addDialogAuth, SIGNAL(accepted()),this, SLOT(close()));
+    connect(addDialogAuth, SIGNAL(sendLoginToAuth(QString)),this, SIGNAL(sendLogin(QString)));
     //emit openExperiments(index.row());
 
     /* Выполняем запуск диалогового окна

@@ -25,6 +25,7 @@ public:
 signals:
     void showlogoWindow();
     void openExperiments(int id);
+    void sendLogin(QString loginQString);
 
 private slots:
     //void on_addDeviceButton_clicked();

@@ -1,3 +1,6 @@
+
+include( C:\qwt-6.1.2\examples\examples.pri )
+
 QT += widgets
 QT += sql
 

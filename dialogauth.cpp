@@ -116,6 +116,7 @@ void DialogAuth::login()
    {
     //QMessageBox::information(this, trUtf8("Pass"),trUtf8("Success"));
     emit accepted();
+    emit sendLoginToAuth(scientistLogin->text());
     this->close();
    }else
    {
