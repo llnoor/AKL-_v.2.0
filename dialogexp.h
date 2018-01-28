@@ -22,10 +22,10 @@ public:
     explicit DialogExp(int row = -1, QWidget *parent = 0);
     ~DialogExp();
 
-signals:
+Q_SIGNALS:
     void signalReady();
 
-private slots:
+private Q_SLOTS:
     void startExp();
     void save_data();
     void delete_data();

@@ -164,7 +164,7 @@ DialogReg::DialogReg(int row, QWidget *parent) :
      } else {
          mapper->submit();
          model->submitAll();
-         emit signalReady();
+         Q_EMIT signalReady();
          this->close();
      }
  }
@@ -202,7 +202,7 @@ DialogReg::DialogReg(int row, QWidget *parent) :
 
          mapper->submit();
          model->submitAll();
-         emit signalReady();
+         Q_EMIT signalReady();
          this->close();
      }else
      {

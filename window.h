@@ -7,6 +7,7 @@
 #include <authorization.h>
 #include <sqlamp.h>
 #include <experiments.h>
+#include <lamphplot.h>
 
 
 class Window : public QWidget
@@ -15,7 +16,7 @@ class Window : public QWidget
 public:
     Window();
 
-private slots:
+private Q_SLOTS:
     void openWindow();
     void login(QString loginQString);
 
@@ -25,7 +26,7 @@ private:
     AuthorizationWindow *authWindow;
     SQLamp *sqLamp;
     Experiments *exprimentsWindow;
-
+    LAMPhPlot *lamphPlot;
 
 
 

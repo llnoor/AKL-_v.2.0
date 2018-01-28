@@ -22,12 +22,12 @@ public:
     explicit AuthorizationWindow(QWidget *parent = 0);
     //~AuthorizationWindow();
 
-signals:
+Q_SIGNALS:
     void showlogoWindow();
     void openExperiments(int id);
     void sendLogin(QString loginQString);
 
-private slots:
+private Q_SLOTS:
     //void on_addDeviceButton_clicked();
 
     void slotUpdateModels();

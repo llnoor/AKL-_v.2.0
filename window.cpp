@@ -3,11 +3,11 @@
 #include "authorization.h"
 #include "sqlamp.h"
 #include "experiments.h"
-
+#include "lamphplot.h"
 
 Window::Window() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
 {
-    logoWindow = new Logo();
+    //logoWindow = new Logo();
     //logoWindow->show();
 
     //sqLamp = new SQLamp();
@@ -17,8 +17,10 @@ Window::Window() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
 
 
     authWindow = new AuthorizationWindow();
-    authWindow->show();
+    //authWindow->show();
 
+    lamphPlot = new LAMPhPlot("user23del");
+    lamphPlot ->show();
 
     //exprimentsWindow = new Experiments("user23");
     //exprimentsWindow ->show();

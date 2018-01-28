@@ -1,5 +1,5 @@
 
-include( C:\qwt-6.1.2\examples\examples.pri )
+include( qwtWidgetLibrary.pri )
 
 QT += widgets
 QT += sql
@@ -13,7 +13,11 @@ HEADERS       = window.h \
     database.h \
     dialogauth.h \
     dialogreg.h \
-    dialogexp.h
+    dialogexp.h \
+    lamphplot.h \
+    incrementalplot.h \
+    mainplot.h \
+    pixmaps.h
 SOURCES       = window.cpp \
                 main.cpp \
     logowindow.cpp \
@@ -23,7 +27,10 @@ SOURCES       = window.cpp \
     database.cpp \
     dialogauth.cpp \
     dialogreg.cpp \
-    dialogexp.cpp
+    dialogexp.cpp \
+    lamphplot.cpp \
+    incrementalplot.cpp \
+    mainplot.cpp
 
 
 DISTFILES += \

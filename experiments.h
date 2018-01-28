@@ -26,11 +26,11 @@ public:
 
     //~Experiments();
 
-signals:
+Q_SIGNALS:
     void showlogoWindow();
     //void openExperiments();
 
-private slots:
+private Q_SLOTS:
     //void on_addDeviceButton_clicked();
 
     void slotUpdateModels();

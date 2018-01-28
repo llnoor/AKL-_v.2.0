@@ -22,10 +22,10 @@ public:
     explicit DialogReg(int row = -1, QWidget *parent = 0);
     ~DialogReg();
 
-signals:
+Q_SIGNALS:
     void signalReady();
 
-private slots:
+private Q_SLOTS:
     void save_data();
     void delete_data();
     void updateButtons(int row);

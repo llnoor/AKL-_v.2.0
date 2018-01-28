@@ -16,10 +16,10 @@ class Logo : public QWidget
 public:
     Logo();
 
-signals:
+Q_SIGNALS:
     void firstWindow();
 
-public slots:
+public Q_SLOTS:
     void showlogoWindow();
 
 private:

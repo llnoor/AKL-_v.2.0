@@ -115,8 +115,8 @@ void DialogAuth::login()
    if (scientistPass->text() == checkScientistPass->text())
    {
     //QMessageBox::information(this, trUtf8("Pass"),trUtf8("Success"));
-    emit accepted();
-    emit sendLoginToAuth(scientistLogin->text());
+    Q_EMIT accepted();
+    Q_EMIT sendLoginToAuth(scientistLogin->text());
     this->close();
    }else
    {
@@ -181,7 +181,7 @@ void DialogAuth::save_data()
    } else {
        mapper->submit();
        model->submitAll();
-       emit signalReady();
+       Q_EMIT signalReady();
        this->close();
    }
 }
@@ -219,7 +219,7 @@ void DialogAuth::delete_data()
 
        mapper->submit();
        model->submitAll();
-       emit signalReady();
+       Q_EMIT signalReady();
        this->close();
    }else
    {

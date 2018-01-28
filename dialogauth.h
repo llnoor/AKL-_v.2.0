@@ -22,11 +22,11 @@ public:
     explicit DialogAuth(int row = -1, QWidget *parent = 0);
     ~DialogAuth();
 
-signals:
+Q_SIGNALS:
     void signalReady();
     void sendLoginToAuth(QString loginQString);
 
-private slots:
+private Q_SLOTS:
     void login();
     void save_data();
     void delete_data();

@@ -95,7 +95,7 @@ void DialogExp::startExp()
    if (1 /*scientistPass->text() == checkScientistPass->text()*/)
    {
     //QMessageBox::information(this, trUtf8("Pass"),trUtf8("Success"));
-    emit accepted();
+    Q_EMIT accepted();
     this->close();
    }else
    {
@@ -138,7 +138,7 @@ void DialogExp::save_data()
    } else {
        mapper->submit();
        model->submitAll();
-       emit signalReady();
+       Q_EMIT signalReady();
        this->close();
    }
 }
@@ -176,7 +176,7 @@ void DialogExp::delete_data()
 
        mapper->submit();
        model->submitAll();
-       emit signalReady();
+       Q_EMIT signalReady();
        this->close();
    }else
    {
