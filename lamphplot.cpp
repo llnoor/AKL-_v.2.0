@@ -173,8 +173,8 @@ LAMPhPlot::LAMPhPlot(QString loginQString, QWidget *parent):
     connect( d_startAction, SIGNAL( toggled( bool ) ), this, SLOT( appendPoints( bool ) ) );
     connect( d_clearAction, SIGNAL( triggered() ), d_plot, SLOT( clear() ) );
     connect( d_symbolType, SIGNAL( toggled( bool ) ), d_plot, SLOT( showSymbols( bool ) ) );
-    /*connect( d_plot, SIGNAL( running( bool ) ), this, SLOT( showRunning( bool ) ) );
-    connect( d_plot, SIGNAL( elapsed( int ) ), this, SLOT( showElapsed( int ) ) );*/
+    connect( d_plot, SIGNAL( running( bool ) ), this, SLOT( showRunning( bool ) ) );
+    connect( d_plot, SIGNAL( elapsed( int ) ), this, SLOT( showElapsed( int ) ) );
 
 
     setWindowTitle(tr("LAMPh Plot - %1 ").arg(login->toLower()));
@@ -190,6 +190,7 @@ QToolBar *LAMPhPlot::toolBar()
 
     d_startAction = new QAction( QPixmap( start_xpm ), "Start", toolBar );
     d_startAction->setCheckable( true );
+    d_startAction->setText("Start");
     d_clearAction = new QAction( QPixmap( clear_xpm ), "Clear", toolBar );
     QAction *whatsThisAction = QWhatsThis::createAction( toolBar );
     whatsThisAction->setText( "Help" );
