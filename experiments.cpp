@@ -418,7 +418,7 @@ void Experiments::setupModel(const QString &tableName, const QStringList &header
     }
     // Устанавливаем сортировку по возрастанию данных по нулевой колонке
     //model->setSort(0,Qt::AscendingOrder);
-    //model->setSort(3,Qt::SortOrder("user"));
+    //model->setSort(0, Qt::AscendingOrder);
 
 }
 
@@ -443,7 +443,7 @@ void Experiments::setupModelDevices(const QString &tableName, const QStringList 
 void Experiments::createUI()
 {
     tableView->setModel(model);     // Устанавливаем модель на TableView
-    tableView->setColumnHidden(0, true);    // Скрываем колонку с id записей
+    tableView->setColumnHidden(0, false);    // Скрываем колонку с id записей
     tableView->setColumnHidden(1, false);
     tableView->setColumnHidden(2, false);
     tableView->setColumnHidden(3, false);
@@ -451,7 +451,7 @@ void Experiments::createUI()
     tableView->setColumnHidden(5, true);
     tableView->setColumnHidden(6, true);
     tableView->setColumnHidden(7, true);
-    tableView->setColumnHidden(8, false);
+    tableView->setColumnHidden(8, true);
 
 
     // Разрешаем выделение строк
@@ -463,26 +463,7 @@ void Experiments::createUI()
     tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     tableView->horizontalHeader()->setStretchLastSection(true);
 
-    //model->setFilter(QString(EXPERIMENTS_AUTHOR" NOT LIKE 'user' "));
-    /*model->setFilter(QString(EXPERIMENTS_AUTHOR" like 'user%' or "
-                             EXPERIMENTS_AUTHOR" like '%'"));*/
-
-    //model->setFilter(QString("CASE "EXPERIMENTS_AUTHOR" WHEN 'user' THEN '1' ELSE '0' END Conf"));
-
-
-
-    QSqlQuery query;
-    query.prepare("SELECT Conf FROM TableExperiments CASE Author WHEN 'user' THEN 1 ELSE 0 END Conf;");
-    query.exec();
-    //qDebug() << query.lastError().text();
-
-    model->setQuery(query);
-
-
-    //model->setSort(8,Qt::DescendingOrder);
-    //model->setSort(8,QString("ORDER BY SELECT Conf FROM TableExperiments CASE Author WHEN 'user' THEN 1 ELSE 0 END DESC"));
-
-    //model->setFilter("1=1 ORDER BY Author DESC");
+    model->setFilter("1=1 ORDER BY CASE "EXPERIMENTS_AUTHOR" WHEN 'user2' THEN '1' ELSE '0' END DESC"); //также надо добавить для dialogExp!!!
 
     model->select();
 

@@ -25,6 +25,7 @@ DialogExp::DialogExp(int row, QWidget *parent) :
     * */
    if(row == -1){
        model->insertRow(model->rowCount(QModelIndex()));
+
        mapper->toLast();
    /* В противном случае диалог настраивается на заданную запись
     * */
@@ -49,6 +50,9 @@ void DialogExp::setupModel()
    model = new QSqlTableModel(this);
    model->setTable(EXPERIMENTS);
    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+
+   model->setFilter("1=1 ORDER BY CASE "EXPERIMENTS_AUTHOR" WHEN 'user2' THEN '1' ELSE '0' END DESC");
+
    model->select();
 
    /* Инициализируем mapper и привязываем
