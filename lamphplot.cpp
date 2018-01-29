@@ -17,14 +17,12 @@
 #include "start.xpm"
 #include "clear.xpm"
 #include "pixmaps.h"
-#include <QtWidgets>
-#include <QMainWindow>
-#include <QToolBar>
+
 
 class MyToolBar: public QToolBar
 {
 public:
-    MyToolBar( QWidget *parent ):
+    MyToolBar( LAMPhPlot *parent ):
         QToolBar( parent )
     {
     }
@@ -84,27 +82,28 @@ public:
     }
 };
 
-LAMPhPlot::LAMPhPlot(QString loginQString, QWidget *parent):
-    QWidget(parent) 
-    //QWidget(0, Qt::Window | Qt::FramelessWindowHint)
-
+LAMPhPlot::LAMPhPlot(QString loginQString)
 {
+    addToolBar( toolBar() );
+#ifndef QT_NO_STATUSBAR
+    ( void )statusBar();
+#endif
+
+
     login = new QString();
     *login = loginQString;
 
-
-
     //newuserButton = new QPushButton(tr("New"));
-    newExpButton = new QPushButton(tr("New Exp"));
+    //newExpButton = new QPushButton(tr("New Exp"));
     //edituserButton = new QPushButton(tr("Edit Exp"));
-    infoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to "
+    /*infoLabel = new QLabel(tr("<i>Choose a menu option, or right-click to "
                               "invoke a context menu</i>"));
     infoLabel->setFrameStyle(QFrame::StyledPanel | QFrame::Sunken);
-    infoLabel->setAlignment(Qt::AlignCenter);
+    infoLabel->setAlignment(Qt::AlignCenter);*/
 
 
-    menu_bar = new QMenuBar(/*this*/);
-    menu_barDevices = new QMenuBar(/*this*/);
+    //menu_bar = new QMenuBar(/*this*/);
+    //menu_barDevices = new QMenuBar(/*this*/);
 
 
 
@@ -132,13 +131,13 @@ LAMPhPlot::LAMPhPlot(QString loginQString, QWidget *parent):
         d_picker->setRubberBand( QwtPicker::CrossRubberBand );
         d_picker->setTrackerPen( QColor( Qt::white ) );
 
-    //setCentralWidget( d_plot );
+    setCentralWidget( d_plot );
 
 
 
-    //initWhatsThis();
+    initWhatsThis();
 
-    //setContextMenuPolicy( Qt::NoContextMenu );
+    setContextMenuPolicy( Qt::NoContextMenu );
 
     connect( d_picker, SIGNAL( moved( const QPoint & ) ),
         SLOT( moved( const QPoint & ) ) );
@@ -146,56 +145,45 @@ LAMPhPlot::LAMPhPlot(QString loginQString, QWidget *parent):
         SLOT( selected( const QPolygon & ) ) );
 
     enableZoomMode( false );
-    //showInfo();
-    //int on = 0;
-    //d_panner->setEnabled( on );
-
-    //d_zoomer[0]->setEnabled( on );
-    //d_zoomer[0]->zoom( 0 );
-
-    //d_picker->setEnabled( !on );
-
-    //toolBar() = new QToolBar();
 
 
-    QGridLayout *grid = new QGridLayout;
-    //grid->addWidget(groupTable());
-    //grid->addWidget(menu_bar, 0, 0 );
-    //grid->addWidget(menu_barDevices, 0, 1 );
-    grid->addWidget(toolBar(), 0, 0);
-    grid->addWidget(d_plot, 1, 0);
-    grid->addWidget(newExpButton, 2, 0);
-    grid->addWidget(infoLabel, 3, 0);
-
-    setLayout(grid);
-
-    //ERROR!!!
     connect( d_startAction, SIGNAL( toggled( bool ) ), this, SLOT( appendPoints( bool ) ) );
     connect( d_clearAction, SIGNAL( triggered() ), d_plot, SLOT( clear() ) );
+    connect( d_zoomAction, SIGNAL( toggled( bool ) ), SLOT( enableZoomMode( bool ) ) );
+    connect( d_exportAction, SIGNAL( triggered() ), this, SLOT( exportDocument() ) );
+
     connect( d_symbolType, SIGNAL( toggled( bool ) ), d_plot, SLOT( showSymbols( bool ) ) );
     connect( d_plot, SIGNAL( running( bool ) ), this, SLOT( showRunning( bool ) ) );
     connect( d_plot, SIGNAL( elapsed( int ) ), this, SLOT( showElapsed( int ) ) );
 
 
     setWindowTitle(tr("LAMPh Plot - %1 ").arg(login->toLower()));
-    resize(600, 420);
+    //resize(600, 420);
 }
 
 QToolBar *LAMPhPlot::toolBar()
 {
-    QToolBar *toolBar = new QToolBar( this );
+    MyToolBar *toolBar = new MyToolBar( this );
 
     toolBar->setAllowedAreas( Qt::TopToolBarArea | Qt::BottomToolBarArea );
-    //setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
+    setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
 
     d_startAction = new QAction( QPixmap( start_xpm ), "Start", toolBar );
     d_startAction->setCheckable( true );
-    d_startAction->setText("Start");
     d_clearAction = new QAction( QPixmap( clear_xpm ), "Clear", toolBar );
+
+    d_zoomAction = new QAction( QPixmap( zoom_xpm ), "Zoom", toolBar );
+    d_zoomAction->setCheckable( true );
+    d_exportAction = new QAction( QPixmap( print_xpm ), "Print", toolBar );
+
+
     QAction *whatsThisAction = QWhatsThis::createAction( toolBar );
     whatsThisAction->setText( "Help" );
 
-    QToolButton *btnZoom = new QToolButton( toolBar );
+
+
+
+    /*QToolButton *btnZoom = new QToolButton( toolBar );
     btnZoom->setText( "Zoom" );
     btnZoom->setIcon( QPixmap( zoom_xpm ) );
     btnZoom->setCheckable( true );
@@ -203,20 +191,25 @@ QToolBar *LAMPhPlot::toolBar()
     toolBar->addWidget( btnZoom );
     connect( btnZoom, SIGNAL( toggled( bool ) ), SLOT( enableZoomMode( bool ) ) );
 
+    connect( btnExport, SIGNAL( clicked() ), SLOT( exportDocument() ) );
+
+
     QToolButton *btnExport = new QToolButton( toolBar );
     btnExport->setText( "Export" );
     btnExport->setIcon( QPixmap( print_xpm ) );
     btnExport->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
     toolBar->addWidget( btnExport );
-    connect( btnExport, SIGNAL( clicked() ), SLOT( exportDocument() ) );
+    connect( btnExport, SIGNAL( clicked() ), SLOT( exportDocument() ) );*/
 
 
 
     toolBar->addAction( d_startAction );
     toolBar->addAction( d_clearAction );
+    toolBar->addAction( d_zoomAction );
+    toolBar->addAction( d_exportAction );
     toolBar->addAction( whatsThisAction );
 
-    //setIconSize( QSize( 22, 22 ) );
+    setIconSize( QSize( 22, 22 ) );
 
     QWidget *hBox = new QWidget( toolBar );
 
@@ -271,7 +264,7 @@ void LAMPhPlot::showElapsed( int ms )
     text.setNum( ms );
     text += " ms";
 
-    //statusBar()->showMessage( text );
+    statusBar()->showMessage( text );
 }
 
 void LAMPhPlot::initWhatsThis()

@@ -1,10 +1,8 @@
 #ifndef LAMPHPLOT_H
 #define LAMPHPLOT_H
 
-#include <QSqlTableModel>
-#include <QWidget>
-#include <QAction>
-#include <QToolBar>
+#include <qmainwindow.h>
+#include <qaction.h>
 
 class QSpinBox;
 class QPushButton;
@@ -17,21 +15,13 @@ class QwtPlotPanner;
 class Plot;
 class QPolygon;
 
-QT_BEGIN_NAMESPACE
-class QGroupBox;
-class QAction;
-class QActionGroup;
-class QLabel;
-class QMenu;
-class QMenuBar;
-QT_END_NAMESPACE
 
-class LAMPhPlot : public QWidget
+class LAMPhPlot : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit LAMPhPlot(QString loginQString, QWidget *parent = 0);
+    LAMPhPlot(QString loginQString);
     //~LAMPhPlot();
 
 private Q_SLOTS:
@@ -56,6 +46,8 @@ private:
     QCheckBox *d_symbolType;
     QAction *d_startAction;
     QAction *d_clearAction;
+    QAction *d_zoomAction;
+    QAction *d_exportAction;
     MainPlot *d_plot;
 
     QwtPlotZoomer *d_zoomer[2];
@@ -69,12 +61,9 @@ private:
     QPushButton     *editExpButton;
     QPushButton     *tableButton;
 
-
-private:
-
-    QMenuBar *menu_bar;
-    QMenuBar *menu_barDevices;
-    QLabel *infoLabel;
+    //QMenuBar *menu_bar;
+    //QMenuBar *menu_barDevices;
+    //QLabel *infoLabel;
    
 
 
