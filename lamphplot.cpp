@@ -18,6 +18,10 @@
 #include "clear.xpm"
 #include "pixmaps.h"
 
+#include <QLineEdit>
+#include <QFileDialog>
+#include <QPushButton>
+
 
 class MyToolBar: public QToolBar
 {
@@ -84,7 +88,11 @@ public:
 
 LAMPhPlot::LAMPhPlot(QString loginQString)
 {
-    addToolBar( toolBar() );
+
+
+    addToolBar(Qt::TopToolBarArea, toolBar());
+    addToolBar(Qt::LeftToolBarArea, toolBar_Devices());
+
 #ifndef QT_NO_STATUSBAR
     ( void )statusBar();
 #endif
@@ -157,6 +165,15 @@ LAMPhPlot::LAMPhPlot(QString loginQString)
     connect( d_plot, SIGNAL( elapsed( int ) ), this, SLOT( showElapsed( int ) ) );
 
 
+    for (int i=0;i<20;i++)
+    {
+        connect(checkBox_Devices_X[i], SIGNAL(toggled(bool)),this,SLOT(setCheckBox()) );
+        connect(checkBox_Devices_Y[i], SIGNAL(toggled(bool)),this,SLOT(setCheckBox()) );
+        connect(checkBox_Devices_Show[i], SIGNAL(toggled(bool)),this,SLOT(setCheckBox()) );
+    }
+
+
+
     setWindowTitle(tr("LAMPh Plot - %1 ").arg(login->toLower()));
     //resize(600, 420);
 }
@@ -177,37 +194,33 @@ QToolBar *LAMPhPlot::toolBar()
     d_exportAction = new QAction( QPixmap( print_xpm ), "Print", toolBar );
 
 
+    d_OpenWindow_Temp = new QAction( QPixmap( start_xpm ), "Temp", toolBar );
+    d_OpenWindow_Temp->setCheckable( true );
+
+    d_OpenWindow_Devices = new QAction( QPixmap( start_xpm ), "Devices", toolBar );
+    d_OpenWindow_Devices->setCheckable( true );
+
+    d_OpenWindow_DataBase = new QAction( QPixmap( start_xpm ), "DataBase", toolBar );
+    d_OpenWindow_DataBase->setCheckable( true );
+
+    d_OpenWindow_Edit = new QAction( QPixmap( start_xpm ), "Edit", toolBar );
+    d_OpenWindow_Edit->setCheckable( true );
+
+
     QAction *whatsThisAction = QWhatsThis::createAction( toolBar );
     whatsThisAction->setText( "Help" );
-
-
-
-
-    /*QToolButton *btnZoom = new QToolButton( toolBar );
-    btnZoom->setText( "Zoom" );
-    btnZoom->setIcon( QPixmap( zoom_xpm ) );
-    btnZoom->setCheckable( true );
-    btnZoom->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
-    toolBar->addWidget( btnZoom );
-    connect( btnZoom, SIGNAL( toggled( bool ) ), SLOT( enableZoomMode( bool ) ) );
-
-    connect( btnExport, SIGNAL( clicked() ), SLOT( exportDocument() ) );
-
-
-    QToolButton *btnExport = new QToolButton( toolBar );
-    btnExport->setText( "Export" );
-    btnExport->setIcon( QPixmap( print_xpm ) );
-    btnExport->setToolButtonStyle( Qt::ToolButtonTextUnderIcon );
-    toolBar->addWidget( btnExport );
-    connect( btnExport, SIGNAL( clicked() ), SLOT( exportDocument() ) );*/
-
-
 
     toolBar->addAction( d_startAction );
     toolBar->addAction( d_clearAction );
     toolBar->addAction( d_zoomAction );
     toolBar->addAction( d_exportAction );
+    toolBar->addSeparator();
+    toolBar->addAction( d_OpenWindow_Temp );
+    toolBar->addAction( d_OpenWindow_Devices );
+    toolBar->addAction( d_OpenWindow_DataBase );
+    toolBar->addAction( d_OpenWindow_Edit );
     toolBar->addAction( whatsThisAction );
+    toolBar->addSeparator();
 
     setIconSize( QSize( 22, 22 ) );
 
@@ -239,6 +252,186 @@ QToolBar *LAMPhPlot::toolBar()
     toolBar->addWidget( hBox );
 
     return toolBar;
+}
+
+QToolBar *LAMPhPlot::toolBar_Devices()
+{
+    MyToolBar *toolBar_Devices = new MyToolBar( this );
+    toolBar_Devices->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    hBox_Devices = new QWidget( toolBar_Devices );
+
+    /*d_OpenWindow_A = toolBar_Devices->toggleViewAction();
+    d_OpenWindow_A->setIconText("APPA");
+    d_OpenWindow_A->setIcon(QPixmap( start_xpm ));
+    d_OpenWindow_A->setText("APPA");
+    d_OpenWindow_A->setShortcut(QKeySequence(tr("Ctrl+A")));
+    d_OpenWindow_A->setStatusTip(tr("Open Window"));*/
+
+    label_Devices_All = new QLabel(tr("Devices"));
+    label_Devices_All_X = new QLabel(tr("X"));
+    label_Devices_All_Y = new QLabel(tr("Y"));
+    label_Devices_All_Y2 = new QLabel(tr("Y2"));
+    label_Devices_All_Show = new QLabel(tr("Show"));
+    Button_Devices_ClearAll = new QPushButton(tr("Clear"));
+    Button_Devices_AutoScaleAll = new QPushButton(tr("AutoScale"));
+    Button_Devices_ClearAll->setFixedWidth(40);
+    Button_Devices_AutoScaleAll->setFixedWidth(70);
+
+    for(int i=0; i<20; i++)
+    {
+        lineEdit_Devices[i] = new QLineEdit();
+        lineEdit_Devices[i]->setText( QString("Device %1:").arg(i));
+        lineEdit_Devices[i]->setReadOnly(true);
+
+        label_Devices[i] = new QLabel();
+        label_Devices[i]->setText( QString("Device %1:").arg(i));
+        checkBox_Devices_X[i] = new QCheckBox(tr(""));
+        checkBox_Devices_Y[i] = new QCheckBox(tr(""));
+        checkBox_Devices_Y2[i] = new QCheckBox(tr(""));
+        checkBox_Devices_Show[i] = new QCheckBox(tr(""));
+
+        //checkBox_Devices_X[i]->setEnabled(false);
+
+        Button_Devices_Start[i] = new QPushButton(tr("Start"));
+        Button_Devices_Clear[i] = new QPushButton(tr("Clear"));
+        Button_Devices_AutoScale[i] = new QPushButton(tr("AutoScale"));
+        Button_Devices_Clear[i]->setFixedWidth(40);
+        Button_Devices_AutoScale[i]->setFixedWidth(70);
+
+    }
+
+
+    QGridLayout *mainLayout = new QGridLayout( hBox_Devices );
+
+    mainLayout->addWidget(label_Devices_All, 0, 0);
+    mainLayout->addWidget(label_Devices_All_X, 0, 1);
+    mainLayout->addWidget(label_Devices_All_Y, 0, 2);
+    //mainLayout->addWidget(label_Devices_All_Y2, 0, 3);
+    mainLayout->addWidget(label_Devices_All_Show, 0, 4);
+    mainLayout->addWidget(Button_Devices_ClearAll, 0, 5);
+    mainLayout->addWidget(Button_Devices_AutoScaleAll, 0, 6);
+
+
+    for(int i=0; i<20; i++)
+    {
+        mainLayout->addWidget(lineEdit_Devices[i], i+1, 0);
+        //mainLayout->addWidget(label_Devices[i], 0, 0);
+        mainLayout->addWidget(checkBox_Devices_X[i], i+1, 1);
+        mainLayout->addWidget(checkBox_Devices_Y[i], i+1, 2);
+        //mainLayout->addWidget(checkBox_Devices_Y2[i], i+1, 3);
+        mainLayout->addWidget(checkBox_Devices_Show[i], i+1, 4);
+        //mainLayout->addWidget(Button_Devices_Start[i], 0, 5);
+        mainLayout->addWidget(Button_Devices_Clear[i], i+1, 5);
+        mainLayout->addWidget(Button_Devices_AutoScale[i], i+1, 6);
+
+    }
+    //mainLayout->getContentsMargins(0,0,0,0);
+
+    mainLayout->setContentsMargins(5,5,5,5);
+    mainLayout->setVerticalSpacing(5);
+    mainLayout->setHorizontalSpacing(5);
+
+    toolBar_Devices->addWidget( hBox_Devices );
+    return toolBar_Devices;
+}
+
+void LAMPhPlot::setCheckBox()
+{
+    int new_int=0;
+    for (int i=0;i<20;i++)
+    {
+        if (checkBox_Devices_X[i]->isChecked()) {
+            number_of_checkBox = i;
+            new_int++;
+        }
+    }
+
+    if (new_int>1)
+    {
+     for (int i=0;i<20;i++)
+     {
+         if (number_of_checkBox_tmp==i) {
+             checkBox_Devices_X[i]->setChecked(false);
+             checkBox_Devices_Y[i]->setChecked(true);
+             checkBox_Devices_Show[i]->setChecked(true);
+             break;
+         }
+     }
+     number_of_checkBox=number_of_checkBox_tmp;
+    }
+    number_of_checkBox_tmp=number_of_checkBox;
+
+    for (int i=0;i<20;i++)
+    {
+        if (number_of_checkBox==i)
+        {
+            if (new_int!=0){
+                checkBox_Devices_Y[i]->setChecked(false);
+                checkBox_Devices_Show[i]->setChecked(false);
+            }else {
+                checkBox_Devices_Y[i]->setChecked(true);
+                checkBox_Devices_Show[i]->setChecked(true);
+                break;
+            }
+        }
+
+    }
+
+    // // // Simple and understandable explanation // // //
+
+    /*int new_int=0;
+
+    if (checkBox_A1_X->isChecked()) {number_of_checkBox = 1; new_int++;}
+    if (checkBox_A2_X->isChecked()) {number_of_checkBox = 2; new_int++;}
+    if (checkBox_A3_X->isChecked()) {number_of_checkBox = 3; new_int++;}
+    if (checkBox_A4_X->isChecked()) {number_of_checkBox = 4; new_int++;}
+
+    if (checkBox_K1_X->isChecked()) {number_of_checkBox = 11; new_int++;}
+    if (checkBox_K2_X->isChecked()) {number_of_checkBox = 12; new_int++;}
+    if (checkBox_K3_X->isChecked()) {number_of_checkBox = 13; new_int++;}
+    if (checkBox_K4_X->isChecked()) {number_of_checkBox = 14; new_int++;}
+
+    if (checkBox_L1_X->isChecked()) {number_of_checkBox = 21; new_int++;}
+    if (checkBox_L2_X->isChecked()) {number_of_checkBox = 22; new_int++;}
+    if (checkBox_L3_X->isChecked()) {number_of_checkBox = 23; new_int++;}
+    if (checkBox_L4_X->isChecked()) {number_of_checkBox = 24; new_int++;}
+
+    if (new_int>1)
+    {
+        switch (number_of_checkBox_tmp) {
+        case 1:checkBox_A1_X->setChecked(false);checkBox_A1_Y->setChecked(true);break;
+        case 2:checkBox_A2_X->setChecked(false);checkBox_A2_Y->setChecked(true);break;
+        case 3:checkBox_A3_X->setChecked(false);checkBox_A3_Y->setChecked(true);break;
+        case 4:checkBox_A4_X->setChecked(false);checkBox_A4_Y->setChecked(true);break;
+
+        case 11:checkBox_K1_X->setChecked(false);checkBox_K1_Y->setChecked(true);break;
+        case 12:checkBox_K2_X->setChecked(false);checkBox_K2_Y->setChecked(true);break;
+        case 13:checkBox_K3_X->setChecked(false);checkBox_K3_Y->setChecked(true);break;
+        case 14:checkBox_K4_X->setChecked(false);checkBox_K4_Y->setChecked(true);break;
+
+        case 21:checkBox_L1_X->setChecked(false);checkBox_L1_Y->setChecked(true);break;
+        case 22:checkBox_L2_X->setChecked(false);checkBox_L2_Y->setChecked(true);break;
+        case 23:checkBox_L3_X->setChecked(false);checkBox_L3_Y->setChecked(true);break;
+        case 24:checkBox_L4_X->setChecked(false);checkBox_L4_Y->setChecked(true);break;
+        }
+        number_of_checkBox=number_of_checkBox_tmp;
+    }
+        number_of_checkBox_tmp=number_of_checkBox;
+    switch (number_of_checkBox) {
+    case 1:if (new_int!=0)checkBox_A1_Y->setChecked(false);else checkBox_A1_Y->setChecked(true);break;
+    case 2:if (new_int!=0)checkBox_A2_Y->setChecked(false);else checkBox_A2_Y->setChecked(true);break;
+    case 3:if (new_int!=0)checkBox_A3_Y->setChecked(false);else checkBox_A3_Y->setChecked(true);break;
+    case 4:if (new_int!=0)checkBox_A4_Y->setChecked(false);else checkBox_A4_Y->setChecked(true);break;
+    case 11:if (new_int!=0)checkBox_K1_Y->setChecked(false);else checkBox_K1_Y->setChecked(true);break;
+    case 12:if (new_int!=0)checkBox_K2_Y->setChecked(false);else checkBox_K2_Y->setChecked(true);break;
+    case 13:if (new_int!=0)checkBox_K3_Y->setChecked(false);else checkBox_K3_Y->setChecked(true);break;
+    case 14:if (new_int!=0)checkBox_K4_Y->setChecked(false);else checkBox_K4_Y->setChecked(true);break;
+    case 21:if (new_int!=0)checkBox_L1_Y->setChecked(false);else checkBox_L1_Y->setChecked(true);break;
+    case 22:if (new_int!=0)checkBox_L2_Y->setChecked(false);else checkBox_L2_Y->setChecked(true);break;
+    case 23:if (new_int!=0)checkBox_L3_Y->setChecked(false);else checkBox_L3_Y->setChecked(true);break;
+    case 24:if (new_int!=0)checkBox_L4_Y->setChecked(false);else checkBox_L4_Y->setChecked(true);break;
+    }*/
+
 }
 
 void LAMPhPlot::appendPoints( bool on )
