@@ -1,13 +1,8 @@
-#ifndef LAMPHPLOT_H
-#define LAMPHPLOT_H
+#ifndef LAMPHSETTING_H
+#define LAMPHSETTING_H
 
 #include <qmainwindow.h>
 #include <qaction.h>
-
-#include <lamphedit.h>
-#include <lamphsetting.h>
-#include <datatable.h>
-#include <lamphdevices.h>
 
 class QSpinBox;
 class QPushButton;
@@ -23,41 +18,39 @@ class QwtPlotPanner;
 class Plot;
 class QPolygon;
 
+QT_BEGIN_NAMESPACE
+class QGroupBox;
+QT_END_NAMESPACE
 
-class LAMPhPlot : public QMainWindow
+
+class LAMPhSetting : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    LAMPhPlot(QString loginQString);
-    //~LAMPhPlot();
+    LAMPhSetting(QString loginQString);
+    //~PlotSetting();
 
-private Q_SLOTS:
-    void showRunning( bool );
-    void appendPoints( bool );
-    void showElapsed( int );
+    void getDataDll();
 
-    void moved( const QPoint & );
-    void selected( const QPolygon & );
-    void exportDocument();
-    void enableZoomMode( bool );
-    void setCheckBox();
+Q_SIGNALS:
+
+    void showLAMPhPlot();
+    void showLAMPhDevices();
+    void showLAMPhTemp();
+    void showDataTable();
+    void showLAMPhEdit();
+    void showLAMPhSetting();
+    void LAMPhExit();
 
 private:
     QToolBar *toolBar(); //main
     QToolBar *toolBar_Actions();
-    QToolBar *toolBar_Temp();
-    QToolBar *toolBar_Devices();
-    QToolBar *toolBar_PlotSize();
-    void initWhatsThis();
+    //void initWhatsThis();
 
 private:
-    LAMPhDevices *lamphDevices;
-    LAMPhEdit *lamphEdit;
-    LAMPhSetting *lamphSetting;
-    DataTable *dataTable;
+    //void showInfo( QString text = QString::null );
 
-    void showInfo( QString text = QString::null );
 
     Counter *d_randomCount;
     Counter *d_timerCount;
@@ -68,7 +61,8 @@ private:
     QAction *d_zoomAction;
     QAction *d_exportAction; //PDF
     QAction *d_connectAction;
-    QAction *d_OpenWindow_PlotSize;
+    QAction *d_sendAction;
+    QAction *d_getAction;
     QAction *d_helpAction;
     //QAction *d_exportAction;
 
@@ -134,18 +128,19 @@ private:
 
 
 private:
+    QGroupBox       *groupLAMPhSetting();
+    QLabel          *labelPlotSetting;
+    QLabel          *labelPlotSettingS;
+
     QString         *login;
 
     QPushButton     *newExpButton;
     QPushButton     *editExpButton;
     QPushButton     *tableButton;
 
-    //QMenuBar *menu_bar;
-    //QMenuBar *menu_barDevices;
-    //QLabel *infoLabel;
    
 
 
 };
 
-#endif // LAMPHPLOT_H
+#endif // LAMPHSETTING_H

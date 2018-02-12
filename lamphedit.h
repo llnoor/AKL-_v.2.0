@@ -1,13 +1,8 @@
-#ifndef LAMPHPLOT_H
-#define LAMPHPLOT_H
+#ifndef LAMPHEDIT_H
+#define LAMPHEDIT_H
 
 #include <qmainwindow.h>
 #include <qaction.h>
-
-#include <lamphedit.h>
-#include <lamphsetting.h>
-#include <datatable.h>
-#include <lamphdevices.h>
 
 class QSpinBox;
 class QPushButton;
@@ -24,13 +19,27 @@ class Plot;
 class QPolygon;
 
 
-class LAMPhPlot : public QMainWindow
+
+class LAMPhEdit : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    LAMPhPlot(QString loginQString);
-    //~LAMPhPlot();
+    LAMPhEdit(QString loginQString);
+    //~LAMPhEdit();
+    void getDataDll();
+
+Q_SIGNALS:
+
+    void showLAMPhPlot();
+    void showLAMPhDevices();
+    void showLAMPhTemp();
+    void showDataTable();
+    void showLAMPhEdit();
+    void showLAMPhSetting();
+    void LAMPhExit();
+
+
 
 private Q_SLOTS:
     void showRunning( bool );
@@ -43,6 +52,7 @@ private Q_SLOTS:
     void enableZoomMode( bool );
     void setCheckBox();
 
+
 private:
     QToolBar *toolBar(); //main
     QToolBar *toolBar_Actions();
@@ -52,12 +62,8 @@ private:
     void initWhatsThis();
 
 private:
-    LAMPhDevices *lamphDevices;
-    LAMPhEdit *lamphEdit;
-    LAMPhSetting *lamphSetting;
-    DataTable *dataTable;
-
     void showInfo( QString text = QString::null );
+
 
     Counter *d_randomCount;
     Counter *d_timerCount;
@@ -68,7 +74,8 @@ private:
     QAction *d_zoomAction;
     QAction *d_exportAction; //PDF
     QAction *d_connectAction;
-    QAction *d_OpenWindow_PlotSize;
+    QAction *d_sendAction;
+    QAction *d_getAction;
     QAction *d_helpAction;
     //QAction *d_exportAction;
 
@@ -81,7 +88,7 @@ private:
     QAction *d_OpenWindow_Exit;
     //QAction *d_OpenWindow_
 
-    MainPlot *d_plot;
+    MainPlot *d_edit;
 
     QwtPlotZoomer *d_zoomer[2];
     QwtPlotPicker *d_picker;
@@ -134,18 +141,18 @@ private:
 
 
 private:
+    QLabel          *labelPlotSetting;
+    QLabel          *labelPlotSettingS;
+
     QString         *login;
 
     QPushButton     *newExpButton;
     QPushButton     *editExpButton;
     QPushButton     *tableButton;
 
-    //QMenuBar *menu_bar;
-    //QMenuBar *menu_barDevices;
-    //QLabel *infoLabel;
    
 
 
 };
 
-#endif // LAMPHPLOT_H
+#endif // LAMPHEDIT_H

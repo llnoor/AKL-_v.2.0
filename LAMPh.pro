@@ -17,7 +17,11 @@ HEADERS       = window.h \
     lamphplot.h \
     incrementalplot.h \
     mainplot.h \
-    pixmaps.h
+    pixmaps.h \
+    lamphsetting.h \
+    lamphedit.h \
+    datatable.h \
+    lamphdevices.h
 SOURCES       = window.cpp \
                 main.cpp \
     logowindow.cpp \
@@ -30,7 +34,11 @@ SOURCES       = window.cpp \
     dialogexp.cpp \
     lamphplot.cpp \
     incrementalplot.cpp \
-    mainplot.cpp
+    mainplot.cpp \
+    lamphsetting.cpp \
+    lamphedit.cpp \
+    datatable.cpp \
+    lamphdevices.cpp
 
 
 DISTFILES += \

@@ -22,6 +22,7 @@ Window::Window() : QWidget(0, Qt::Window | Qt::FramelessWindowHint)
     lamphPlot = new LAMPhPlot("user23del");
     lamphPlot ->show();
 
+
     //exprimentsWindow = new Experiments("user23");
     //exprimentsWindow ->show();
 
