@@ -23,6 +23,19 @@
 #include <QDebug>
 #include <QLibrary>
 
+#include <QApplication>
+#include <QWidget>
+#include <QVBoxLayout>
+#include <QLabel>
+#include <QScrollArea>
+
+/* #include <QtSerialPort/QSerialPortInfo> */
+
+#include <QSerialPort>
+#include <QSerialPortInfo>
+
+QT_USE_NAMESPACE
+
 class MyToolBar: public QToolBar
 {
 public:
@@ -45,10 +58,10 @@ LAMPhDevices::LAMPhDevices(QString loginQString)
 
     addToolBar(Qt::LeftToolBarArea, toolBar_GET());
     /*addToolBar(Qt::LeftToolBarArea, toolBar_SEND());
-    addToolBar(Qt::LeftToolBarArea, toolBar_COUNTERS());
+    addToolBar(Qt::LeftToolBarArea, toolBar_COUNTERS());*/
 
     addToolBar(Qt::RightToolBarArea, toolBar_PORTS());
-    addToolBar(Qt::RightToolBarArea, toolBar_DEVICES());*/
+    //addToolBar(Qt::RightToolBarArea, toolBar_DEVICES());
 
 #ifndef QT_NO_STATUSBAR
     ( void )statusBar();
@@ -310,6 +323,100 @@ void LAMPhDevices::toolBar_GET_hide_data()
     comboBox_ColorData[int_GET]->hide();
     comboBox_SizeData[int_GET]->hide();
 }
+
+
+
+QToolBar *LAMPhDevices::toolBar_PORTS()
+{
+    MyToolBar *toolBar_PORTS = new MyToolBar( this );
+    toolBar_PORTS->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+    hBox_PORTS = new QWidget( toolBar_PORTS );
+
+
+    label_Ports = new QLabel(tr("PORTS"));
+
+
+    for(int i=0; i<20; i++)
+    {
+        label_Port[i] = new QLabel();
+        label_Port[i]->setText(QString("PORT %1:").arg(i));
+
+
+        button_Port_Setting[i] = new QPushButton(tr("Settings"));
+        //connect(button_Port_Setting[i],SIGNAL(released()), this, SLOT()   );
+
+    }
+
+
+    update_toolBar_PORTS();
+
+    button_Ports_Refresh = new QPushButton(tr("Refresh"));
+    connect(button_Ports_Refresh,SIGNAL(released()), this, SLOT(update_toolBar_PORTS()));
+
+    QGridLayout *gridLayout = new QGridLayout( hBox_PORTS);
+
+    gridLayout->addWidget(label_Ports, 0, 0);
+    //gridLayout->addWidget(label_comboBox_Device, 0, 1);
+
+
+    for(int i=0; i<20; i++)
+    {
+        gridLayout->addWidget(label_Port[i], i+1, 0);
+        gridLayout->addWidget(button_Port_Setting[i], i+1, 1);
+
+    }
+
+    gridLayout->addWidget(button_Ports_Refresh,22,2);
+
+    gridLayout->setContentsMargins(5,5,5,5);
+    gridLayout->setVerticalSpacing(5);
+    gridLayout->setHorizontalSpacing(5);
+
+    toolBar_PORTS->addWidget( hBox_PORTS );
+    return toolBar_PORTS;
+}
+
+void LAMPhDevices::update_toolBar_PORTS(){
+
+
+    for (int i=0; i<20; i++)
+    {
+
+        label_Port[i]->hide();
+        button_Port_Setting[i]->hide();
+    }
+
+
+    int device=0;
+    //const infos = QSerialPortInfo::availablePorts();
+    for (const QSerialPortInfo &info : QSerialPortInfo::availablePorts()) {
+        QString s = QObject::tr("Port: ") + info.portName() + " "
+                    + QObject::tr("Manufacturer: ") + info.manufacturer() + " "
+                    + QObject::tr("Serial number: ") + info.serialNumber() + "\n"
+                    + QObject::tr("Vendor Identifier: ") + (info.hasVendorIdentifier() ? QString::number(info.vendorIdentifier(), 16) : QString()) + " "
+                    + QObject::tr("Product Identifier: ") + (info.hasProductIdentifier() ? QString::number(info.productIdentifier(), 16) : QString()) + " "
+                    + QObject::tr("Busy: ") + (info.isBusy() ? QObject::tr("Yes") : QObject::tr("No"));
+
+        label_Port[device]->setText(QString("%1").arg(s));
+        label_Port[device]->show();
+        button_Port_Setting[device]->show();
+
+        device++;
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

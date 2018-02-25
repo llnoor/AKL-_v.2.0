@@ -3,6 +3,11 @@ include( qwtWidgetLibrary.pri )
 
 QT += widgets
 QT += sql
+QT += serialport
+
+CONFIG += C++11
+
+
 
 HEADERS       = window.h \
     logowindow.h \

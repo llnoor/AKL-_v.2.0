@@ -17,6 +17,8 @@ class QwtPlotPicker;
 class QwtPlotPanner;
 class Plot;
 class QPolygon;
+class QSerialPort;
+class QSerialPortInfo;
 
 QT_BEGIN_NAMESPACE
 class QGroupBox;
@@ -45,6 +47,7 @@ Q_SIGNALS:
 private Q_SLOTS:
     void toolBar_GET_show_data();
     void toolBar_GET_hide_data();
+    void update_toolBar_PORTS();
 
 private:
     QToolBar *toolBar(); //main
@@ -103,6 +106,7 @@ private:
     QWidget *hBox_GET;
     QWidget *hBox_SEND;
     QWidget *hBox_COUNTERS;
+    QWidget *hBox_PORTS;
     QWidget *hBox_PLOTS;
     QWidget *hBox_DEVICES;
 
@@ -169,7 +173,7 @@ private:
 
     QLabel *label_SendData[20];
     QComboBox *comboBox_SendData_Device[20];
-    QComboBox *comboBox_SendData_Device_Functions[20][20];
+    QComboBox *comboBox_SendData_Device_Functions[20]/*[20]*/;
     QComboBox *comboBox_SendData_Function_Parameters[20];
     QLineEdit *lineEdit_SendData_NameData[20];
     QCheckBox *checkBox_SendData_Device_Show[20];
@@ -204,8 +208,10 @@ private:
     // COM PORTS (Sockets, LAN)
     int int_PORTS;
 
-    QLabel *label_label_COM_Port;
-    QLabel *label_COM_Port[20];
+    QLabel *label_Ports;
+    QLabel *label_Port[20];
+    QPushButton *button_Port_Setting[20];
+    QPushButton *button_Ports_Refresh;
 
     // DEVICES
     int int_DEVICES;
