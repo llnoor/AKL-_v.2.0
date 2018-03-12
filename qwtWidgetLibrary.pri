@@ -19,20 +19,17 @@ TEMPLATE     = app
 INCLUDEPATH += $${QWT_ROOT}/src
 DEPENDPATH  += $${QWT_ROOT}/src
 
-!debug_and_release {
-
-    DESTDIR      = $${QWT_OUT_ROOT}/examples/bin
-}
-else {
-    CONFIG(debug, debug|release) {
-
-        DESTDIR      = $${QWT_OUT_ROOT}/examples/bin_debug
-    }
-    else {
-
-        DESTDIR      = $${QWT_OUT_ROOT}/examples/bin
-    }
-}
+#!debug_and_release {
+#    DESTDIR      = $${QWT_OUT_ROOT}/examples/bin
+#}
+#else {
+#    CONFIG(debug, debug|release) {
+#        DESTDIR      = $${QWT_OUT_ROOT}/examples/bin_debug
+#    }
+#    else {
+#        DESTDIR      = $${QWT_OUT_ROOT}/examples/bin
+#    }
+#}
 
 QMAKE_RPATHDIR *= $${QWT_OUT_ROOT}/lib
 qwtAddLibrary($${QWT_OUT_ROOT}/lib, qwt)
