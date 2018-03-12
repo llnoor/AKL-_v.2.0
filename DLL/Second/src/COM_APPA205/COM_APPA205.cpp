@@ -8,7 +8,7 @@
 #define NAME  "COM_APPA205"
 #define DEVICE "APPA205"
 #define TXT "_functions.txt"
-#define FUNCTIONS  "char checkPORT(char,char); void setPORT(char); float getFloat(); char getUnit(); char getValue(); char getSN()"
+#define FUNCTIONS "char checkPORT(char,char)& void setPORT(char)& float getFloat()& char getUnit()& char getValue()& char getSN()"
 #define INFO "The Lib for LAMPh to connect with APPA205";
 
 

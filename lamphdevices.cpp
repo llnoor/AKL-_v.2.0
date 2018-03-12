@@ -584,14 +584,14 @@ void LAMPhDevices::getDataDll()
         suffix = "d";
     #endif
 
-        static const QString LIB_NAME = "COM_Appa_Lib" + suffix;
+        static const QString LIB_NAME = "COM_APPA205" + suffix;
 
         QLibrary lib( LIB_NAME );
         if( !lib.load() ) {
             qDebug() << "Loading failed!";
         }
 
-        typedef void ( *InputTest )( const char* const );
+        /*typedef void ( *InputTest )( const char* const );
         InputTest inputTest = ( InputTest ) lib.resolve( "inputTest" );
         if( inputTest ) {
             inputTest( "Hello to MyLib!" );
@@ -604,10 +604,17 @@ void LAMPhDevices::getDataDll()
             //labelPlotSettingS->setText( outputTest()  );
         }
 
-        typedef QString (*Fct) (const QString&);
-        Fct fct = (Fct)(lib.resolve("oddUpper"));
+        typedef QString (*Fct) ();
+        Fct fct = (Fct)(lib.resolve("getInfo"));
         if (fct) {
             //labelPlotSettingS->setText(fct("SEND TEXT send text"));
+        }*/
+
+        typedef const char* ( *OutputTest )();
+        OutputTest outputTest = ( OutputTest ) lib.resolve( "getInfo" );
+        if( outputTest ) {
+            qDebug() << outputTest();
+            //labelPlotSettingS->setText( outputTest()  );
         }
 
 }

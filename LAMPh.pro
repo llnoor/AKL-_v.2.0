@@ -1,3 +1,11 @@
+PROJECT_ROOT_PATH = $${PWD}/
+
+DESTDIR = $${BIN_PATH}
+
+win32: OS_SUFFIX = win32
+linux-g++: OS_SUFFIX = linux
+
+linux-g++: QMAKE_LFLAGS += -Wl,--rpath=\\\$\$ORIGIN/../../lib.$${OS_SUFFIX}/
 
 include( qwtWidgetLibrary.pri )
 
@@ -6,8 +14,6 @@ QT += sql
 QT += serialport
 
 CONFIG += C++11
-
-
 
 HEADERS       = window.h \
     logowindow.h \
@@ -51,3 +57,9 @@ DISTFILES += \
     README.md \
     photo1.jpg \
     photo_sql.jpg
+
+win32
+{
+    CONFIG += embed_manifest_exe
+    QMAKE_LFLAGS_WINDOWS += /MANIFESTUAC:"level='requireAdministrator'"
+}
