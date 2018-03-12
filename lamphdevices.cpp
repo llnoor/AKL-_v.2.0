@@ -616,6 +616,7 @@ void LAMPhDevices::getDataDll()
             qDebug() << outputTest();
             //labelPlotSettingS->setText( outputTest()  );
             //
+			//
         }
 
 }
