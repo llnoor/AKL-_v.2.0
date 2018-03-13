@@ -51,6 +51,104 @@ public:
     }
 };
 
+
+class ConnectComDevice
+{
+private: // спецификатор доступа private
+    QString nameDll;
+    QString comPort;
+    QString comInfo;
+    QString LIB_NAME;
+
+    //QLibrary lib;
+    float result_float;
+    double result_double;
+
+
+
+public: // спецификатор доступа public
+    ConnectComDevice(QString nameDll_, QString comPort_, QString comInfo_ ) // конструктор класса
+    {
+        nameDll=nameDll_;
+        comPort=comPort_;
+        comInfo=comInfo_;
+
+        static QString suffix = "";
+        #ifdef QT_DEBUG
+            suffix = "d";
+        #endif
+
+        /*static const QString */ LIB_NAME = nameDll + suffix;
+
+        QLibrary lib ( LIB_NAME );
+        if( !lib.load() ) {
+            qDebug() << "Loading failed!";
+        }
+
+
+        //checkCOM
+        //setCOM
+
+
+    }
+
+    /*void getInfo()
+    {
+        QLibrary lib ( LIB_NAME );
+        typedef const char* ( *OutputTest )();
+        OutputTest outputTest;
+
+        outputTest = ( OutputTest ) lib.resolve( "getInfo" );
+        if( outputTest ) {
+            qDebug() << outputTest();
+        }
+    }*/
+
+    void getFloat(int number_of_device)
+    {
+        QLibrary lib ( LIB_NAME );
+        typedef float ( *outputFloat )(int);
+        outputFloat outputFloatd  = ( outputFloat ) lib.resolve( "getFloat" );
+
+        typedef bool ( *setCh )(int, float);
+        setCh setChd  =  ( setCh ) lib.resolve( "setCh" );
+
+
+        for (int i=0; i<11; i++)
+        {
+            if( outputFloatd ) {
+                qDebug() << outputFloatd(number_of_device);
+            }
+        }
+
+        if( setChd ) {
+            qDebug() << setChd(number_of_device, 5 );
+        }
+
+        for (int i=0; i<11; i++)
+        {
+            if( outputFloatd ) {
+                qDebug() << outputFloatd(number_of_device);
+            }
+        }
+
+    }
+
+
+
+    /*void message() // функция (метод класса) выводящая сообщение на экран
+    {
+        cout << "\nwebsite: cppstudio.com\ntheme: Classes and Objects in C + +\n";
+    }
+
+    void getDate() // отобразить текущую дату
+    {
+        cout << "date: " << day << "." << month << "." << year << endl;
+    }*/
+};
+
+
+
 LAMPhDevices::LAMPhDevices(QString loginQString)
 {
 
@@ -113,6 +211,17 @@ LAMPhDevices::LAMPhDevices(QString loginQString)
     //showFullScreen();
     showMaximized();
     //this->setWindowState(Qt::WindowMaximized);
+
+
+    ConnectComDevice connectDevice("COM_APPA205","COM3","APPA205");
+    //connectDevice.getInfo();
+    connectDevice.getFloat(1);
+
+
+    ConnectComDevice connectDevice1("COM_APPA205","COM3","APPA205");
+    //connectDevice1.getInfo();
+    connectDevice1.getFloat(2);
+
 
 }
 
@@ -408,18 +517,6 @@ void LAMPhDevices::update_toolBar_PORTS(){
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 QGroupBox *LAMPhDevices::groupLAMPhDevices()
 {
    QGroupBox *groupBox = new QGroupBox(tr(""));
@@ -575,21 +672,90 @@ QGroupBox *LAMPhDevices::groupLAMPhPorts()
      return groupBox;
 }*/
 
-
-
 void LAMPhDevices::getDataDll()
 {
+
+   /*
     static QString suffix = "";
     #ifdef QT_DEBUG
         suffix = "d";
     #endif
 
-        static const QString LIB_NAME = "COM_APPA205" + suffix;
+        //static const
+        QString LIB_NAME [20];
 
-        QLibrary lib( LIB_NAME );
+        LIB_NAME [0]= "COM_APPA205" + suffix;
+        LIB_NAME [1]= "COM_APPA205t" + suffix;
+        LIB_NAME [2]= "COM_APPA205" + suffix;
+
+        QLibrary lib ( LIB_NAME[0] );
         if( !lib.load() ) {
             qDebug() << "Loading failed!";
         }
+
+        QLibrary lib2 ( LIB_NAME[1] );
+        if( !lib2.load() ) {
+            qDebug() << "Loading failed!";
+        }
+
+        QLibrary lib3 ( LIB_NAME[2] );
+        if( !lib3.load() ) {
+            qDebug() << "Loading failed!";
+        }
+
+
+        typedef const char* ( *OutputTest )();
+        OutputTest outputTest[20];
+
+        outputTest[0] = ( OutputTest ) lib.resolve( "getInfo" );
+        if( outputTest[0] ) {
+            qDebug() << outputTest[0]();
+        }
+
+
+        typedef float ( *outputFloat )();
+        outputFloat outputFloatd[20];
+        for (int i=0; i<14; i++)
+        {
+            outputFloatd[0] = ( outputFloat ) lib.resolve( "getFloat" );
+            if( outputFloatd[0] ) {
+                qDebug() << outputFloatd[0]();
+            }
+        }
+
+        outputTest[1] = ( OutputTest ) lib.resolve( "getUnit" );
+        if( outputTest[1] ) {
+            qDebug() << outputTest[1]();
+        }
+
+        outputTest[2] = ( OutputTest ) lib.resolve( "getValue" );
+        if( outputTest[2] ) {
+            qDebug() << outputTest[2]();
+        }
+
+        typedef float ( *outputFloat2 )();
+        outputFloat2 outputFloatd2[20];
+        for (int i=0; i<20; i++)
+        {
+            outputFloatd2[0] = ( outputFloat2 ) lib2.resolve( "getFloat" );
+            if( outputFloatd2[0] ) {
+                qDebug() << outputFloatd2[0]();
+            }
+        }
+
+        for (int i=0; i<14; i++)
+        {
+            outputFloatd2[0] = ( outputFloat2 ) lib3.resolve( "getFloat" );
+            if( outputFloatd2[0] ) {
+                qDebug() << outputFloatd2[0]();
+            }
+        }
+
+*/
+
+
+
+
 
         /*typedef void ( *InputTest )( const char* const );
         InputTest inputTest = ( InputTest ) lib.resolve( "inputTest" );
@@ -610,19 +776,11 @@ void LAMPhDevices::getDataDll()
             //labelPlotSettingS->setText(fct("SEND TEXT send text"));
         }*/
 
-        typedef const char* ( *OutputTest )();
-        OutputTest outputTest = ( OutputTest ) lib.resolve( "getInfo" );
-        if( outputTest ) {
-            qDebug() << outputTest();
-            //labelPlotSettingS->setText( outputTest()  );
-            //
-			//
-        }
 
-}
 
 
 
+}
 
 
 
