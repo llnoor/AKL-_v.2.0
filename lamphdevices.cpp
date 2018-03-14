@@ -457,7 +457,7 @@ QToolBar *LAMPhDevices::toolBar_PORTS()
     }
 
 
-    update_toolBar_PORTS();
+
 
     button_Ports_Refresh = new QPushButton(tr("Refresh"));
     connect(button_Ports_Refresh,SIGNAL(released()), this, SLOT(update_toolBar_PORTS()));
@@ -480,6 +480,8 @@ QToolBar *LAMPhDevices::toolBar_PORTS()
     gridLayout->setContentsMargins(5,5,5,5);
     gridLayout->setVerticalSpacing(5);
     gridLayout->setHorizontalSpacing(5);
+
+    update_toolBar_PORTS();
 
     toolBar_PORTS->addWidget( hBox_PORTS );
     return toolBar_PORTS;
