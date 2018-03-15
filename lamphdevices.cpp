@@ -107,14 +107,34 @@ public: // спецификатор доступа public
     void getFloat(int number_of_device)
     {
         QLibrary lib ( LIB_NAME );
+
+
+        typedef bool ( *setCh )(int, const char * );
+        setCh setChd  =  ( setCh ) lib.resolve( "setPORT" );
+        if( setChd ) {
+            qDebug() << setChd(number_of_device, comPort.toStdString().c_str() );
+        }
+
+
         typedef float ( *outputFloat )(int);
         outputFloat outputFloatd  = ( outputFloat ) lib.resolve( "getFloat" );
+        for (int y=0; y<120; y++)
+        {
+            if( outputFloatd ) {
+                qDebug() << QString::number(outputFloatd(number_of_device));
+            }
+        }
 
-        typedef bool ( *setCh )(int, float);
-        setCh setChd  =  ( setCh ) lib.resolve( "setCh" );
+
+        /*for (int i=0; i<11; i++)
+                {
+                    if( outputFloatd ) {
+                        qDebug() << outputFloatd(number_of_device);
+                    }
+                }*/
 
 
-        for (int i=0; i<11; i++)
+        /*for (int i=0; i<11; i++)
         {
             if( outputFloatd ) {
                 qDebug() << outputFloatd(number_of_device);
@@ -130,7 +150,7 @@ public: // спецификатор доступа public
             if( outputFloatd ) {
                 qDebug() << outputFloatd(number_of_device);
             }
-        }
+        }*/
 
     }
 
@@ -209,16 +229,16 @@ LAMPhDevices::LAMPhDevices(QString loginQString)
 
     setWindowTitle(tr("LAMPhDevices - %1 ").arg(login->toLower()));
     //showFullScreen();
-    showMaximized();
+    //showMaximized();
     //this->setWindowState(Qt::WindowMaximized);
 
 
-    ConnectComDevice connectDevice("COM_APPA205","COM3","APPA205");
+    ConnectComDevice connectDevice("COM_APPA205","COM10","APPA205");
     //connectDevice.getInfo();
     connectDevice.getFloat(1);
 
 
-    ConnectComDevice connectDevice1("COM_APPA205","COM3","APPA205");
+    ConnectComDevice connectDevice1("COM_APPA205","COM12","APPA205");
     //connectDevice1.getInfo();
     connectDevice1.getFloat(2);
 
