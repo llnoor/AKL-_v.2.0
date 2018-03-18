@@ -33,6 +33,7 @@ public:
     LAMPhDevices(QString loginQString);
     //~LAMPhDevices();
     void getDataDll();
+    void getAllAvailableSerialPorts();
 
 Q_SIGNALS:
 
@@ -65,6 +66,7 @@ private:
 private:
     //void showInfo( QString text = QString::null );
 
+    QMap<QString, QString> AllAvailableSerialPortsQMap;
 
     Counter *d_randomCount;
     Counter *d_timerCount;

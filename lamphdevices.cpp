@@ -33,6 +33,8 @@
 
 #include <QSerialPort>
 #include <QSerialPortInfo>
+#include <QFile>
+#include <QTextStream>
 
 QT_USE_NAMESPACE
 
@@ -118,7 +120,7 @@ public: // спецификатор доступа public
 
         typedef float ( *outputFloat )(int);
         outputFloat outputFloatd  = ( outputFloat ) lib.resolve( "getFloat" );
-        for (int y=0; y<120; y++)
+        for (int y=0; y<5; y++)
         {
             if( outputFloatd ) {
                 qDebug() << QString::number(outputFloatd(number_of_device));
@@ -229,21 +231,129 @@ LAMPhDevices::LAMPhDevices(QString loginQString)
 
     setWindowTitle(tr("LAMPhDevices - %1 ").arg(login->toLower()));
     //showFullScreen();
-    //showMaximized();
+    showMaximized();
     //this->setWindowState(Qt::WindowMaximized);
 
 
-    ConnectComDevice connectDevice("COM_APPA205","COM10","APPA205");
+    //ConnectComDevice connectDevice("COM_APPA205","COM10","APPA205");
     //connectDevice.getInfo();
-    connectDevice.getFloat(1);
+    //connectDevice.getFloat(1);
 
 
-    ConnectComDevice connectDevice1("COM_APPA205","COM12","APPA205");
+    //ConnectComDevice connectDevice1("COM_APPA205","COM12","APPA205");
     //connectDevice1.getInfo();
-    connectDevice1.getFloat(2);
+    //connectDevice1.getFloat(2);
+    getAllAvailableSerialPorts();
+
+}
+
+void LAMPhDevices::getAllAvailableSerialPorts(){
+
+
+
+
+    QString testString = "byte:00;00;55;55;AA";
+
+    QStringList testStringList = testString.split(':');
+
+    testString = testStringList[1];
+
+    testStringList = testString.split(';');
+
+    QByteArray testByteArray;
+    testByteArray.resize(testStringList.size());
+    for (int i=0; i<testStringList.size(); i++)
+    {
+        testByteArray.append(testStringList[i]);
+        //testByteArray=testStringList[i].toLocal8Bit();
+    }
+
+    //testByteArray=testStringList.toLocal8Bit();
+
+    char *buff = testByteArray.data();
+    int buff_int_char[60];
+    for (int l=0; l<30; l++){
+        buff_int_char[l]=0;
+        buff_int_char[l]= buff[l]  - '0';
+    }
+    int sn_appa =
+            buff_int_char[12]* 10000000+
+            buff_int_char[13]* 1000000+
+            buff_int_char[14]* 100000+
+            buff_int_char[15]* 10000+
+            buff_int_char[16]* 1000+
+            buff_int_char[17]* 100+
+            buff_int_char[18]* 10+
+            buff_int_char[19];
+    QString str= QString::number(sn_appa);
+
+
+    std::string testSTDString = testByteArray.toStdString();
+    QString testNEWString = QString::fromStdString(testSTDString);
+
+    qDebug() << "QSting->Byte->QString" << str;
+
+
+    QStringList commandlist;
+    QFile file ("conf/COMcommands.txt");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        commandlist.append(in.readLine());
+    }
+    file.flush();
+    file.close();
+
+    for (int i=0; i<commandlist.size() ; i++)
+    {
+        qDebug() << commandlist[i];
+    }
+
+
+
+
+    for (const QSerialPortInfo &info : QSerialPortInfo::availablePorts()) {
+        AllAvailableSerialPortsQMap[info.portName()] = (info.isBusy() ? QObject::tr("Busy") : QObject::tr("Ready"));
+
+        if (!info.isBusy())
+        {
+            QSerialPort newSerialPort;
+            newSerialPort.setPortName(info.portName());
+            newSerialPort.setBaudRate(QSerialPort::Baud9600);
+            newSerialPort.setStopBits(QSerialPort::OneStop);
+            newSerialPort.setDataBits(QSerialPort::Data8);
+            newSerialPort.setParity(QSerialPort::NoParity);
+            newSerialPort.setFlowControl(QSerialPort::NoFlowControl);
+            newSerialPort.open(QIODevice::ReadWrite);
+            for (int i=0; i<commandlist.size() ; i++)
+            {
+
+                //if "commandlist[i] == byte:..." send bytes!!!
+
+                newSerialPort.write(commandlist[i].toLocal8Bit());
+                newSerialPort.waitForReadyRead(300);
+
+                QByteArray data;
+
+                data = newSerialPort.readAll();
+                std::string result_tmp = data.toStdString();
+                QString data_tmp = QString::fromStdString(result_tmp);   //here should be name of devices, SN and so on.
+                //qDebug() << "PORT:" << info.portName() << "DATA:" << data_tmp;
+                if (data_tmp==commandlist[i]) {AllAvailableSerialPortsQMap[info.portName()] = "BIOS"; break;}
+                else if (data_tmp.trimmed().isEmpty()) {/*continue*/}
+                else { AllAvailableSerialPortsQMap[info.portName()] = data_tmp; break;}
+            }
+        }
+        qDebug() << info.portName() << ":" << AllAvailableSerialPortsQMap.value(info.portName());
+
+    }
+
+
+
 
 
 }
+
 
 QToolBar *LAMPhDevices::toolBar()
 {
