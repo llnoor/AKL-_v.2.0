@@ -4,7 +4,7 @@ numberofdevice++
 
 
 Get list of DLLs
-open folder "DLL" 
+open folder "DLL"
 add names of all DLLs
 
 for (int i=0; i<sizeOFdllsList;i++)
@@ -50,6 +50,9 @@ for (int i=0; i<sizeOFCOMdllList;i++)
 				// this com port will be busy, because we connected right now
 				numberofdevice++;
             }
+			newSerialPort.close();
+			
+			
         }
         //qDebug() << info.portName() << ":" << AllAvailableSerialPortsQMap.value(info.portName());
 

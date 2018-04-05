@@ -91,7 +91,9 @@ public: // спецификатор доступа public
         //checkCOM
         //setCOM
 
-
+        /* !!! Important !!! Take attention !!!
+         * You should get TRUE from Ready, only after that you can transfer data from DLL
+        */
     }
 
     /*void getInfo()
@@ -252,7 +254,116 @@ void LAMPhDevices::getAllAvailableSerialPorts(){
 
 
 
-    QString testString = "byte:00;00;55;55;AA";
+    //int numberofdevice=0; //you can get this info from listDll.size
+    listDll = new QStringList;
+    listDllCOM  = new QStringList;
+    listDllSocket  = new QStringList;
+    listDllUSB  = new QStringList;
+    listDllLAN  = new QStringList;
+    listDllLAMPh  = new QStringList;
+
+
+    QDir dir;
+    dir.cd(".");
+    dir.setFilter(QDir::Files);
+    QFileInfoList list = dir.entryInfoList();
+    for (int i = 0; i < list.size(); ++i)
+    {
+        QFileInfo fileInfo = list.at(i);
+        listDll->append(QString("%1").arg(fileInfo.fileName()));
+    }
+
+    for (int i=0; i<listDll->size();i++)
+    {
+        if (listDll->at(i).contains("COM", Qt::CaseInsensitive)) listDllCOM->append(listDll->at(i));
+        else if (listDll->at(i).contains("Socket", Qt::CaseInsensitive)) listDllSocket->append(listDll->at(i));
+        else if (listDll->at(i).contains("USB", Qt::CaseInsensitive)) listDllUSB->append(listDll->at(i));
+        else if (listDll->at(i).contains("LAN", Qt::CaseInsensitive)) listDllLAN->append(listDll->at(i));
+        else listDllLAMPh->append(listDll->at(i));
+    }
+
+    numberofdeviceInt=0;
+    for (int i=0; i<listDllCOM->size();i++)
+    {
+        //QString nameofDLL = listDllCOM[i].at(i);
+
+
+        QStringList receivedDataList;   //=outputTest
+        // receivedDataList transfer to next Strings!!!
+
+        QString nameofdeviceString = "APPA205";
+        QString commandString = "byte:00;00;55;55;AA";
+        QString respondString = "APPA205";
+
+        QLibrary lib ( listDllCOM->at(i) );
+        typedef const char* ( *ReceivedData )();
+        ReceivedData receivedData;
+
+        receivedData = ( ReceivedData ) lib.resolve( "getCOMcommands" );
+        if( receivedData ) {
+            receivedDataList = QString::fromUtf8(receivedData()).split(",");
+            qDebug() << receivedData();
+        }
+
+        nameofdeviceString = receivedDataList.at(0);
+        commandString = receivedDataList.at(1);
+        respondString = receivedDataList.at(2);
+        qDebug() << "name" << nameofdeviceString << "command" << commandString << "respond" << respondString;
+
+
+
+        statusBar()->showMessage(  receivedDataList.join("---") );
+
+
+        int numberTHISdevice=0;
+        for (const QSerialPortInfo &info : QSerialPortInfo::availablePorts()) {
+            AllAvailableSerialPortsQMap[info.portName()] = (info.isBusy() ? QObject::tr("Busy") : QObject::tr("Ready"));
+
+
+
+            if (!info.isBusy())
+            {
+                QSerialPort newSerialPort;
+                newSerialPort.setPortName(info.portName());
+                newSerialPort.setBaudRate(QSerialPort::Baud9600);
+                newSerialPort.setStopBits(QSerialPort::OneStop);
+                newSerialPort.setDataBits(QSerialPort::Data8);
+                newSerialPort.setParity(QSerialPort::NoParity);
+                newSerialPort.setFlowControl(QSerialPort::NoFlowControl);
+                newSerialPort.open(QIODevice::ReadWrite);
+                newSerialPort.write(commandString.toLocal8Bit());
+                newSerialPort.waitForReadyRead(300);
+
+                QByteArray data;
+                data = newSerialPort.readAll();
+                std::string result_tmp = data.toStdString();
+                QString data_tmp = QString::fromStdString(result_tmp);   //here should be name of devices, SN and so on.
+
+
+                if (data_tmp.contains(respondString, Qt::CaseInsensitive)){
+                    AllAvailableSerialPortsQMap[info.portName()] = QString ("Device%1:%2#%3 DLL:%4").arg(numberofdeviceInt++).arg(nameofdeviceString).arg(numberTHISdevice++).arg(listDllCOM->at(i));
+                }
+
+                //new connectDevice[numberofdevice](COMdllList[1]  /*nameofDLL*/, info.portName() /*COMPORT*/,nameofdevice /*APPA205*/);
+                // this com port will be busy, because we connected right now
+                //numberofdevice++;
+
+
+
+                newSerialPort.close();
+
+
+            }
+            qDebug() << info.portName() << ":" << AllAvailableSerialPortsQMap.value(info.portName());
+
+        }
+
+        //after that we will have 3-4 classCOM[1] .. [2]
+
+    }
+
+
+    /*QString testString = "byte:00;00;55;55;AA";
 
     QStringList testStringList = testString.split(':');
 
@@ -289,12 +400,12 @@ void LAMPhDevices::getAllAvailableSerialPorts(){
 
 
     std::string testSTDString = testByteArray.toStdString();
-    QString testNEWString = QString::fromStdString(testSTDString);
+    QString testNEWString = QString::fromStdString(testSTDString);*/
 
-    qDebug() << "QSting->Byte->QString" << str;
+    //qDebug() << "QSting->Byte->QString" << str;
 
 
-    QStringList commandlist;
+    /*QStringList commandlist;
     QFile file ("conf/COMcommands.txt");
     file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream in(&file);
@@ -307,12 +418,12 @@ void LAMPhDevices::getAllAvailableSerialPorts(){
     for (int i=0; i<commandlist.size() ; i++)
     {
         qDebug() << commandlist[i];
-    }
+    }*/
 
 
 
 
-    for (const QSerialPortInfo &info : QSerialPortInfo::availablePorts()) {
+    /*for (const QSerialPortInfo &info : QSerialPortInfo::availablePorts()) {
         AllAvailableSerialPortsQMap[info.portName()] = (info.isBusy() ? QObject::tr("Busy") : QObject::tr("Ready"));
 
         if (!info.isBusy())
@@ -340,18 +451,15 @@ void LAMPhDevices::getAllAvailableSerialPorts(){
                 QString data_tmp = QString::fromStdString(result_tmp);   //here should be name of devices, SN and so on.
                 //qDebug() << "PORT:" << info.portName() << "DATA:" << data_tmp;
                 if (data_tmp==commandlist[i]) {AllAvailableSerialPortsQMap[info.portName()] = "BIOS"; break;}
-                else if (data_tmp.trimmed().isEmpty()) {/*continue*/}
+                else if (data_tmp.trimmed().isEmpty()) {
+                                                        //continue
+                    }
                 else { AllAvailableSerialPortsQMap[info.portName()] = data_tmp; break;}
             }
         }
         qDebug() << info.portName() << ":" << AllAvailableSerialPortsQMap.value(info.portName());
 
-    }
-
-
-
-
-
+    }*/
 }
 
 

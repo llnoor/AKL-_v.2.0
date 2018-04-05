@@ -66,7 +66,19 @@ private:
 private:
     //void showInfo( QString text = QString::null );
 
+    //getAllAvailableSerialPorts:
+    QStringList *listDll;
+    QStringList *listDllCOM;
+    QStringList *listDllSocket;
+    QStringList *listDllUSB;
+    QStringList *listDllLAN;
+    QStringList *listDllLAMPh;
+
+    int numberofdeviceInt;
+
     QMap<QString, QString> AllAvailableSerialPortsQMap;
+
+
 
     Counter *d_randomCount;
     Counter *d_timerCount;
