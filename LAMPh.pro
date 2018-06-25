@@ -28,7 +28,8 @@ HEADERS       = window.h \
     lamphsetting.h \
     lamphedit.h \
     datatable.h \
-    lamphdevices.h
+    lamphdevices.h \
+    lamphtemp.h
 SOURCES       = window.cpp \
                 main.cpp \
     logowindow.cpp \
@@ -45,7 +46,8 @@ SOURCES       = window.cpp \
     lamphsetting.cpp \
     lamphedit.cpp \
     datatable.cpp \
-    lamphdevices.cpp
+    lamphdevices.cpp \
+    lamphtemp.cpp
 
 
 DISTFILES += \

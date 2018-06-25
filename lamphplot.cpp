@@ -67,7 +67,7 @@ private:
     QSpinBox *d_counter;
 };
 
-class Zoomer: public QwtPlotZoomer
+class Zoomer: public QwtPlotZoomer //Zoomer
 {
 public:
     Zoomer( int xAxis, int yAxis, QWidget *canvas ):
@@ -89,16 +89,15 @@ public:
 LAMPhPlot::LAMPhPlot(QString loginQString)
 {
 
-
-    addToolBar(Qt::TopToolBarArea, toolBar());
-    addToolBar(Qt::LeftToolBarArea, toolBar_Devices());
+    addToolBar(Qt::TopToolBarArea, toolBar()); // main buttons (for switching between windows)
+    addToolBar(Qt::LeftToolBarArea, toolBar_Devices()); // data fields
 
 #ifndef QT_NO_STATUSBAR
     ( void )statusBar();
 #endif
 
 
-    login = new QString();
+    login = new QString(); // to transfer the user's login and delineation of rights
     *login = loginQString;
 
     //newuserButton = new QPushButton(tr("New"));
@@ -113,6 +112,7 @@ LAMPhPlot::LAMPhPlot(QString loginQString)
     //menu_bar = new QMenuBar(/*this*/);
     //menu_barDevices = new QMenuBar(/*this*/);
 
+    //to prepare in advance those windows
     lamphEdit = new LAMPhEdit("user23LAMPhEdit");
     lamphEdit ->close();
 
@@ -125,17 +125,15 @@ LAMPhPlot::LAMPhPlot(QString loginQString)
     lamphDevices = new LAMPhDevices("user23LAMPhDevices");
     lamphDevices ->close();
 
+    lamphTemp = new LAMPhTemp("user23LAMPhTemp");
+    lamphTemp ->close();
 
-    //lamphTemp = new LAMPhTemp("user23LAMPhTemp");
-    //lamphTemp ->close();
-
-
+    //this is for switching between windows
     connect( d_OpenWindow_Devices, SIGNAL( triggered() ), lamphDevices, SLOT( show() ) );
-    //connect( d_OpenWindow_Temp, SIGNAL( triggered() ), lamphTemp, SLOT( show() ) );
+    connect( d_OpenWindow_Temp, SIGNAL( triggered() ), lamphTemp, SLOT( show() ) );
     connect( d_OpenWindow_DataTable, SIGNAL( triggered() ), dataTable, SLOT( show() ) );
     connect( d_OpenWindow_Edit, SIGNAL( triggered() ), lamphEdit, SLOT(show()) );
     connect( d_OpenWindow_Setting, SIGNAL( triggered() ), lamphSetting, SLOT( show() ) );
-
 
     /*connect( d_OpenWindow_Devices, SIGNAL( triggered() ), lamphDevices, SLOT( raise() ) );
     //connect( d_OpenWindow_Temp, SIGNAL( triggered() ), lamphTemp, SLOT( raise() ) );
@@ -143,27 +141,24 @@ LAMPhPlot::LAMPhPlot(QString loginQString)
     connect( d_OpenWindow_Edit, SIGNAL( triggered() ), lamphEdit, SLOT(raise()) );
     connect( d_OpenWindow_Setting, SIGNAL( triggered() ), lamphSetting, SLOT( raise() ) );*/
 
-
     connect( d_OpenWindow_Exit, SIGNAL( triggered() ), lamphDevices, SLOT(close()) );
-    //connect( d_OpenWindow_Exit, SIGNAL( triggered() ), lamphTemp, SLOT(close()) );
+    connect( d_OpenWindow_Exit, SIGNAL( triggered() ), lamphTemp, SLOT(close()) );
     connect( d_OpenWindow_Exit, SIGNAL( triggered() ), dataTable, SLOT(close()) );
     connect( d_OpenWindow_Exit, SIGNAL( triggered() ), lamphEdit, SLOT(close()) );
     connect( d_OpenWindow_Exit, SIGNAL( triggered() ), lamphSetting, SLOT(close()) );
     connect( d_OpenWindow_Exit, SIGNAL( triggered() ), this, SLOT(close()) );
 
-
     connect( lamphEdit, SIGNAL(showLAMPhPlot()),this, SLOT(show())  );
     connect( lamphEdit, SIGNAL(showLAMPhDevices()),lamphDevices, SLOT(show())  );
-    //connect( lamphEdit, SIGNAL(showLAMPhTemp()),lamphTemp, SLOT(show())  );
+    connect( lamphEdit, SIGNAL(showLAMPhTemp()),lamphTemp, SLOT(show())  );
     connect( lamphEdit, SIGNAL(showDataTable()),dataTable, SLOT(show())  );
     connect( lamphEdit, SIGNAL(showLAMPhEdit()),lamphEdit, SLOT(show())  );
     connect( lamphEdit, SIGNAL(showLAMPhSetting()),lamphSetting, SLOT(show())  );
     connect( lamphEdit, SIGNAL(LAMPhExit()),this, SLOT(close())  );
 
-
     connect( lamphSetting, SIGNAL(showLAMPhPlot()),this, SLOT(show())  );
     connect( lamphSetting, SIGNAL(showLAMPhDevices()),lamphDevices, SLOT(show())  );
-    //connect( lamphSetting, SIGNAL(showLAMPhTemp()),lamphTemp, SLOT(show())  );
+    connect( lamphSetting, SIGNAL(showLAMPhTemp()),lamphTemp, SLOT(show())  );
     connect( lamphSetting, SIGNAL(showDataTable()),dataTable, SLOT(show())  );
     connect( lamphSetting, SIGNAL(showLAMPhEdit()),lamphEdit, SLOT(show())  );
     connect( lamphSetting, SIGNAL(showLAMPhSetting()),lamphSetting, SLOT(show())  );
@@ -171,7 +166,7 @@ LAMPhPlot::LAMPhPlot(QString loginQString)
 
     connect( dataTable, SIGNAL(showLAMPhPlot()),this, SLOT(show())  );
     connect( dataTable, SIGNAL(showLAMPhDevices()),lamphDevices, SLOT(show())  );
-    //connect( dataTable, SIGNAL(showLAMPhTemp()),lamphTemp, SLOT(show())  );
+    connect( dataTable, SIGNAL(showLAMPhTemp()),lamphTemp, SLOT(show())  );
     connect( dataTable, SIGNAL(showDataTable()),dataTable, SLOT(show())  );
     connect( dataTable, SIGNAL(showLAMPhEdit()),lamphEdit, SLOT(show())  );
     connect( dataTable, SIGNAL(showLAMPhSetting()),lamphSetting, SLOT(show())  );
@@ -179,31 +174,25 @@ LAMPhPlot::LAMPhPlot(QString loginQString)
 
     connect( lamphDevices, SIGNAL(showLAMPhPlot()),this, SLOT(show())  );
     connect( lamphDevices, SIGNAL(showLAMPhDevices()),lamphDevices, SLOT(show())  );
-    //connect( lamphDevices, SIGNAL(showLAMPhTemp()),lamphTemp, SLOT(show())  );
+    connect( lamphDevices, SIGNAL(showLAMPhTemp()),lamphTemp, SLOT(show())  );
     connect( lamphDevices, SIGNAL(showDataTable()),dataTable, SLOT(show())  );
     connect( lamphDevices, SIGNAL(showLAMPhEdit()),lamphEdit, SLOT(show())  );
     connect( lamphDevices, SIGNAL(showLAMPhSetting()),lamphSetting, SLOT(show())  );
     connect( lamphDevices, SIGNAL(LAMPhExit()),this, SLOT(close())  );
 
-    /*connect( lamphTemp, SIGNAL(showLAMPhPlot()),this, SLOT(show())  );
+    connect( lamphTemp, SIGNAL(showLAMPhPlot()),this, SLOT(show())  );
     connect( lamphTemp, SIGNAL(showLAMPhDevices()),lamphDevices, SLOT(show())  );
-    //connect( lamphTemp, SIGNAL(showLAMPhTemp()),lamphTemp, SLOT(show())  );
+    connect( lamphTemp, SIGNAL(showLAMPhTemp()),lamphTemp, SLOT(show())  );
     connect( lamphTemp, SIGNAL(showDataTable()),dataTable, SLOT(show())  );
     connect( lamphTemp, SIGNAL(showLAMPhEdit()),lamphEdit, SLOT(show())  );
     connect( lamphTemp, SIGNAL(showLAMPhSetting()),lamphSetting, SLOT(show())  );
-    connect( lamphTemp, SIGNAL(LAMPhExit()),this, SLOT(close())  );*/
+    connect( lamphTemp, SIGNAL(LAMPhExit()),this, SLOT(close())  );
 
-
-
-
-
-//raise()
-
-    d_plot = new MainPlot( this );
-    const int margin = 4;
+    d_plot = new MainPlot( this ); //for working with graphs
+    const int margin = 4; //margin
     d_plot->setContentsMargins( margin, margin, margin, margin );
 
-
+    //Zoomer
     d_zoomer[0] = new Zoomer( QwtPlot::xBottom, QwtPlot::yLeft,
         d_plot->canvas() );
     d_zoomer[0]->setRubberBand( QwtPicker::RectRubberBand );
@@ -211,6 +200,7 @@ LAMPhPlot::LAMPhPlot(QString loginQString)
     d_zoomer[0]->setTrackerMode( QwtPicker::ActiveOnly );
     d_zoomer[0]->setTrackerPen( QColor( Qt::white ) );
 
+    //allows to work with graphs with the mouse
     d_panner = new QwtPlotPanner( d_plot->canvas() );
     d_panner->setMouseButton( Qt::MidButton );
 
@@ -223,8 +213,6 @@ LAMPhPlot::LAMPhPlot(QString loginQString)
         d_picker->setTrackerPen( QColor( Qt::white ) );
 
     setCentralWidget( d_plot );
-
-
 
     initWhatsThis();
 
@@ -243,9 +231,6 @@ LAMPhPlot::LAMPhPlot(QString loginQString)
     connect( d_zoomAction, SIGNAL( toggled( bool ) ), SLOT( enableZoomMode( bool ) ) );
     connect( d_exportAction, SIGNAL( triggered() ), this, SLOT( exportDocument() ) );
 
-
-
-
     connect( d_symbolType, SIGNAL( toggled( bool ) ), d_plot, SLOT( showSymbols( bool ) ) );
     connect( d_plot, SIGNAL( running( bool ) ), this, SLOT( showRunning( bool ) ) );
     connect( d_plot, SIGNAL( elapsed( int ) ), this, SLOT( showElapsed( int ) ) );
@@ -257,7 +242,6 @@ LAMPhPlot::LAMPhPlot(QString loginQString)
         connect(checkBox_Devices_Y[i], SIGNAL(toggled(bool)),this,SLOT(setCheckBox()) );
         //connect(checkBox_Devices_Show[i], SIGNAL(toggled(bool)),this,SLOT(setCheckBox()) );
     }
-
 
     setWindowTitle(tr("LAMPh Plot - %1 ").arg(login->toLower()));
     //showFullScreen();
@@ -323,7 +307,6 @@ QToolBar *LAMPhPlot::toolBar()
 
     toolBar->addWidget( hBox );
 
-
     d_OpenWindow_Main = new QAction( QPixmap( start_xpm ), "Main Plot", toolBar );
     d_OpenWindow_Main->setCheckable( true );
     d_OpenWindow_Main->setChecked(true);
@@ -335,7 +318,6 @@ QToolBar *LAMPhPlot::toolBar()
     d_OpenWindow_Edit = new QAction( QPixmap( start_xpm ), "Edit", toolBar );
     d_OpenWindow_Setting = new QAction( QPixmap( start_xpm ), "Setting", toolBar );
     d_OpenWindow_Exit = new QAction( QPixmap( start_xpm ), "Exit", toolBar );
-
 
     toolBar->addSeparator();
     toolBar->addAction( d_OpenWindow_Main );
@@ -395,7 +377,6 @@ QToolBar *LAMPhPlot::toolBar_Devices()
 
     }
 
-
     QGridLayout *mainLayout = new QGridLayout( hBox_Devices );
 
     mainLayout->addWidget(label_Devices_All, 0, 0);
@@ -430,7 +411,7 @@ QToolBar *LAMPhPlot::toolBar_Devices()
     return toolBar_Devices;
 }
 
-void LAMPhPlot::setCheckBox()
+void LAMPhPlot::setCheckBox() //this automatically switches checkBoxes so that there is no controversy in the program
 {
     int new_int=0;
     for (int i=0;i<20;i++)
@@ -618,6 +599,7 @@ void LAMPhPlot::showInfo( QString text )
         else
             text = "Zoom: Press mouse button and drag";
     }
+    statusBar()->showMessage( text );
 
 /*#ifndef QT_NO_STATUSBAR
     statusBar()->showMessage( text );
@@ -627,7 +609,7 @@ void LAMPhPlot::showInfo( QString text )
 void LAMPhPlot::moved( const QPoint &pos )
 {
     QString info;
-    info.sprintf( "Freq=%g, Ampl=%g, Phase=%g",
+    info.sprintf( "X=%g, Y=%g, Y2=%g",
         d_plot->invTransform( QwtPlot::xBottom, pos.x() ),
         d_plot->invTransform( QwtPlot::yLeft, pos.y() ),
         d_plot->invTransform( QwtPlot::yRight, pos.y() )

@@ -176,13 +176,13 @@ public: // спецификатор доступа public
 LAMPhDevices::LAMPhDevices(QString loginQString)
 {
 
-    addToolBar(Qt::TopToolBarArea, toolBar());
+    addToolBar(Qt::TopToolBarArea, toolBar()); //buttons
 
-    addToolBar(Qt::LeftToolBarArea, toolBar_GET());
+    addToolBar(Qt::LeftToolBarArea, toolBar_GET()); //these are fields for selecting functions of DEVICES
     /*addToolBar(Qt::LeftToolBarArea, toolBar_SEND());
     addToolBar(Qt::LeftToolBarArea, toolBar_COUNTERS());*/
 
-    addToolBar(Qt::RightToolBarArea, toolBar_PORTS());
+    addToolBar(Qt::RightToolBarArea, toolBar_PORTS()); //All Available Serial Ports (COM+USB+LAN+Sockets and so on)
     //addToolBar(Qt::RightToolBarArea, toolBar_DEVICES());
 
 #ifndef QT_NO_STATUSBAR
@@ -190,11 +190,10 @@ LAMPhDevices::LAMPhDevices(QString loginQString)
 #endif
 
 
-    login = new QString();
+    login = new QString(); // to transfer the user's login and delineation of rights
     *login = loginQString;
 
-    labelPlotSettingS = new QLabel(tr(" "));
-
+    labelPlotSettingS = new QLabel(tr(" ")); //free space in the center of the window, due to "mainwindow" features
 
     /*QLabel       lbl("this is the example text");
     QLibrary     lib("dynlibd");
@@ -205,22 +204,20 @@ LAMPhDevices::LAMPhDevices(QString loginQString)
         labelPlotSettingS->setText("fct(lbl.text())");
     }*/
 
+    setCentralWidget( labelPlotSettingS ); //mainwindow does not work without this thing
 
-    setCentralWidget( labelPlotSettingS );
-
-    getDataDll();
+    //getDataDll();
     //initWhatsThis();
 
     setContextMenuPolicy( Qt::NoContextMenu );
 
-
-
+    // this is for switching between windows
     connect( d_OpenWindow_Main, SIGNAL( triggered() ), this, SIGNAL(showLAMPhPlot()) );
     connect( d_OpenWindow_Main, SIGNAL( triggered() ), this, SLOT(close()) );
     connect( d_OpenWindow_Devices, SIGNAL( triggered() ), this, SIGNAL(showLAMPhDevices()) );
     connect( d_OpenWindow_Devices, SIGNAL( triggered() ), this, SLOT(close()) );
-    //connect( d_OpenWindow_Temp, SIGNAL( triggered() ), this, SIGNAL(showLAMPhTemp()) );
-    //connect( d_OpenWindow_Temp, SIGNAL( triggered() ), this, SLOT(close()) );
+    connect( d_OpenWindow_Temp, SIGNAL( triggered() ), this, SIGNAL(showLAMPhTemp()) );
+    connect( d_OpenWindow_Temp, SIGNAL( triggered() ), this, SLOT(close()) );
     connect( d_OpenWindow_DataTable, SIGNAL( triggered() ), this, SIGNAL(showDataTable()) );
     connect( d_OpenWindow_DataTable, SIGNAL( triggered() ), this, SLOT(close()) );
     connect( d_OpenWindow_Edit, SIGNAL( triggered() ), this, SIGNAL(showLAMPhEdit()) );
@@ -246,13 +243,9 @@ LAMPhDevices::LAMPhDevices(QString loginQString)
     //connectDevice1.getInfo();
     //connectDevice1.getFloat(2);
     getAllAvailableSerialPorts();
-
 }
 
-void LAMPhDevices::getAllAvailableSerialPorts(){
-
-
-
+void LAMPhDevices::getAllAvailableSerialPorts(){ // main
 
     //int numberofdevice=0; //you can get this info from listDll.size
     listDll = new QStringList;
@@ -261,7 +254,6 @@ void LAMPhDevices::getAllAvailableSerialPorts(){
     listDllUSB  = new QStringList;
     listDllLAN  = new QStringList;
     listDllLAMPh  = new QStringList;
-
 
     QDir dir;
     dir.cd(".");
@@ -287,7 +279,6 @@ void LAMPhDevices::getAllAvailableSerialPorts(){
     {
         //QString nameofDLL = listDllCOM[i].at(i);
 
-
         QStringList receivedDataList;   //=outputTest
         // receivedDataList transfer to next Strings!!!
 
@@ -310,16 +301,11 @@ void LAMPhDevices::getAllAvailableSerialPorts(){
         respondString = receivedDataList.at(2);
         qDebug() << "name" << nameofdeviceString << "command" << commandString << "respond" << respondString;
 
-
-
         statusBar()->showMessage(  receivedDataList.join("---") );
-
 
         int numberTHISdevice=0;
         for (const QSerialPortInfo &info : QSerialPortInfo::availablePorts()) {
             AllAvailableSerialPortsQMap[info.portName()] = (info.isBusy() ? QObject::tr("Busy") : QObject::tr("Ready"));
-
-
 
             if (!info.isBusy())
             {
@@ -348,10 +334,7 @@ void LAMPhDevices::getAllAvailableSerialPorts(){
                 // this com port will be busy, because we connected right now
                 //numberofdevice++;
 
-
-
                 newSerialPort.close();
-
 
             }
             qDebug() << info.portName() << ":" << AllAvailableSerialPortsQMap.value(info.portName());

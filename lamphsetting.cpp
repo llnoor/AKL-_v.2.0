@@ -74,8 +74,8 @@ LAMPhSetting::LAMPhSetting(QString loginQString)
     connect( d_OpenWindow_Main, SIGNAL( triggered() ), this, SLOT(close()) );
     connect( d_OpenWindow_Devices, SIGNAL( triggered() ), this, SIGNAL(showLAMPhDevices()) );
     connect( d_OpenWindow_Devices, SIGNAL( triggered() ), this, SLOT(close()) );
-    //connect( d_OpenWindow_Temp, SIGNAL( triggered() ), this, SIGNAL(showLAMPhTemp()) );
-    //connect( d_OpenWindow_Temp, SIGNAL( triggered() ), this, SLOT(close()) );
+    connect( d_OpenWindow_Temp, SIGNAL( triggered() ), this, SIGNAL(showLAMPhTemp()) );
+    connect( d_OpenWindow_Temp, SIGNAL( triggered() ), this, SLOT(close()) );
     connect( d_OpenWindow_DataTable, SIGNAL( triggered() ), this, SIGNAL(showDataTable()) );
     connect( d_OpenWindow_DataTable, SIGNAL( triggered() ), this, SLOT(close()) );
     connect( d_OpenWindow_Edit, SIGNAL( triggered() ), this, SIGNAL(showLAMPhEdit()) );

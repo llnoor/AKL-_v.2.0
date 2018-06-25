@@ -10,7 +10,7 @@
 #include <qpixmap.h>
 
 
-#include "datatable.h"
+#include "lamphtemp.h"
 #include "start.xpm"
 #include "clear.xpm"
 #include "pixmaps.h"
@@ -25,7 +25,7 @@
 class MyToolBar: public QToolBar
 {
 public:
-    MyToolBar( DataTable *parent ):
+    MyToolBar( LAMPhTemp *parent ):
         QToolBar( parent )
     {
     }
@@ -37,7 +37,7 @@ public:
     }
 };
 
-DataTable::DataTable(QString loginQString)
+LAMPhTemp::LAMPhTemp(QString loginQString)
 {
 
     addToolBar(Qt::TopToolBarArea, toolBar());
@@ -50,7 +50,7 @@ DataTable::DataTable(QString loginQString)
     login = new QString();
     *login = loginQString;
 
-    labelPlotSettingS = new QLabel(tr("DataTable"));
+    labelPlotSettingS = new QLabel(tr("LAMPhTemp"));
 
 
     /*QLabel       lbl("this is the example text");
@@ -86,13 +86,13 @@ DataTable::DataTable(QString loginQString)
     //connect( d_OpenWindow_Exit, SIGNAL( triggered() ), this, SIGNAL(LAMPhExit()) );
     //connect( d_OpenWindow_Exit, SIGNAL( triggered() ), this, SLOT(close()) );
 
-    setWindowTitle(tr("DataTable - %1 ").arg(login->toLower()));
+    setWindowTitle(tr("LAMPhTemp - %1 ").arg(login->toLower()));
     //showFullScreen();
     showMaximized();
 
 }
 
-QToolBar *DataTable::toolBar()
+QToolBar *LAMPhTemp::toolBar()
 {
     MyToolBar *toolBar = new MyToolBar( this );
 
@@ -138,7 +138,7 @@ QToolBar *DataTable::toolBar()
     d_OpenWindow_Edit = new QAction( QPixmap( start_xpm ), "Edit", toolBar );
     d_OpenWindow_Setting = new QAction( QPixmap( start_xpm ), "Setting", toolBar );
     d_OpenWindow_Exit = new QAction( QPixmap( start_xpm ), "Exit", toolBar );
-    d_OpenWindow_DataTable->setEnabled(false);
+    d_OpenWindow_Temp->setEnabled(false);
     d_OpenWindow_Exit->setEnabled(false);
 
 
@@ -156,7 +156,7 @@ QToolBar *DataTable::toolBar()
     return toolBar;
 }
 
-QGroupBox *DataTable::groupDataTable()
+QGroupBox *LAMPhTemp::groupDataTable()
 {
    QGroupBox *groupBox = new QGroupBox(tr(""));
    groupBox->setStyleSheet("border: 0px solid white");
@@ -178,7 +178,7 @@ QGroupBox *DataTable::groupDataTable()
    return groupBox;
 }
 
-void DataTable::getDataDll()
+void LAMPhTemp::getDataDll()
 {
     
 
