@@ -19,7 +19,7 @@ void DataBase::connectToDataBase()
     /* Перед подключением к базе данных производим проверку на её существование.
      * В зависимости от результата производим открытие базы данных или её восстановление
      * */
-    if(!QFile("C:/Git/git/LAMP/DataBase/db/" DATABASE_NAME).exists()){
+    if(!QFile("C:/Git/git/PROJECT/src/LAMPh/db/" DATABASE_NAME).exists()){
         this->restoreDataBase();
     } else {
         this->openDataBase();
@@ -53,7 +53,7 @@ bool DataBase::openDataBase()
      * */
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setHostName(DATABASE_HOSTNAME);
-    db.setDatabaseName("C:/Git/git/LAMP/DataBase/db/" DATABASE_NAME);
+    db.setDatabaseName("C:/Git/git/PROJECT/src/LAMPh/db/" DATABASE_NAME);
     if(db.open()){
         return true;
     } else {
