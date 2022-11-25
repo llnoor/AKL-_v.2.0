@@ -1,8 +1,11 @@
-/****************************************************************************
-**  LAMP (Laboratory for Advanced Materials Physics)
-**  Copyright (C) 2017 Ilnur Gimazov ubvfp94@mail.ru
-**
-****************************************************************************/
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru) 2017
+*	
+*-------------------------------------------------
+*/
+
+
 
 #include <QApplication>
 #include "window.h"

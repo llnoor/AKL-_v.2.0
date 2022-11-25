@@ -1,3 +1,11 @@
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru)
+*	
+*-------------------------------------------------
+*/
+
+
 #ifndef PIXMAPS_H
 #define PIXMAPS_H
 

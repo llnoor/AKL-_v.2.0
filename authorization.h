@@ -1,3 +1,10 @@
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru)
+*	
+*-------------------------------------------------
+*/
+
 #ifndef AUTHORIZATIONWINDOW_H
 #define AUTHORIZATIONWINDOW_H
 

@@ -1,3 +1,12 @@
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru)
+*	
+*-------------------------------------------------
+*/
+
+
+
 #include "window.h"
 #include "logowindow.h"
 #include "authorization.h"

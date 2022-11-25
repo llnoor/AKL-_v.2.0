@@ -1,3 +1,9 @@
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru)
+*	
+*-------------------------------------------------
+*/
 #include "database.h"
 #include <QDateTime>
 #include <QTime>
@@ -777,13 +783,3 @@ bool DataBase::inserIntoNewTableExperimentNumber(const QVariantList &ndata)
     }
     return false;
 }
-
-
-
-
-
-
-
-
-
-

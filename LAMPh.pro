@@ -2,6 +2,7 @@ include( qwtWidgetLibrary.pri )
 include( ../../common.pri )
 include( ../../app.pri )
 
+
 TARGET = LAMPh
 TEMPLATE = app
 

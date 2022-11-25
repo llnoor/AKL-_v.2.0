@@ -1,3 +1,11 @@
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru)
+*	
+*-------------------------------------------------
+*/
+
+
 #ifndef _INCREMENTALPLOT_H_
 #define _INCREMENTALPLOT_H_ 1
 

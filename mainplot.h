@@ -1,3 +1,11 @@
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru)
+*	
+*-------------------------------------------------
+*/
+
+
 #ifndef _MAINPLOT_H_
 #define _MAINPLOT_H_ 1
 

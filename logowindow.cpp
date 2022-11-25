@@ -1,3 +1,11 @@
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru)
+*	
+*-------------------------------------------------
+*/
+
+
 #include <QtWidgets>
 #include "logowindow.h"
 

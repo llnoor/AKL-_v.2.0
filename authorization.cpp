@@ -1,3 +1,10 @@
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru)
+*	
+*-------------------------------------------------
+*/
+
 #include "authorization.h"
 #include <QtWidgets>
 #include <QMainWindow>

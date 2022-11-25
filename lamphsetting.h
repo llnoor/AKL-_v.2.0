@@ -1,3 +1,11 @@
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru)
+*	
+*-------------------------------------------------
+*/
+
+
 #ifndef LAMPHSETTING_H
 #define LAMPHSETTING_H
 

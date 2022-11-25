@@ -1,3 +1,12 @@
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru)
+*	
+*-------------------------------------------------
+*/
+
+
+
 #ifndef DIALOGAUTH_H
 #define DIALOGAUTH_H
 
@@ -86,5 +95,6 @@ private:
     void accept();
 
 };
+
 
 #endif // DIALOGAUTH_H

@@ -1,3 +1,11 @@
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru)
+*	
+*-------------------------------------------------
+*/
+
+
 #include <qglobal.h>
 #include <qtimer.h>
 #include <qwt_plot_grid.h>

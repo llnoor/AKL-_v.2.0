@@ -1,3 +1,9 @@
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru)
+*	
+*-------------------------------------------------
+*/
 #ifndef DATABASE_H
 #define DATABASE_H
 
@@ -136,5 +142,6 @@ private:
     bool createTable();
     bool createAdmin();
 };
+
 
 #endif // DATABASE_H

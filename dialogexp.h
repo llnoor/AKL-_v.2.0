@@ -1,3 +1,13 @@
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru)
+*	
+*-------------------------------------------------
+*/
+
+
+
+
 #ifndef DIALOGEXP_H
 #define DIALOGEXP_H
 

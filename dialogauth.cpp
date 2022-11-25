@@ -1,3 +1,11 @@
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru)
+*	
+*-------------------------------------------------
+*/
+
+
 #include "dialogauth.h"
 #include <QtWidgets>
 #include <QMainWindow>
@@ -344,3 +352,4 @@ QGroupBox *DialogAuth::groupTableAuth()
 
    return groupBox;
 }
+

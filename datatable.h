@@ -1,3 +1,9 @@
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru)
+*	
+*-------------------------------------------------
+*/
 #ifndef DATATABLE_H
 #define DATATABLE_H
 
@@ -142,5 +148,6 @@ private:
 
 
 };
+
 
 #endif // DATATABLE_H

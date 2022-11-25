@@ -1,6 +1,7 @@
 #include "sqlamp.h"
 #include "initdb.h"
 
+
 SQLamp::SQLamp()
 {
 

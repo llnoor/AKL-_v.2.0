@@ -1,3 +1,12 @@
+/*-------------------------------------------------
+*	
+*	Created by Ilnur Gimazov (ubvfp94@mail.ru)
+*	
+*-------------------------------------------------
+*/
+
+
+
 #include "dialogexp.h"
 #include <QtWidgets>
 #include <QMainWindow>
@@ -281,3 +290,4 @@ QGroupBox *DialogExp::groupTableExp()
 
    return groupBox;
 }
+

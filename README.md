@@ -1,9 +1,3 @@
-LAMPh
-
-Laboratory for Advanced Materials Physics
-
-LAMPh — acronym from Laboratory for Advanced Materials Physics. LAMPh is an interesting computer program. His experimental tasks help to better understand the physical processes.
-
 The program includes a set of laboratory experiments that cover the following topics:
 
 Measuring the MWA

@@ -4,6 +4,7 @@
 #include <QtWidgets>
 #include <QtSql>
 
+
 class SQLamp: public QMainWindow
 {
     Q_OBJECT
