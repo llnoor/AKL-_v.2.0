@@ -3,7 +3,6 @@ include( ../../common.pri )
 include( ../../app.pri )
 
 
-TARGET = LAMPh
 TEMPLATE = app
 
 QT += widgets
